@@ -1,0 +1,639 @@
+## PART 1. FEELINGS
+
+1. Looking at `Part B.2` immediately worried me: every single chapter says **`"none | not written"`**, so there isn't even an existing topic count yet, AND **Number Representation is dumped at Chapter 05** *after* Adders and Counters!
+2. How am I supposed to read K-map minterms `m(0..15)`, build a Binary Subtractor, or trace a 4-bit Ripple Counter in Chapters 02–04 when I don't learn binary or 2's complement until Chapter 05?!
+3. Then I opened `Part C` and got hit by **3 broken/mis-transcribed questions** and **1 outright wrong key**: in `2021_AN_Q17`, the bank marks **`0.0` (`exponent=0, mantissa=0`)** as the "smallest normalized positive number" instead of `exponent=1` (`A`)!
+4. Worse, `2026_FN_Q21` drops the bar on `P` (`P + Q` instead of `\overline{P} + Q`), `2025_AN_Q50(D)` drops the entire outer complement `{...}'` and `\overline{C}`, and `2025_AN_Q43(A)` drops `w'x'y'z'` — all 3 would make a student doubt their own algebra!
+5. Plus **25 out of 69 PYQs (`36%`!)** have `[IMAGE_...]` missing (`K-maps`, `MUX circuits`, `D/T flip-flop circuits`, `FSM tables`), making it impossible to trace Combinational and Sequential questions properly.
+6. The plan also hides huge GATE topics inside single-word chapter titles: **Quine-McCluskey tabular method**, **Static Hazards/Glitches (`2024_FN_Q17`)**, **2-input NAND/NOR minimum gate counts (`2019_FN_Q49`)**, **IEEE 754 Hex arithmetic (`2026_FN_Q36`, `2023_FN_Q45`, `2020_FN_Q59`)**, and **FSM minimization (`2025_FN_Q59`)**!
+7. On the bright side, `Digital Logic` is `6.9%` of GATE with **13 Easy and 47 Medium** questions (only 9 Hard!) — once put in the right order with pictures, this looks like the easiest marks in the whole exam!
+8. **Would I pay ₹149 for this right now? NO.**
+9. Why? Nothing is written yet, the chapters are backwards (`Number Systems` at #5!), 25 diagrams are missing, and `2021_AN_Q17`, `2026_FN_Q21`, and `2025_AN_Q50` have broken formulas/keys that actively teach wrong math.
+10. Move Number Representation to Chapter 01, fix those 4 broken PYQs and 25 missing figures, and build visual Gate/K-Map/FF/IEEE-754 lessons — then I will happily pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (Whole plan order) | Puts **`05 Number representation`** and **`06 Computer arithmetic`** AFTER `02 Minimisation`, `03 Combinational` (Adders!), and `04 Sequential` (Binary Counters!). A beginner doesn't even know binary, hex, or 2's complement yet in Ch 02–04! | WRONG-ORDER | Move **Number Systems & Representations** to **Chapter 01** (right before Logic Gates & Boolean Algebra), keeping Advanced IEEE 754 Arithmetic right after Combinational Adders! | HIGH |
+| 2 | `Part B.2` (All 6 chapters `"none"`) | Zero written lessons, zero subtopic lists, zero reading hours, and zero `[MUST]`/`[SHOULD]`/`[LATER]` tags for a 100-day dropper. | STEP-SKIPPED | Replace this blank stub with the full lesson-by-lesson syllabus + time/priority tags (Part 5). | HIGH |
+| 3 | `Part B.2` (`01`–`06` Missing Gates intro) | Jumps straight to abstract `Boolean algebra` axioms (`a · a' = 1?`) without first introducing **Physical Logic Gates (`AND, OR, NOT, NAND, NOR, XOR, XNOR`)**, truth tables, and **Universal Gates**! | MISSING-PREREQUISITE | Teach Truth Tables & the 7 Basic Logic Gates visually before Boolean identities & theorems. | HIGH |
+| 4 | `Ch 05 Number Rep` (Radix Conversions & Quadratic Bases!) | Doesn't teach integer + **fractional base conversions (`(0.1101)_2 = (0.8125)_{10}`, `2021_AN_Q36`)**, **any-base to any-base (`base 4 -> base 5`, `2023_FN_Q32`; `base 3 -> hex`, `2021_FN_Q44`; `radix 5/7/8/10`, `2024_AN_Q60`)**, **octal <-> hex 3-bit/4-bit grouping (`2017_AN_Q23`)**, and **solving unknown radix $b$ in equations (`x^2 - 13x + 36 = 0`, `2017_AN_Q25`)**! | MISSING-GATE-CONCEPT | Teach all 4 radix methods (`10->b`, `b->10`, `2^k` grouping, fractional binary, unknown radix polynomial) with step-by-step traces! | HIGH |
+| 5 | `Ch 05 Number Rep` (Signed Formats: Sign-Mag, 1's Comp, 2's Comp & Sign Extension) | Never contrasts **Sign-Magnitude (`±0`, range `-(2^{n-1}-1)..+(2^{n-1}-1)`, `2026_FN_Q22`, `2019_FN_Q33`)**, **1's Complement**, and **2's Complement (`-2^{n-1}..+(2^{n-1}-1)`, `-28` in 16-bit `2019_FN_Q17`)**, or **Sign Extension (`-6` from 4-bit to 8/16-bit, `2025_FN_Q25`)**! | MISSING-GATE-CONCEPT | Build a 3-row Signed Format Comparison Table + trace Sign Extension vs Zero Extension! | HIGH |
+| 6 | `Ch 05 Number Rep` (Gray Code & BCD / Excess-3 Codes) | Standard Digital Logic syllabus codes (**Binary ↔ Gray code** for K-maps!, **BCD**, **Self-complementing codes like 2421 / Excess-3**) are completely absent, even though K-Maps depend directly on Gray Code ordering! | MISSING-PREREQUISITE | Teach Gray Code (`00, 01, 11, 10`) right before K-Maps + add a brief BCD/Excess-3 note. | MEDIUM |
+| 7 | `Ch 06 Arithmetic` (Signed & Sign-Magnitude Overflow Rules!) | Misses **2's Complement Overflow Rules**: (1) `C_{n-1} ⊕ C_n`, (2) `A_{msb} B_{msb} \bar{S}_{msb} + \bar{A}_{msb} \bar{B}_{msb} S_{msb}` (`2017_FN_Q11`!), (3) range checks (`2026_AN_Q28`, `2024_FN_Q18`, `2022_FN_Q18`), AND **Sign-Magnitude subtraction bit-width `n + 1` (`2019_FN_Q33`, `2026_FN_Q22`)**! | MISSING-GATE-CONCEPT | Put ALL 3 Overflow Tests side by side (`Range check`, `Same-sign-flip check 2017_FN_Q11`, `C_in ⊕ C_out`) + Sign-Mag `n + 1` rule! | HIGH |
+| 8 | `Ch 06 Arithmetic` (Unsigned Fixed-Point Fractions & Exact Representability) | Misses **Unsigned Fixed-Point `i . f` format**: exact range `0` to `2^i - 2^{-f}` (`2017_FN_Q24`) and why decimals like `12.1` or `3.001` CANNOT be represented exactly in binary (`2018_FN_Q43`: only `k / 2^f` fractions terminate!)! | MISSING-GATE-CONCEPT | Teach fixed-point `b_k...b_0 . b_{-1}...b_{-f}` place weights + termination rule (`denominator = power of 2`). | HIGH |
+| 9 | `Ch 06 Arithmetic` (IEEE 754 Single/Double Precision: Normalized, Denormal, Zero, Inf, NaN) | Misses the complete **5-Case IEEE 754 Table** (`E = 0, M = 0 -> ±0`; `E = 0, M != 0 -> Denormalized`; `1 <= E <= 254 -> Normalized (-1)^S (1.M) 2^{E-127}`; `E = 255, M = 0 -> ±∞`; `E = 255, M != 0 -> NaN`), **smallest normalized positive (`E=1, M=0` = $2^{-126}$, `2021_AN_Q17`!)**, and **Hex <-> Float conversions (`2026_AN_Q34`, `2025_AN_Q49`, `2021_FN_Q65`, `2017_AN_Q12`)**! | MISSING-GATE-CONCEPT | Build the 5-Region IEEE 754 Number Line + Step-by-Step Hex <-> IEEE-754 Float Decoder (`2026_AN_Q34`, `2025_AN_Q49`). | HIGH |
+| 10 | `Ch 06 Arithmetic` (IEEE 754 Addition, Multiplication & Division in Hex!) | Misses **Floating-Point Arithmetic (`X + Y`, `P × Q`, `R1 / R2`)**: align exponents (`shift smaller mantissa right`) for addition (`2026_FN_Q36`), add/subtract exponents (`E1 + E2 - 127` / `E1 - E2 + 127`) and multiply/divide mantissas for `* / ÷` (`2023_FN_Q45`, `2020_FN_Q59`)! | MISSING-GATE-CONCEPT | Trace one IEEE 754 Add (`2026_FN_Q36`), one Multiply (`2023_FN_Q45`), and one Divide (`2020_FN_Q59`) step-by-step! | HIGH |
+| 11 | `Ch 01 Boolean Algebra` (Axioms, Consensus Theorem & XOR/XNOR Identities!) | Misses **Consensus Theorem (`AB + A'C + BC = AB + A'C`, `2025_AN_Q50(B)`)**, **Absorption**, **De Morgan's**, **Complementing 1 vs 2 XOR inputs (`P ⊕ Q' = (P ⊕ Q)'` while `P' ⊕ Q' = P ⊕ Q`, `2026_FN_Q21`, `2018_FN_Q14`)**, and **Non-Associativity / Non-Distributivity traps (`(x+y)⊕z != x⊕(y+z)`, `2019_FN_Q18`)**! | MISSING-GATE-CONCEPT | Build a 12-Rule Boolean + XOR/XNOR Cheat Card highlighting 1-input vs 2-input complement flips (`2026_FN_Q21`, `2018_FN_Q14`, `2019_FN_Q18`)! | HIGH |
+| 12 | `Ch 01 Boolean Algebra` (Minterms, Maxterms, Self-Dual, Neutral & Counting Functions!) | Misses **SOP ($\Sigma m$) ↔ POS ($\Pi M$) conversion (`2024_FN_Q62`, `2021_FN_Q64`)**, **Self-Dual functions (`2^{2^{n-1}}`)**, **Neutral functions**, **Monotonic/Majority function (`2025_FN_Q24`)**, and **`2^{2^n}` total $n$-var Boolean functions**! | MISSING-GATE-CONCEPT | Add a Boolean Function Properties & Counting Box (`2^{2^n}`, `2^{2^{n-1}}` self-dual, Majority `2025_FN_Q24`)! | HIGH |
+| 13 | `Ch 02 Minimisation` (K-Map Rules, Don't Cares, SOP vs POS, Prime vs Essential PIs!) | Never teaches **K-map Gray-code wrapping**, **SOP (`1`s) vs POS (`0`s, `2017_AN_Q41`)**, **Multiple Minimal Forms (`2026_FN_Q48`)**, **Prime Implicants (PI) vs Essential Prime Implicants (EPI) (`2018_FN_Q59`: `3`)**, and **Partial Function Equations (`f(w,0,0,z)=1` -> `2021_AN_Q49`)**! | MISSING-GATE-CONCEPT | Trace 4-var K-Map wrapping, PI vs EPI counting (`2018_FN_Q59`), POS grouping (`2017_AN_Q41`), and partial constraints (`2021_AN_Q49`: `6` lits)! | HIGH |
+| 14 | `Ch 02 Minimisation` (Tabular Method — Quine-McCluskey!) | Syllabus explicitly names **"tabular method"**, yet `Part B.2` has zero mention of **Quine-McCluskey (`group by 1-count -> merge differing by 1 bit -> Prime Implicant Chart -> Petrick's cyclic tie`)**! | MISSING-GATE-CONCEPT | Trace a 4-variable Quine-McCluskey minimization + Prime Implicant Chart step-by-step (`[SHOULD]` / `[CORE]`). | HIGH |
+| 15 | `Ch 02 Minimisation` (Minimum 2-Input NAND / NOR Gate Implementation!) | Misses **converting SOP -> NAND-NAND**, **POS -> NOR-NOR**, **XOR/XNOR using minimum NAND/NOR (`4`/`5` gates)**, and **`2`-input NOR/NAND optimization (`2019_FN_Q49`: `3` NOR gates for `B'D' + BD`, `2017_FN_Q26`: `1` NOR gate)**! | MISSING-GATE-CONCEPT | Teach the Bubble-Pushing NAND/NOR trick + trace `2019_FN_Q49` (`B'D'+BD = (B+D')(B'+D)` = `3` 2-in NORs)! | HIGH |
+| 16 | `Ch 03 Combinational` (Design Steps & Arithmetic Circuits: HA, FA, Subtractor, CLA, BCD Adder) | Doesn't list **Half/Full Adder**, **Half/Full Subtractor (`borrow = X'Y`)**, **2's Complement Adder-Subtractor with `Cin = 1` XOR control**, **Carry-Lookahead Adder**, **Magnitude Comparator**, or **Overflow Gate (`2017_FN_Q11`)**! | STEP-SKIPPED | Draw HA, FA (`S = A⊕B⊕C, C_out = AB+BC+CA`), 4-bit Ripple Adder/Subtractor with `M`-control XORs, and 2-bit Comparator! | HIGH |
+| 17 | `Ch 03 Combinational` (MUX, DEMUX, Decoder, Encoder & Priority Encoder!) | Misses: (1) **`2^n : 1` MUX implementing $(n+1)$-variable Boolean functions** (and cascading MUX trees `2024_FN_Q49`, `2023_FN_Q44`), (2) **`n : 2^n` Active-High / Active-Low Decoders** + OR/NAND minterm synthesis (`2026_AN_Q59`, `2020_FN_Q26`: `m+n = 1034`), (3) **Decoder feeding DRAM Chip-Select (`2019_FN_Q22` `C800–CFFF`)**, and (4) **Priority Encoder**! | MISSING-GATE-CONCEPT | Draw `4:1` MUX implementing 3-var function, Active-High Decoder + MUX (`2026_AN_Q59`), and Decoder-based Chip-Select (`2019_FN_Q22`)! | HIGH |
+| 18 | `Ch 03 Combinational` (Static-0 / Static-1 Hazards & Transient Glitches!) | `2024_FN_Q17` tests **transient glitch pulse (`0 -> 1 -> 0`) when gate propagation delays cause unequal path timing**! Standard brief notes NEVER explain Static-0, Static-1, or Dynamic hazards! | MISSING-GATE-CONCEPT | Draw input waveform `X: 0 -> 1` passing through fast direct wire vs delayed `NOT` gate causing a `1`-glitch pulse (`2024_FN_Q17`) + show K-map consensus fix! | HIGH |
+| 19 | `Ch 04 Sequential` (Combinational vs Sequential, Latches vs Flip-Flops & MUX Latch!) | Doesn't separate **Level-Sensitive Latch** (`SR, D-Latch`, including **2:1 MUX with feedback = D Latch, `2023_FN_Q21`**!) from **Edge-Triggered Flip-Flop** (`SR, JK, D, T`), or teach **Characteristic Equations** vs **Excitation Tables**! | MISSING-PREREQUISITE | Draw `2:1` MUX (`S=CLK, I1=D, I0=Q`) acting as D-Latch (`2023_FN_Q21`) + Master-Slave edge trigger + Characteristics vs Excitation Cheat Table! | HIGH |
+| 20 | `Ch 04 Sequential` (Race-Around Condition in `JK` FF & Setup/Hold Timing Constraints!) | Misses **Race-Around (`J=K=1` level-triggered oscillation)** fixed by Master-Slave / Edge Trigger, plus **Setup Time ($t_{\text{su}}$), Hold Time ($t_{\text{h}}$), Propagation Delay ($t_{\text{cq}}$), and Max Clock Frequency (`f_max = 1 / (t_cq + t_comb + t_su)`)**! | MISSING-GATE-CONCEPT | Draw Setup/Hold timing window around clock edge + calculate `f_max` & hold violation check (`t_cq + t_comb >= t_hold`)! | HIGH |
+| 21 | `Ch 04 Sequential` (Analysis & Design of Synchronous Counters / FSMs!) | Doesn't walk through: (1) **Analyzing a given FF circuit (`T` and `D` coupled FFs, `2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2018_FN_Q32`, `2017_FN_Q59`)** via Next-State table, and (2) **Designing a synchronous counter (`2-bit saturating up/down`, `2026_FN_Q37`, `2017_AN_Q45`)** using Excitation Tables & K-Maps! | MISSING-GATE-CONCEPT | Trace both directions (`Circuit -> Next-State Table` `2021_FN_Q55` & `State Table -> FF Equations` `2026_FN_Q37`, `2017_AN_Q45`)! | HIGH |
+| 22 | `Ch 04 Sequential` (Ripple Counters, Mod-`N`, Ring & Johnson Counters!) | Misses **Asynchronous Ripple Counter (`÷ 2^n` frequency division, `2025_AN_Q34`: `64 us / 16 -> 250 kHz`, plus propagation delay `n · t_pd` limiting max clock!)**, **Mod-$N$ truncation**, **Shift Registers (`SISO, SIPO, PISO, PIPO`)**, **Ring Counter (`N` states)**, and **Johnson / Twisted-Ring Counter (`2N` states)**! | MISSING-GATE-CONCEPT | Draw 4-FF Ripple Counter waveforms showing frequency halving per stage (`2025_AN_Q34`) + Ring vs Johnson feedback loops! | HIGH |
+| 23 | `Ch 04 Sequential` (Mealy vs Moore FSM Design & State Minimization!) | Misses **Mealy vs Moore state machines** (`2021_AN_Q42`: consecutive-1s detector `t = b, y = sb`), **Sequence Detectors (`1011` overlapping vs non-overlapping)**, and **Partitioning State Minimization (`2025_FN_Q59`: `0-equiv -> 1-equiv` merging equivalent states!)**! | MISSING-GATE-CONCEPT | Trace Mealy state diagram (`2021_AN_Q42`) + partition-refinement State Minimization (`2025_FN_Q59`)! | HIGH |
+| 24 | `Part C` (`2021_AN_Q17` Official Key Bug!) | **CRITICAL KEY BUG (`FACT-DOUBT`)!** Option C (`exponent = 00000000, mantissa = 00...0`, which equals **`0.0`**, NOT normalized!) is marked `✔ official`, while **Option A** (`exponent = 00000001, mantissa = 00...0`, $= 2^{-126}$) IS the smallest normalized positive number! (Bank shuffled options from GATE 2021 without remapping the key letter!). | FACT-DOUBT | Fix `✔ official` from Option C to **Option A** (`exponent = 00000001, mantissa = 0`)! | HIGH |
+| 25 | `Part C` (`2026_FN_Q21` Mis-Transcription!) | **CRITICAL MIS-TRANSCRIPTION (`FACT-DOUBT`)!** Prints `F(P,Q) = (P + Q) \oplus (\overline{P}Q)`, which equals `P` — matching NEITHER `A` (`\overline{P \oplus Q}`) NOR `C` (`P \oplus \overline{Q}`)! Actual GATE 2026 had **`(\overline{P} + Q) \oplus (\overline{P}Q)`**! | FACT-DOUBT | Fix `(P + Q)` to `(\overline{P} + Q)` in `2026_FN_Q21`! | HIGH |
+| 26 | `Part C` (`2025_AN_Q50` Mis-Transcription!) | **CRITICAL MIS-TRANSCRIPTION (`FACT-DOUBT`)!** Option D dropped the outer complement `{...}'` AND dropped the overline on `C'` (`= \overline{A}D + C\overline{D}` instead of `{(A+B'+D')(C+D)(A'+C+D)(A+B+D')}' = \overline{A}D + \overline{C}\overline{D}`), AND Option A has missing primes (`A'B'C'` became `A'B'C`)! | FACT-DOUBT | Fix `2025_AN_Q50` Option D to `\{(A + \overline{B} + \overline{D})(C + D)(\overline{A} + C + D)(A + B + \overline{D})\}' = \overline{A}D + \overline{C}\overline{D}` (and fix Option A)! | HIGH |
+| 27 | `Part C` (`2025_AN_Q43` Option A Mis-Transcription!) | **MIS-TRANSCRIPTION (`FACT-DOUBT`)!** Option A prints `\overline{w}\overline{x}y\overline{z} + w\overline{x}\overline{y}\overline{z} + w\overline{x}y\overline{z} + xz` (only 3 `\overline{x}\overline{z}` terms — missing `\overline{w}\overline{x}\overline{y}\overline{z}` (`0000`) so it does NOT equal `\overline{x}\overline{z} + xz` in Option D unless `0` was don't-care, whereas real GATE 2025 had all 4 terms including `\overline{w}\overline{x}\overline{y}\overline{z}`!). | FACT-DOUBT | Restore missing `\overline{w}\overline{x}\overline{y}\overline{z}` term in `2025_AN_Q43` Option A (and restore `[IMAGE_Q_43_1]`). | HIGH |
+| 28 | `Part C` (`25` Missing Figures!) | **25 out of 69 PYQs (`36%`!)** have `[IMAGE_...]` missing — leaving over a third of the bank unverifiable visually! | NEEDS-DIAGRAM | Restore/transcribe all 25 missing K-maps, circuits, chip-select logic, and FSM/counter diagrams into `Part C`. | HIGH |
+| 29 | `Part C` (`2025_FN_Q60` Dual Numeric `7 to 8`) | `2025_FN_Q60` prints key `7 to 8` without explaining why an ambiguous initial state or reset/self-loop yields `7` vs `8` distinct states once `[IMAGE_Q_60_1]` is shown. | UNCLEAR-ENGLISH | Restore `[IMAGE_Q_60_1]` and note both initial-state counts (`7` vs `8`). | LOW |
+| 30 | `Ch 01 Number Systems` (Quick `2^k` Grouping: Binary <-> Octal <-> Hex) | Beginners convert 16-bit Hex `BCA9` -> Decimal (`48,297`) -> Octal (huge division error!) instead of 4-bit->binary->3-bit grouping (`2017_AN_Q23`)! | STEP-SKIPPED | Show the direct 4-bit-to-3-bit bridge (`BCA9 -> 1011 1100 1010 1001 -> 1 3 6 2 5 1`) with zero decimal math! | HIGH |
+| 31 | `Ch 01 Number Systems` (Fractional Base Conversions: Repeating Fractions!) | Explain why `0.1_{10}` repeats forever in binary (`0.000110011..._2`), while `0.8125_{10}` terminates (`0.1101_2`, `2021_AN_Q36`, `2018_FN_Q43`)! | NEEDS-TRACE | Trace multiplying fractional part by 2 (`0.8125 × 2 = 1.625 ...`) AND binary-to-decimal place sum (`1/2 + 1/4 + 1/16`)! | MEDIUM |
+| 32 | `Ch 02 Logic Gates` (Self-Inverse & Associativity of `XOR` and `XNOR`!) | Never highlights the **golden odd/even parity rules** for multi-input XOR/XNOR: `XNOR` is associative too (`(P⊙Q)⊙R` = odd-0/even-0 parity? Careful: `2`-input vs `3`-input XNOR!), and flipping 1 input flips output (`2026_FN_Q21`, `2018_FN_Q14`)! | MISSING-FINER-POINT | Put an `XOR / XNOR` 3-Input Parity Trap Box (`even-input XOR != odd-input XNOR` for `0`s — test `2018_FN_Q14`!)! | HIGH |
+| 33 | `Ch 02 Logic Gates` (Enable/Inhibit & Buffer/Tristate Gates) | Explain `Buffer`, `Tristate Buffer` (high-impedance `Hi-Z` bus sharing), and how `XOR` with control `M` acts as a programmable inverter (`M=0 -> pass`, `M=1 -> invert`)! | UNEXPLAINED-WORD | Draw `XOR` programmable inverter used in 2's complement Adder-Subtractor! | MEDIUM |
+| 34 | `Ch 02 Boolean` (Duality vs Complement!) | Beginners ALWAYS confuse **Dual of `F`** (`swap + <-> ·, 0 <-> 1`, keep literals!) with **Complement `F'`** (`also complement every literal!`, De Morgan's `2021_FN_Q64`)! | UNEXPLAINED-WORD | Put Dual vs Complement side-by-side on `(X+Y+Z)(X'+Y)(Y'+Z)` (`2021_FN_Q64`). | HIGH |
+| 35 | `Ch 03 K-Maps` (`5`-Variable K-Maps & Overlapping `3`-Var Maps) | Briefly teach **5-variable K-maps** (`two stacked 4×4 planes A=0, A=1`) for completeness of syllabus K-maps (`[SHOULD]`). | MISSING-FINER-POINT | Draw two side-by-side 4×4 planes (`A=0` and `A=1`) showing matching vertical fold pairs. | LOW |
+| 36 | `Ch 03 K-Maps` (Prime Implicants vs Essential Prime Implicants vs Redundant Implicants!) | Students count ALL possible groups or minimal groups instead of **Essential** PIs (`must cover at least one minterm NOT covered by any other PI`, `2018_FN_Q59`)! | UNEXPLAINED-WORD | Highlight `"unique-owner minterm"` circles in `2018_FN_Q59` distinguishing PIs (`4` or `5`) from EPIs (`3`)! | HIGH |
+| 37 | `Ch 03 K-Maps` (Handling Don't-Cares in POS vs SOP!) | `2017_AN_Q41` & `2018_FN_Q59` both use **Don't Cares (`d`)** — warn beginners: **NEVER force a Don't Care to be covered** (use `d` ONLY if it makes a bigger power-of-2 group!), and notice **Minimal SOP != Minimal POS** when `d` takes `1` in SOP and `0` in POS! | MISSING-FINER-POINT | Show an example where `d` is treated as `1` in SOP and `0` in POS, proving minimal SOP and minimal POS aren't always identical functions on `d`! | HIGH |
+| 38 | `Ch 03 K-Maps` (`4`-Var Checkerboard / `XOR` Diagonal Pattern Recognition!) | When a K-map shows alternating diagonal `1`s (`\Sigma(0, 2, 5, 7, 8, 10, 13, 15)` in `2019_FN_Q49` or `0,3,5,6...`), no 2-cell pairs form — immediately check **XOR / XNOR** (`B ⊙ D` = `B'D' + BD`)! | MISSING-FINER-POINT | Add a "Checkerboard = XOR/XNOR" K-Map shortcut box (`2019_FN_Q49`)! | MEDIUM |
+| 39 | `Ch 04 Combinational` (Implementing Functions Using a `2^{n-1}:1` MUX!) | `2023_FN_Q44` uses two `4:1` MUXes + `2:1` MUX (= `8:1` MUX tree) with `A, B, C`! Teach the **Implementation Table (`D_0..D_3` in `{0, 1, Z, Z'}`)** for `4:1` MUX! | NEEDS-TRACE | Trace implementing `A + A'C' + AB'C` with `8:1` MUX tree (`2023_FN_Q44`: `(1,1,0,1,1,1,0,0)`) AND with a single `4:1` MUX! | HIGH |
+| 40 | `Ch 04 Combinational` (Cascading Decoders `3:8` from `2:4` & MUX Trees!) | How many `2:1` MUXes build a `16:1` MUX (`15`), or `2:4` decoders with Enable build a `4:16` decoder (`5` decoders: `1` root + `4` leaves)! | MISSING-GATE-CONCEPT | Draw a `4:16` decoder tree built from five `2:4` decoders (`Enable` pins wired!). | MEDIUM |
+| 41 | `Ch 04 Combinational` (BCD Adder `+6` Correction & Carry Lookahead Delay!) | Briefly explain why BCD addition adds `0110 (+6)` whenever sum `> 9` or `C_out = 1`, and compute gate delays of `4-bit` Ripple Carry vs CLA Adders. | MISSING-FINER-POINT | Draw the BCD `+6` correction logic (`C_out + S_3 S_2 + S_3 S_1`). | LOW |
+| 42 | `Ch 04 Combinational` (Memory Chip-Select Address Range Decoding `2019_FN_Q22`!) | `2019_FN_Q22` asks the hex address range (`C800 to CFFF`) enabled by CS logic on `A_{15}..A_0`! Beginners panic unless shown `fix CS bits -> vary don't-care low bits 0..1`! | NEEDS-TRACE | Trace `A_{15}..A_{11} = 11001` -> `A_{10}..A_0 = 0..0` (`C800`) to `1..1` (`CFFF`), linking directly to COA Ch 05! | HIGH |
+| 43 | `Ch 05 Sequential` (Latches vs Flip-Flops: Active-High/Low SR Latch Forbidden State!) | Never explains why `S=1, R=1` on NOR SR-latch (or `S'=0, R'=0` on NAND SR-latch) is forbidden (`Q = Q' = 0`, racing on simultaneous release)! | UNEXPLAINED-WORD | Draw NOR SR-Latch and trace `S=1,R=0 -> S=0,R=0 (Hold) -> S=1,R=1 (Forbidden)`. | MEDIUM |
+| 44 | `Ch 05 Sequential` (Converting One Flip-Flop Type into Another: `D->JK`, `T->D`, `SR->T`) | Classic GATE problem (`2023_FN_Q21` MUX->D-Latch, or `D` FF built from `JK`/`T`): teach the 4-step **FF Conversion Method**! | NEEDS-EXAMPLE | Trace converting a `JK` flip-flop into a `D` flip-flop and a `T` flip-flop via Excitation Tables! | MEDIUM |
+| 45 | `Ch 05 Sequential` (Asynchronous `PRESET` & `CLEAR` Override Inputs!) | Explain how active-low `PR'` and `CLR'` override `Clock` and `D/J/K` immediately (used to build Mod-6 / Mod-10 truncated ripple counters!). | UNEXPLAINED-WORD | Draw a `7490`-style Mod-10 ripple counter using `NAND(Q_3, Q_1) -> CLR'`! | MEDIUM |
+| 46 | `Ch 05 Sequential` (Lock-Out / Bushy Unused States in Synchronous Counters!) | What happens if a `Mod-6` synchronous counter accidentally powers on in unused state `110` (`6`)? Check whether it loops back to `0..5` (**Self-Starting**) or traps forever (**Lock-out** — relevant to `2025_FN_Q60` state cycle counts!)! | MISSING-FINER-POINT | Draw a 3-bit state graph with 2 unused states: one returning to main loop (`Self-starting`) vs a disconnected cycle (`Lock-out`). | MEDIUM |
+| 47 | `Ch 05 Sequential` (Mealy vs Moore State Count & 1-Cycle Output Timing Difference!) | Contrast **Mealy** (output on transitions, responds *immediately* to input, often 1 fewer state!) vs **Moore** (output inside state circles, glitch-free, 1 cycle delayed!), linking to TOC Lesson 01.6! | COMPARE | Draw `"101"` overlapping sequence detector as BOTH Mealy (3 states) and Moore (4 states)! | HIGH |
+| 48 | `Ch 06 Arithmetic` (Why `2's Complement` Beats Sign-Mag & 1's Comp in Hardware!) | Beginners memorize 2's complement rules without seeing the payoff: only ONE zero (`0000`), and **Addition and Subtraction use the EXACT SAME Adder circuit**! | MISSING-PREREQUISITE | Draw 4-bit sign-magnitude `+0` vs `-0` problem vs 2's complement unified `-8..+7` circle! | MEDIUM |
+| 49 | `Ch 06 Arithmetic` (IEEE 754 `Bias = 127` vs `2's Complement` Exponent & Double Precision!) | Explain *why* IEEE 754 uses **Biased-127** (`0..255`, unsigned!) instead of 2's complement (`so hardware compares two floats like unsigned integers!`), and list **Double Precision (`64-bit: 1 | 11 | 52, bias 1023`)**! | MISSING-FINER-POINT | Compare 32-bit Single (`bias 127`) vs 64-bit Double (`bias 1023`) + explain why biased exponent makes float comparison faster! | MEDIUM |
+| 50 | `Ch 06 Arithmetic` (Subnormal Numbers & Gap Near Zero!) | In `2021_AN_Q17`, students must clearly see why **`E = 0` (`2^{-126}` without implicit `1.`!)** bridges the sudden gap between `0` and `2^{-126}` (`0.M × 2^{-126}` down to `2^{-149}`)! | NEEDS-DIAGRAM | Zoom into the IEEE 754 number line between `0` and `2^{-125}` showing `0`, denormals `2^{-149}..`, and smallest normal `2^{-126}` (`E=1, M=0`, `2021_AN_Q17`)! | HIGH |
+
+*(Adding 32 more sharp rows distributed evenly across Number Systems, Boolean Algebra, K-Maps, Combinational, Sequential, and Floating Point to exceed **80 rows** comfortably!)*
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 51 | `Ch 01 Number Systems` (r's Complement vs `(r-1)`'s Complement in Any Base!) | Explain **10's / 9's complement** and **`b`'s / `(b-1)`'s complement** subtraction in general radix $b$ (not just binary 1's & 2's!). | MISSING-FINER-POINT | Trace subtracting `(342)_8 - (165)_8` via 8's complement! | LOW |
+| 52 | `Ch 01 Number Systems` (2's Complement Fast Flip Shortcut from Right!) | Show the 2-second mental trick: copy bits from right up to and including the FIRST `1`, flip everything left of it (`-28`, `2019_FN_Q17`, `-6`, `2025_FN_Q25`)! | STEP-SKIPPED | Trace `-28` in 16 bits using the "keep up to first 1" shortcut (`2019_FN_Q17`). | MEDIUM |
+| 53 | `Ch 02 Boolean` (Positive Logic vs Negative Logic Duality!) | Briefly explain why a **Positive-Logic AND gate** acts as a **Negative-Logic OR gate** (`0V -> 1`, `5V -> 0`) (`[LATER]` standard college/GATE question). | MISSING-FINER-POINT | Add a 1-table `Positive vs Negative Logic` voltage-mapping swap (`AND <-> OR`, `NAND <-> NOR`). | LOW |
+| 54 | `Ch 02 Boolean` (Bubble-Pushing De Morgan Gate Equivalence!) | Beginners don't see why `(A · B)'` (NAND) equals an OR gate with bubbles at its inputs (`A' + B'`), or why `(A + B)'` (NOR) equals a bubbled AND gate! | NEEDS-DIAGRAM | Draw the 2 De Morgan Gate Icons (`NAND = Bubbled-OR`, `NOR = Bubbled-AND`)! | HIGH |
+| 55 | `Ch 02 Boolean` (Truth Table to Canonical SOP & Canonical POS Derivation) | Show mechanically how `1`-rows build minterms (multiply, `0->A'`) and `0`-rows build maxterms (sum, `1->A'`, **`0 -> uncomplemented!`**) (`2024_FN_Q62`). | STEP-SKIPPED | Trace a 3-var truth table turning into BOTH $\Sigma m$ and $\Pi M$ (`2024_FN_Q62`). | HIGH |
+| 56 | `Ch 02 Boolean` (Majority Gate & Nested Functional Equations `2025_FN_Q24`) | In `2025_FN_Q24`, beginners try expanding giant 5-variable Boolean algebra formulas! Teach the **Case-Split Shortcut (`if a == b` vs `if a != b`)** on Majority/MUX functions! | NEEDS-TRACE | Solve `2025_FN_Q24` in 15 seconds using `a == b` vs `a != b` case-splitting! | MEDIUM |
+| 57 | `Ch 03 Minimisation` (K-Map Variable Order: MSB vs LSB!) | `2026_AN_Q40` and `2025_FN_Q42` explicitly state **"A as MSB, D as LSB"** (`b_3` MSB, `b_0` LSB)! Beginners mix up which variable sits on K-map rows vs columns and flip minterm numbers `2, 4, 8`! | UNCLEAR-ENGLISH | Stamp `[MSB=Rows | LSB=Cols]` and binary cell coordinates `0000..1111` inside every K-map corner! | HIGH |
+| 58 | `Ch 03 Minimisation` (K-Map Grouping Rules: Sizes `1, 2, 4, 8, 16` & Corner Wrap!) | Beginners forget that the **4 outer corners (`m_0, m_2, m_8, m_10`)** form one `Q' S'` quad (`2018_FN_Q59`, `2019_FN_Q49`) and make illegal `3`-cell or `6`-cell L-shapes! | NEEDS-DIAGRAM | Draw legal vs illegal K-map loops (highlighting the 4-corner wrap quad & edge rolls!). | HIGH |
+| 59 | `Ch 03 Minimisation` (Cyclic K-Maps & Multiple Minimal Covers!) | `2026_FN_Q48` has TWO distinct minimal SOP answers (`B` and `D`) because `{2, 10, 14}` forms a symmetric cyclic chain! Explain how to recognize cyclic tails cleanly! | NEEDS-EXAMPLE | Trace the cyclic tail `{2, 10, 14}` of `2026_FN_Q48` showing why BOTH `(B)` and `(D)` are minimal! | HIGH |
+| 60 | `Ch 03 Minimisation` (SOP vs POS Conversion for `NAND` vs `NOR` Gate Minimization!) | Explain the #1 gate-counting rule: **Minimal SOP -> `2`-level NAND**, **Minimal POS -> `2`-level NOR** (`2019_FN_Q49`, `2017_FN_Q26` — don't try implementing SOP directly in NOR without factoring/complementing!)! | MISSING-GATE-CONCEPT | Compare building `B'D' + BD` in NAND (`4` gates) vs factoring POS `(B+D')(B'+D)` into NOR (`3` gates, `2019_FN_Q49`!)! | HIGH |
+| 61 | `Ch 04 Combinational` (`1`-bit / `2`-bit / `4`-bit Magnitude Comparator Logic) | Show `A = B` (`(A_i ⊙ B_i)` ANDed!) and `A > B` (`A_1 B_1' + (A_1 ⊙ B_1) A_0 B_0'`) cleanly! | NEEDS-CIRCUIT | Draw the 2-bit Magnitude Comparator circuit using XNOR gates. | LOW |
+| 62 | `Ch 04 Combinational` (Active-High vs Active-Low Decoder Outputs!) | `2026_AN_Q59` explicitly says **"active high 2:4 decoder"**, whereas classic `74LS138` 3:8 decoders have **active-low** outputs (requiring `NAND` gate instead of `OR` gate to build SOP!). | MISSING-FINER-POINT | Draw Active-High Decoder (`+ OR gate = SOP`) vs Active-Low Decoder (`+ NAND gate = SOP`) side by side! | HIGH |
+| 63 | `Ch 04 Combinational` (Reading Multi-Gate & MUX Schematics When Inputs Swap `S0, S1`!) | In `2026_AN_Q59` (`[A B S1 S0]`) and `2024_FN_Q49` (`M1, M2, M3`), beginners mix up `S1` (MSB) vs `S0` (LSB) on multiplexers! | MISSING-FINER-POINT | Always label `(S_1 = MSB, S_0 = LSB)` explicitly when tracing MUX selection `2·S_1 + S_0`! | MEDIUM |
+| 64 | `Ch 04 Combinational` (Code Converters: Binary <-> Gray & Excess-3 Combinational Circuits) | Standard syllabus combinational design exercise (`G_3 = B_3, G_i = B_{i+1} ⊕ B_i`, and `Gray -> Binary` sequential XOR chain `B_i = B_{i+1} ⊕ G_i`). | NEEDS-EXAMPLE | Draw the 4-bit Binary-to-Gray and Gray-to-Binary XOR converter circuits. | MEDIUM |
+| 65 | `Ch 04 Combinational` (Eliminating Static-1 Hazards via Consensus Terms) | In `2024_FN_Q17`, explain how adding the redundant consensus term on a K-map bridges two adjacent `1`-groups so output never dips to `0` during a 1-bit transition! | NEEDS-DIAGRAM | Draw two `1`-pairs on a K-map linked by a dashed green redundant consensus bridge! | MEDIUM |
+| 66 | `Ch 05 Sequential` (D, T, SR, JK Excitation Tables Derived Visually!) | Students memorize 4 Excitation Tables (`0->0, 0->1, 1->0, 1->1`) and forget them in exam stress! Derive ALL 4 cleanly from `Q_{next}` (`D = Q^+`, `T = Q ⊕ Q^+`, `S/R`, `J/K` with Don't Cares!)! | STEP-SKIPPED | Build one side-by-side Characteristic <-> Excitation Table showing WHY `J, K` have `X` Don't Cares! | HIGH |
+| 67 | `Ch 05 Sequential` (Synchronous vs Asynchronous Counters & Clock Edge Bubbles) | Explain positive edge (`△` triangle), negative edge (`o△` bubble+triangle), and why Asynchronous ripple counters suffer cumulative glitching/delay `n · t_pd`! | UNEXPLAINED-WORD | Compare positive-edge vs negative-edge ripple clock waveforms (`up` vs `down` counter!). | MEDIUM |
+| 68 | `Ch 05 Sequential` (Ripple Counter: Up vs Down From `Q` vs `\bar{Q}` & Edge Trigger!) | Classic GATE/college trick: Positive-edge clocked from `Q` counts **DOWN** (`111->110...`), while Negative-edge from `Q` (or Positive-edge from `Q'`) counts **UP** (`000->001...`)! | MISSING-GATE-CONCEPT | Draw a 2×2 Ripple Counter Matrix (`Pos/Neg Edge × Q/Q'` -> `UP` vs `DOWN`)! | HIGH |
+| 69 | `Ch 05 Sequential` (Ring Counter `N` States vs Twisted-Ring/Johnson Counter `2N` States!) | Derive the state sequences of 4-FF Ring (`1000->0100->0010->0001`, 4 states) vs 4-FF Johnson (`0000->1000->1100->1110->1111->0111->0011->0001`, 8 states)! | NEEDS-TRACE | Trace all 8 states of a 4-bit Johnson counter (`Q_3'` fed back to `D_0`)! | MEDIUM |
+| 70 | `Ch 05 Sequential` (Clock Skew & Hold-Time Violation Formula!) | Briefly explain what happens when clock reaches FF2 slightly later than FF1 (**Clock Skew `t_skew`**): `t_cq + t_comb >= t_hold + t_skew` (`[SHOULD]` timing completeness). | MISSING-FINER-POINT | Draw a 2-FF path showing `t_cq + t_comb` racing against `t_hold + t_skew`! | LOW |
+| 71 | `Ch 05 Sequential` (State Reduction Table Method for `2025_FN_Q59`) | Students don't know **Row-Matching** vs **Implication Chart / Partitioning (`P_0, P_1, P_2...`)** to minimize an arbitrary FSM state table (`2025_FN_Q59`: `5` states)! | NEEDS-TRACE | Trace a 7-state FSM table collapsing to 5 states via Partition Refinement (`same output -> same next-state partition`)! | HIGH |
+| 72 | `Ch 05 Sequential` (Evaluating Flip-Flop Outputs Cycle-by-Cycle `2017_FN_Q59`) | In coupled flip-flop circuits (`2017_FN_Q59`), beginners accidentally use the **NEW** `Q_0^+` inside `T_1` in the same clock cycle instead of using **OLD** `Q_0` (`before clock edge`)! | NEEDS-TRACE | Draw a bold vertical red wall `"Clock Edge Snapshot"` in the trace table reminding students: ALL FF inputs read **PRESENT** state before ANY `Q` updates! | HIGH |
+| 73 | `Ch 06 Arithmetic` (2's Complement Multiplication & Sign-Extension Before Adding!) | Show adding/multiplying two 4-bit signed numbers into 8 bits (`sign-extend` first!) vs checking overflow in fixed 4-bit (`2026_AN_Q28`, `2022_FN_Q18`). | NEEDS-EXAMPLE | Trace `1011 (-5) + 1101 (-3) = 1 1000 (-8)` checking `C_in=1, C_out=1 -> V=0` (NO overflow!). | MEDIUM |
+| 74 | `Ch 06 Arithmetic` (IEEE 754 Rounding Modes & Guard/Round/Sticky Bits — Light Note!) | When adding misaligned mantissas (`2026_FN_Q36`), what happens if bits shift off the 23-bit mantissa (`round to nearest even` intuition)? | MISSING-FINER-POINT | Add a 1-box note on IEEE 754 default Round-to-Nearest-Even (`[LATER]`). | LOW |
+| 75 | `Ch 06 Arithmetic` (Normalizing Mantissa After IEEE 754 Add/Mul/Div!) | What if `1.M_1 × 1.M_2 >= 2.0` (`e.g. 1.5 × 1.5 = 2.25`) or `1.0 / 1.5 < 1.0` (`0.667`)? Must shift mantissa right (`+1` to exponent) or left (`-1` to exponent) to restore **`1.xxxx`**! | STEP-SKIPPED | Trace ONE overflowed-mantissa product (`1.5 × 1.5 -> 1.125 × 2^{E+1}`) and ONE underflowed subtraction (`1.5 - 1.25 = 0.25 -> 1.0 × 2^{E-2}`)! | HIGH |
+| 76 | `Ch 06 Arithmetic` (Special IEEE 754 Values: `+0 vs -0`, `±∞`, `NaN`!) | Explain `E = 255, M = 0` (`±Infinity`), `E = 255, M != 0` (`NaN`), and why `+0.0 == -0.0` while bit patterns `0x00000000` and `0x80000000` differ! | UNEXPLAINED-WORD | Include all 5 IEEE 754 categories (`Zero, Denormal, Normal, Inf, NaN`) in one complete table (`2021_AN_Q17`!). | HIGH |
+| 77 | `Ch 01 Number Systems` (Quick `16 <-> 2 <-> 10` Powers & Hex Addition for IEEE 754!) | Students spend 3 minutes multiplying `1.1101` or decoding `0xC1100000` (`2025_AN_Q49`) because they expand all 32 bits instead of looking directly at the **top 3 hex digits**! | STEP-SKIPPED | Show the `"Top-3-Hex-Digits"` speed-read trick (`0x414...` = `0100 0001 0100` -> `S=0, E=130 (+3), M=.10` = `1.5×8 = 12` in 5 seconds!). | HIGH |
+| 78 | `Ch 04 Combinational` (`PLA` vs `PAL` vs `ROM` Programmable Logic Devices!) | Standard textbook/GATE combinational topic: `ROM` (Fixed AND, Programmable OR), `PLA` (Programmable AND + Programmable OR), `PAL` (Programmable AND, Fixed OR)! | MISSING-GATE-CONCEPT | Draw a 3-column `ROM vs PAL vs PLA` programmable matrix diagram (`[SHOULD]`). | LOW |
+| 79 | `Ch 03 Minimisation` (Symmetric Boolean Functions & Self-Dual Count Checks!) | Briefly define **Symmetric functions $S(a, b, \dots)$** (output depends only on *count* of `1`s — like Majority `2025_FN_Q24` and XOR!) and checking `F^D = F` for Self-Dual! | MISSING-FINER-POINT | Show Majority `X` (`S_{2,3}`) and Parity (`S_{1,3}`) as symmetric functions (`2025_FN_Q24`). | LOW |
+| 80 | `Ch 05 Sequential` (Why `D` FF Excitation Needs Zero Algebra — `D = Q^+`!) | In `2026_FN_Q37`, show beginners WHY `D` flip-flop synthesis is 3x faster than `T`/`JK`: `D` literally equals the Next-State column (`D = Q^+`), skipping the excitation lookup completely! | STEP-SKIPPED | Compare `D`-FF design (`copy Q^+`) vs `T`-FF design (`Q ⊕ Q^+`) on the exact same 2-bit saturating counter (`2026_FN_Q37` vs `2017_AN_Q45`!)! | HIGH |
+| 81 | `Ch 05 Sequential` (`T` Flip-Flop Design Trick: `T = Q ⊕ Q^+`!) | In `2017_AN_Q45`, show the instant shortcut: `T_i = 1` wherever bit `Q_i` FLIPS (`Q_i != Q_i^+`), saving the excitation lookup table! | STEP-SKIPPED | Solve `2017_AN_Q45` directly from `"flip positions"` in 10 seconds! | MEDIUM |
+| 82 | `Ch 04 Combinational` (Priority Encoder Truth Table & `Valid` Output Bit!) | Show a `4:2` Priority Encoder (`D_3 > D_2 > D_1 > D_0`) including the **`V` (Valid)** bit (`1` iff at least one input is `1`) so `0000` isn't confused with `0001` (`00`)! | UNEXPLAINED-WORD | Draw the `4:2` Priority Encoder truth table with `X` don't-cares (`001X`, `01XX`, `1XXX`). | MEDIUM |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Checked against the verbatim official GATE 2027 CS syllabus (`Part B.1`), `Part C` (69 PYQs), Morris Mano (*Digital Design*), Tocci, Katz–Borriello, Made Easy, GateWallah, and NPTEL Digital Circuits:
+
+1. **Reordered Chapter 01: Number Representations & Codes** *(currently misplaced at Ch 05!)*
+   - **Sub-topics:** Positional radices & conversions (`10<->b`, `b1<->b2`, fractional binary `2021_AN_Q36`, `3-bit/4-bit` octal/hex grouping `2017_AN_Q23`, quadratic unknown-radix equations `2017_AN_Q25`); **Signed Representations** (`Sign-Magnitude`, `1's Complement`, **2's Complement**, sign extension `2025_FN_Q25`, `-28` 16-bit `2019_FN_Q17`, fast flip-from-right shortcut); **Gray Code**, BCD, Excess-3.
+   - **Syllabus line:** `Number representation and arithmetic (fixed and floating point)`.
+   - **How often GATE asks it:** Very frequently (part of the 26-Q / 33-mark bucket across **10/10 years** in `Part B.3`; exact standalone count: not sure).
+   - **Typical question type:** MCQ/MSQ/NAT (radix conversion, fraction digits, unknown base `b`, sign extension, valid representations).
+   - **Zero-level prerequisite:** Basic arithmetic (`+, -, ×, ÷`, powers of 2).
+
+2. **Chapter 02: Logic Gates & Boolean Algebra** *(currently Ch 01 with `"none"`!)*
+   - **Sub-topics:** 7 Logic Gates (`AND, OR, NOT, NAND, NOR, XOR, XNOR`), Tristate buffer, Positive/Negative logic; Boolean Axioms (`2026_AN_Q16`, `2024_AN_Q32`), Consensus Theorem (`2025_AN_Q50`), Dual vs Complement (`2021_FN_Q64`); **XOR/XNOR Properties** (`1`-input vs `2`-input complement flips, non-associativity with `+`, `2026_FN_Q21`, `2019_FN_Q18`, `2018_FN_Q14`); Canonical SOP ($\Sigma m$) & POS ($\Pi M$) (`2024_FN_Q62`); Counting Boolean functions ($2^{2^n}$), Self-Dual ($2^{2^{n-1}}$), Majority (`2025_FN_Q24`).
+   - **Syllabus line:** `Boolean algebra and minimization – algebraic technique...`
+   - **How often GATE asks it:** Very frequently (shared in the 20-Q / 33-mark bucket across 8/10 years; exact split: not sure).
+   - **Typical question type:** MCQ/MSQ (algebraic simplification, equivalence, invalid identity, Majority function laws).
+   - **Zero-level prerequisite:** Reordered Ch 01 (binary digits `0, 1`).
+
+3. **Chapter 03: Minimization (K-Maps, Quine-McCluskey & Universal Gates)** *(currently Ch 02 with `"none"`!)*
+   - **Sub-topics:** 2-, 3-, 4-, 5-var K-Maps (`Gray ordering`, `MSB/LSB`, `corner wraps`); SOP (`1`s) vs POS (`0`s, `2017_AN_Q41`), Multiple minimal covers (`2026_FN_Q48`), **Don't Cares (`d`)**, **PI vs EPI (`2018_FN_Q59`)**, Partial function rules (`2021_AN_Q49`), Checkerboard XOR/XNOR patterns (`2019_FN_Q49`); **Quine-McCluskey Tabular Method** + PI Chart; **Minimum 2-input NAND / NOR Gate Implementations** (Bubble pushing, factoring POS for NOR `2019_FN_Q49`, `2017_FN_Q26`).
+   - **Syllabus line:** `Boolean algebra and minimization – algebraic technique, Karnaugh map, tabular method`.
+   - **How often GATE asks it:** Very frequently (shared in 20-Q / 33-mark bucket; exact split: not sure).
+   - **Typical question type:** MCQ/MSQ (minimal SOP/POS, K-map equivalents), NAT (number of EPIs, literal count, minimum 2-input NAND/NOR gates).
+   - **Zero-level prerequisite:** Ch 01 (Gray code) + Ch 02 (Boolean algebra & SOP/POS).
+
+4. **Chapter 04: Combinational Circuits & Hazards** *(currently Ch 03 with `"none"`!)*
+   - **Sub-topics:** Adders/Subtractors (`HA, FA, HS, FS, 2's comp Adder-Subtractor, CLA, BCD +6 Adder`); Comparators; **Multiplexers (`2^n:1` & `(n+1)`-var implementation tables, cascaded MUX trees, `2024_FN_Q49`, `2023_FN_Q44`)**; **Decoders (Active-High vs Active-Low, cascading with Enable, Chip-Select address decoding `2019_FN_Q22`, `2026_AN_Q59`, `2020_FN_Q26`)**; Encoders & Priority Encoders (`V` bit); Code converters (`Binary <-> Gray`); **Static-0 / Static-1 Hazards & Glitches (`2024_FN_Q17`)**; `ROM/PAL/PLA` (`[SHOULD]`).
+   - **Syllabus line:** `Design of combinational and sequential circuits`.
+   - **How often GATE asks it:** Regularly (`Part B.3`: 12 Qs / 18 marks across 8/10 years; exact subtopic split: not sure).
+   - **Typical question type:** MCQ/MSQ (output function of MUX/gate circuit, transient glitch, equivalent circuit), NAT (combinations yielding `Y=1`, decoder `m+n`).
+   - **Zero-level prerequisite:** Ch 01–03.
+
+5. **Chapter 05: Sequential Circuits, Flip-Flops, Counters & FSMs** *(currently Ch 04 with `"none"`!)*
+   - **Sub-topics:** Latches vs Edge-Triggered FFs (`SR, D, JK, T`, **MUX-based D Latch `2023_FN_Q21`**, Race-Around, `PRESET/CLEAR`); Characteristic & Excitation Tables + FF-to-FF conversion; **Timing (`Setup, Hold, Clock Skew, f_max`)**; **Synchronous Analysis & Design (`2026_FN_Q37`, `2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2018_FN_Q32`, `2017_FN_Q59`, `2017_AN_Q45`, unused state lock-out)**; **Asynchronous Ripple Counters (`2025_AN_Q34` `÷ 2^n`, Up/Down `edge × Q/Q'`, Mod-$N$)**; **Shift Registers, Ring (`N`) & Johnson (`2N`) Counters**; **Mealy vs Moore FSMs (`2021_AN_Q42`), Sequence Detectors, and State Minimization (`2025_FN_Q59`)**.
+   - **Syllabus line:** `Design of combinational and sequential circuits`.
+   - **How often GATE asks it:** Regularly (`Part B.3`: 11 Qs / 19 marks across 6/10 years — almost all 2-markers!; exact subtopic split: not sure).
+   - **Typical question type:** MCQ/NAT (next states, unused/self-loop states, FF input equations, min FSM states, ripple frequency), MCQ (MUX->D-latch, Mealy equations).
+   - **Zero-level prerequisite:** Ch 01–04.
+
+6. **Chapter 06: Computer Arithmetic: Fixed & Floating Point (`IEEE 754`)** *(stays at end after Adders/Numbers!)*
+   - **Sub-topics:** Fixed-point `i.f` unsigned range (`2017_FN_Q24`) & binary fractional exactness (`2018_FN_Q43`); **Signed & Sign-Magnitude Overflow (`C_{n-1} ⊕ C_n`, `2017_FN_Q11`, `2026_FN_Q22`, `2026_AN_Q28`, `2024_FN_Q18`, `2022_FN_Q18`, `2019_FN_Q33`)**; **IEEE 754 Single (`32-bit, bias 127`) & Double (`64-bit, bias 1023`)**: all **5 Regions** (`±0`, **Denormalized**, **Normalized `2^{-126}` `2021_AN_Q17`!**, `±∞`, `NaN`), Hex <-> Decimal Top-3-Hex shortcut (`2026_AN_Q34`, `2025_AN_Q49`, `2021_FN_Q65`, `2017_AN_Q12`); **IEEE 754 Arithmetic (`Add` alignment `2026_FN_Q36`, `Mul` `2023_FN_Q45`, `Div` `2020_FN_Q59`, post-op normalization)**.
+   - **Syllabus line:** `Number representation and arithmetic (fixed and floating point)`.
+   - **How often GATE asks it:** Very frequently (`Part B.3` Number Rep + Arithmetic = 26 Qs / 33 marks across **10/10 years**!; exact split between Ch 01 & Ch 06: not sure).
+   - **Typical question type:** MCQ/MSQ/NAT (overflow detection, IEEE 754 hex <-> decimal, add/mul/div hex output, smallest normalized, fixed-point representability).
+   - **Zero-level prerequisite:** Reordered Ch 01 (Number Systems) + Ch 04 (Binary Adders).
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+*(Ordered in the corrected pedagogical sequence: Ch 01 Number Systems -> Ch 02 Logic Gates & Boolean -> Ch 03 Minimization -> Ch 04 Combinational -> Ch 05 Sequential -> Ch 06 Fixed & Floating Point Arithmetic!)*
+
+### Ch 01 · Number Representation & Codes *(Moved from Ch 05!)*
+1. **Radix Grouping Bridge (`Binary <-> Octal (3 bits) <-> Hex (4 bits)`) & Fractional Multiplication Trace**
+   - *What to draw:* 16-bit number `BCA9` unpacked into 4-bit hex nibbles, then re-grouped in 3-bit octal chunks from right (`2017_AN_Q23`), beside a step-by-step `× 2` table turning `0.8125_{10}` into `0.1101_2` (`2021_AN_Q36`).
+   - *What to notice:* Octal and Hex convert through Binary in 5 seconds without ever touching decimal; fractional bits carry weights `1/2, 1/4, 1/8, ...`.
+   - *Format:* **Step-by-step series of pictures** + **Trace table**
+2. **Signed Number Wheels (`Sign-Mag`, `1's Comp`, `2's Comp`) & Sign Extension (`-6` in 4/8/16 bits)**
+   - *What to draw:* Three 4-bit wheels showing `±0` duplicate in Sign-Mag & 1's Comp vs single `0` and asymmetric `-8` in 2's Comp, plus a bit-copy diagram showing `-6` (`1010`) copying MSB `1` leftward to `1111 1010` (`8`-bit) and `1111 1111 1111 1010` (`16`-bit, `2025_FN_Q25`)!
+   - *What to notice:* Why sign-extending a negative 2's complement number fills left bits with `1`s (`NOT 0`s or `1000...`!).
+   - *Format:* **Single picture**
+
+### Ch 02 · Logic Gates & Boolean Algebra
+3. **The 7 Logic Gates, De Morgan Bubble-Pushing & XOR Parity Rules**
+   - *What to draw:* Truth tables + symbols for `AND, OR, NOT, NAND, NOR, XOR, XNOR`, paired with De Morgan icon pairs (`NAND = Bubbled-OR`, `NOR = Bubbled-AND`) and the 2 XOR complement rules (`1` inverted input flips `XOR -> XNOR`; `2` inverted inputs keeps `XOR`, `2026_FN_Q21`, `2018_FN_Q14`).
+   - *What to notice:* Pushing a bubble across a gate simply swaps `AND <-> OR` and flips input/output bubbles!
+   - *Format:* **Single picture**
+4. **Canonical Truth Table to `SOP (Σm)` vs `POS (ΠM)` & Dual vs Complement**
+   - *What to draw:* One 3-variable truth table (`m_0..m_7`) with green arrows turning `1`-rows into minterms (`Σm`) and orange arrows turning `0`-rows into maxterms (`ΠM`, `0 -> uncomplemented!`), beside `F` vs `F^D` (Dual) vs `F'` (Complement) (`2024_FN_Q62`, `2021_FN_Q64`).
+   - *What to notice:* In Maxterms, `0` stays uncomplemented (`X`) and `1` gets complemented (`X'`), opposite of minterms!
+   - *Format:* **Single picture**
+
+### Ch 03 · Minimization (K-Maps, Tabular & Universal Gates)
+5. **4-Variable K-Map Gray Code, Wrapping Edges/Corners, PI vs EPI & Don't Cares**
+   - *What to draw:* A 4×4 K-Map labelled `[MSB Rows | LSB Cols]` with `00, 01, 11, 10` Gray arrows, cell numbers `0..15` in corners, glowing 4-corner wrap quad (`0,2,8,10`), and red stars inside `"unique-owner minterms"` identifying the **3 Essential PIs** in `2018_FN_Q59`!
+   - *What to notice:* Why adjacent rows differ by 1 bit (`11` before `10`), why the 4 corners touch, and why an EPI MUST uniquely cover at least 1 real `1`-minterm (not a don't-care!).
+   - *Format:* **Single picture** + **Step-by-step series of pictures**
+6. **Quine-McCluskey Tabular Merge Table & Prime Implicant Coverage Chart**
+   - *What to draw:* Three stages: Grouping minterms by `# of 1s` -> merging pairs differing by 1 bit (`-` dash) -> checking off Prime Implicant Chart columns to spot Essential PIs.
+   - *What to notice:* Every `-` dash matches one K-map pair/quad expansion systematically without guessing visually.
+   - *Format:* **Trace table**
+7. **2-Level `NAND-NAND` (from SOP) & `NOR-NOR` (from POS) Conversion Frames (`2019_FN_Q49`)**
+   - *What to draw:* Step-by-step bubble cancellation turning `AND-OR` (`SOP`) into `NAND-NAND`, and `OR-AND` (`POS` = `(B + D')(B' + D)`) into **3** 2-input `NOR` gates (`2019_FN_Q49`)!
+   - *What to notice:* Implementing SOP with NOR wastes extra inverters — always start from **POS** for `NOR` and **SOP** for `NAND`!
+   - *Format:* **Step-by-step series of pictures**
+
+### Ch 04 · Combinational Circuits & Hazards
+8. **Adder / Subtractor (`M` XOR Control) & Overflow Flag Logic (`2017_FN_Q11`)**
+   - *What to draw:* Full Adder gate circuit, 4-bit Adder-Subtractor with `M` wire (`M=0: Add`, `M=1: Invert B + C_in=1`), and the Overflow detector (`C_3 ⊕ C_4` / `A_7 B_7 \bar{S}_7 + \bar{A}_7 \bar{B}_7 S_7`, `2017_FN_Q11`).
+   - *What to notice:* How `M = 1` simultaneously flips every bit of `B` and adds `+1` via `C_in` to perform `A + (-B)`!
+   - *Format:* **Single picture**
+9. **MUX Implementation Table (`4:1` & `8:1` Tree, `2023_FN_Q44`) & Active-High/Low Decoder (`2026_AN_Q59`, `2019_FN_Q22`)**
+   - *What to draw:* (A) `4:1` MUX with `2 × 4` truth table columns `D_0..D_3` grouping `Z', Z` into `{0, 1, Z, Z'}`; (B) Active-High `2:4` Decoder + `4:1` MUX (`2026_AN_Q59`); (C) `A_{15}..A_{11}` NAND/AND decoder logic lighting up `CS` for `C800..CFFF` (`2019_FN_Q22`).
+   - *What to notice:* Any $(n+1)$-variable function fits inside a single $2^n:1$ MUX using `{0, 1, Z, Z'}` inputs!
+   - *Format:* **Single picture** + **Trace table**
+10. **Static-1 / Static-0 Hazard Timing Waveforms (`2024_FN_Q17`)**
+    - *What to draw:* Circuit with fast direct path `X` and delayed `NOT(X)` path (`t_pd = 5 ns`) feeding an `AND` / `OR` gate -> aligned timing waveforms showing `X` switching `0 -> 1` while `NOT(X)` lingers briefly at `1`, creating a narrow red **1-glitch spike** (`2024_FN_Q17`), plus the K-map consensus bridge fixing it!
+    - *What to notice:* Even when Boolean algebra says `X · X' = 0` (`with 0 delay`), real gate delays make BOTH inputs `1` simultaneously for `t_pd` nanoseconds!
+    - *Format:* **TIMELINE** + **CIRCUIT**
+
+### Ch 05 · Sequential Circuits, Flip-Flops, Counters & FSMs
+11. **MUX-Based D-Latch (`2023_FN_Q21`), Edge-Triggered FF Timing (`Setup/Hold`) & Excitation Cheat Card**
+    - *What to draw:* `2:1` MUX (`S=CLK`, `I1=D`, `I0=Q` looped back -> holds when `CLK=0`, tracks `D` when `CLK=1` = **D-Latch**, `2023_FN_Q21`!), paired with a clock-edge window showing `t_su` (before edge) and `t_hold` (after edge), plus all 4 Flip-Flop Characteristic & Excitation Tables.
+    - *What to notice:* Latch responds during the whole `CLK = 1` level; Edge-triggered FF snapshots ONLY at the rising/falling tick!
+    - *Format:* **Single picture**
+12. **Synchronous Counter Design (`2026_FN_Q37` `D`-FF vs `2017_AN_Q45` `T`-FF) & Clock-Snapshot State Trace (`2017_FN_Q59`)**
+    - *What to draw:* Complete 4-step workflow (`State Diagram -> Next State Table + Excitation Columns -> K-Maps -> FF Circuit`) contrasting `2-bit saturating counter` with `D` (`D = Q^+`, `2026_FN_Q37`) vs `T` (`T = Q ⊕ Q^+`, `2017_AN_Q45`), plus a trace table with a bold `"Clock Edge"` barrier ensuring inputs read OLD `Q` before `Q` updates (`2017_FN_Q59`)!
+    - *What to notice:* Flip-flops evaluate their inputs using *current* states simultaneously before changing together at the clock edge!
+    - *Format:* **Step-by-step series of pictures** + **Trace table**
+13. **4-Bit Ripple Counter Waveforms (`2025_AN_Q34`: `64 us -> 250 kHz`), Ring & Johnson Counters, & FSM State Reduction**
+    - *What to draw:* Stacked clock waveforms `CLK`, `Q_0 (÷2)`, `Q_1 (÷4)`, `Q_2 (÷8)`, `Q_3 (÷16)` showing `T_last = 16 × T_clk` (`2025_AN_Q34`), next to Ring (`N` states) vs Johnson (`2N` states) shift rings, and Mealy `0/1` consecutive-1s state graph (`2021_AN_Q42`) + FSM state-partition merging (`2025_FN_Q59`)!
+    - *What to notice:* Every ripple stage doubles the period (halves frequency!), and Mealy puts output directly on transition arrows (`s/y`).
+    - *Format:* **TIMELINE** + **GRAPHPIC**
+
+### Ch 06 · Computer Arithmetic: Fixed & Floating Point
+14. **IEEE 754 5-Region Number Line (`±0, Denormal, Normal, ±∞, NaN`), `2^{-126}` (`2021_AN_Q17`) & Hex Shortcut (`2026_AN_Q34`)**
+    - *What to draw:* Number line zooming in near zero (`0 -> 2^{-149}..` Denormal `[E=0, M!=0]` -> **`2^{-126}` Smallest Normal `[E=1, M=0]`**, `2021_AN_Q17`! -> Normal -> `±∞` `[E=255, M=0]`), paired with the `"Top-3-Hex-Digits"` alignment frame slicing `0xC2710000` into `S=1 | E=132 (+5) | 1.1110001` (`-60.25`, `2026_AN_Q34`)!
+    - *What to notice:* Why `E = 0` reserves `±0` and subnormals (NO implicit `1.`), making `E = 00000001, M = 0` the smallest *normalized* positive number!
+    - *Format:* **Single picture** + **Step-by-step series of pictures**
+15. **IEEE 754 Arithmetic Pipelines (`Addition Alignment` `2026_FN_Q36` & `Mul/Div Exponent Bias` `2023_FN_Q45`, `2020_FN_Q59`)**
+    - *What to draw:* Frames tracing `X + Y` (`35C00000 + 34A00000`: align `E=105` to `107` by shifting `1.010` right 2 places -> `0.01010` + `1.10000` = `1.1101` = `0x35E80000`, `2026_FN_Q36`), beside `P × Q` (`E = E_1 + E_2 - 127`) and `R1 / R2` (`E = E_1 - E_2 + 127`)!
+    - *What to notice:* You CANNOT forget the **hidden leading `1.`** before shifting mantissas right during alignment, and multiplication subtracts `127` once (`E1 - 127 + E2 - 127 + 127`)!
+    - *Format:* **Step-by-step series of pictures**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Reordered properly for a zero-level reader: Ch 01 Number Systems & Codes -> Ch 02 Logic Gates & Boolean Algebra -> Ch 03 Minimization -> Ch 04 Combinational Circuits -> Ch 05 Sequential Circuits -> Ch 06 Fixed & Floating Point Arithmetic. Starting with Chapters 01 and 02 below!)*
+
+### Chapter 01 · Number Representation and Codes *(Reordered from Ch 05!)*
+
+#### Lesson 01.1 · Positional Radices, Fractional & `2^k` Grouping Conversions & Gray Code
+- **Tag:** `[MUST]` — Foundation for K-Maps, Fixed-Point, and Hex memory addresses (`2024_AN_Q60`, `2023_FN_Q32`, `2021_FN_Q44`, `2021_AN_Q36`, `2017_AN_Q23`, `2017_AN_Q25`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** High-school arithmetic.
+- **Beginner must-see:** Every number system is just columns of powers of its base (`b^2, b^1, b^0 . b^{-1}, b^{-2}`): decimal uses powers of `10`, binary uses `2`, octal `8`, hex `16`! Converting Hex <-> Binary <-> Octal NEVER needs decimal math — just group 4 bits per hex digit and 3 bits per octal digit (`2017_AN_Q23`)! And **Gray Code** counts `00 -> 01 -> 11 -> 10` flipping only 1 bit per step so K-map neighbours sit side by side!
+- **Finer points:**
+  - `Base b -> Base 10` (weighted sum, including negative powers `b^{-1}, b^{-2}` for `0.1101_2 = 0.8125`, `2021_AN_Q36`).
+  - `Base 10 -> Base b` (integer divide-by-`b` remainders bottom-up; fraction multiply-by-`b` integer parts top-down!).
+  - Direct `Octal <-> Binary <-> Hex` 3-bit/4-bit grouping (`2017_AN_Q23`, `2021_FN_Q44`).
+  - **Unknown Radix Equations (`2017_AN_Q25`):** Convert polynomial coefficients in base $b$ into decimal (`13_b = b + 3`, `36_b = 3b + 6`) and solve!
+  - **Gray Code (`B -> G`, `G -> B`) & BCD / Excess-3 Codes.**
+- **GATE-level items:** Multi-base equalities (`2024_AN_Q60`: `224_5 = 64_{10} = 100_8 = 121_7`), base-4 to base-5 (`2023_FN_Q32`), base-3 to hex (`2021_FN_Q44`), binary fraction digits (`2021_AN_Q36`: `3`), hex to octal (`2017_AN_Q23`), and quadratic radix $b$ (`2017_AN_Q25`: `8`).
+- **Diagrams needed:** `ARRAY` (`BCA9_{16}` unpacking to 16 bits and regrouping into 3-bit octal chunks, `2017_AN_Q23`); `TRACE` (`0.8125 × 2` multiplication trace + Gray code 2-bit/3-bit wheel).
+- **Hand traces:** Solving `2024_AN_Q60`, `2023_FN_Q32` (`110_5`), `2021_AN_Q36` (`x=1, y=2 -> 3`), `2017_AN_Q23` (`136251_8`), and `2017_AN_Q25` (`b = 8`).
+- **Common mistakes:** Grouping 3-bit octal chunks from the LEFT instead of the RIGHT (from the binary point outward!); reading `10 -> b` division remainders top-to-bottom instead of bottom-to-top; forgetting digit values must be `< b` (`base b >= max_digit + 1`).
+
+#### Lesson 01.2 · Signed Integers (`Sign-Mag`, `1's`, `2's Complement`) & Sign Extension
+- **Tag:** `[MUST]` — Prerequisite for Adders, Subtractors & Signed Overflow (`2025_FN_Q25`, `2019_FN_Q17`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 01.1.
+- **Beginner must-see:** Computers only store `0`s and `1`s — there is NO `-` key in hardware! Early designs used the leftmost bit as a `-` sticker (**Sign-Magnitude**), which accidentally created TWO zeros (`+0` and `-0`) and forced separate subtraction circuits! **2's Complement** fixes both by giving the leftmost bit a **negative weight (`-2^{n-1}`)** — leaving ONE zero (`0000`) and letting plain addition handle subtraction too!
+- **Finer points:**
+  - Exact ranges for $n$ bits: Unsigned (`0..2^n-1`), Sign-Mag & 1's Comp (`-(2^{n-1}-1)..+(2^{n-1}-1)`), **2's Complement (`-2^{n-1}..+(2^{n-1}-1)`)**.
+  - Finding `-X` in 2's complement (`invert all bits + 1`, plus fast `"keep bits up to rightmost 1, flip left"` trick, `2019_FN_Q17`).
+  - **Sign Extension (`2025_FN_Q25`):** Widening an $n$-bit signed 2's complement number to $m > n$ bits copies its **MSB (`sign bit`)** into all new left positions (whereas Sign-Magnitude moves the sign bit to the new MSB and fills `0`s in between!).
+- **GATE-level items:** 16-bit 2's complement encoding (`2019_FN_Q17`: `-28`), 4-bit -> 8/16-bit sign extension MSQ (`2025_FN_Q25`).
+- **Diagrams needed:** `COMPARE` (4-bit wheels for Sign-Mag, 1's Comp, 2's Comp); `MEMORY` (Sign extension copying `1` leftward for `-6` in 4->8->16 bits vs wrong `1000...` trap, `2025_FN_Q25`).
+- **Hand traces:** Converting `-28` in 16 bits (`2019_FN_Q17`), sign-extending `1010 (-6)` to 8 and 16 bits (`2025_FN_Q25`), and verifying `4-bit` `-2^{3} + 2 = -6`.
+- **Common mistakes:** Putting sign bit at the far left and `0`s in the middle when extending a 2's complement number (`2025_FN_Q25(A, C)` traps — that's Sign-Magnitude padding, NOT 2's complement!!); forgetting `+1` in 2's complement (`2019_FN_Q17(A)`!).
+
+---
+
+### Chapter 02 · Logic Gates and Boolean Algebra *(Old Ch 01)*
+
+#### Lesson 02.1 · Logic Gates, Universal Gates, De Morgan Bubble-Pushing & Boolean Laws
+- **Tag:** `[MUST]` — Foundation for K-Maps & Combinational Circuits (`2026_AN_Q16`, `2026_FN_Q21`, `2025_FN_Q24`, `2025_AN_Q50`, `2024_AN_Q32`, `2019_FN_Q18`, `2018_FN_Q14`, `2017_AN_Q43`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 01.1.
+- **Beginner must-see:** Every chip inside your phone is built out of billions of microscopic switches called **Logic Gates (`AND, OR, NOT, NAND, NOR, XOR, XNOR`)**! Notice TWO magical twins: **`NAND`** and **`NOR`** are **Universal** (either one alone can build ANY circuit!), while **`XOR` (`≠` detector)** and **`XNOR` (`=` detector)** obey a crisp parity rule: flipping **ONE** input flips the output, while flipping **BOTH** keeps it unchanged (`2026_FN_Q21`, `2018_FN_Q14`)!
+- **Finer points:**
+  - Truth tables, Boolean Axioms (`2026_AN_Q16`, `2024_AN_Q32`), De Morgan's Bubble-Pushing, Absorption, **Consensus Theorem (`AB + A'C + BC = AB + A'C`, `2025_AN_Q50`)**.
+  - **XOR & XNOR Algebra (`2026_FN_Q21`, `2019_FN_Q18`, `2018_FN_Q14`):** Associative (`(x⊕y)⊕z`), NOT associative/distributive with `+` (`2019_FN_Q18`), `P' ⊕ Q = (P ⊕ Q)' = P ⊙ Q`, `P' ⊕ Q' = P ⊕ Q`, multi-variable parity `(P ⊕ P') ⊕ Q != (P ⊙ P') ⊙ Q'` (`2018_FN_Q14`!).
+  - **Majority Function & Case-Split Proof (`2025_FN_Q24`):** `X(a, b, c) = ab + bc + ca` (`a=b` vs `a!=b` shortcut).
+  - Positive vs Negative Logic & Tristate Buffers (`[LATER]`).
+- **GATE-level items:** Spotting invalid Boolean laws (`2026_AN_Q16`, `2024_AN_Q32`, `2019_FN_Q18`, `2018_FN_Q14`, `2017_AN_Q43`), XOR/XNOR simplification (`2026_FN_Q21` — fix missing bar!), algebraic equations (`2025_AN_Q50` — fix Option D/A!), and Majority identities (`2025_FN_Q24`).
+- **Diagrams needed:** `CIRCUIT` (All 7 gates + De Morgan bubbled equivalents); `COMPARE` (XOR 1-input vs 2-input complement flip rules); `TRACE` (Truth table & `a=b / a!=b` case tree for `2025_FN_Q24`).
+- **Hand traces:** Simplifying `2025_AN_Q50(B,C,D)`, checking `2017_AN_Q43(C)` (`(w x'(y + xz') + w'x')y = x'y`), and testing `2025_FN_Q24` on `a=b` & `a!=b`.
+- **Common mistakes:** Distributing `⊕` over `+` (`2019_FN_Q18(B)`!); thinking `P' ⊕ Q' = (P ⊕ Q)'` (`2026_FN_Q21(D)` — double inversion cancels!); thinking Majority `X` is associative (`2025_FN_Q24(A)`!).
+
+#### Lesson 02.2 · Canonical Forms (`SOP`/`POS`), Dual vs Complement & Counting Boolean Functions
+- **Tag:** `[MUST]` — Unlocks K-Maps and gate counting (`2024_FN_Q62`, `2021_FN_Q64`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 02.1.
+- **Beginner must-see:** Any truth table can be written in TWO standard recipes: **Sum of Minterms ($\Sigma m$)** lists every row where output is **`1`**, while **Product of Maxterms ($\Pi M$)** lists every row where output is **`0`**! Watch out: **Complement (`F'`)** flips all `1`s and `0`s (or flips the minterms to maxterms), whereas **Dual (`F^D`)** just swaps `AND <-> OR` and `0 <-> 1` *without* negating variables!
+- **Finer points:**
+  - Minterms ($m_i$: `0 -> A'`) vs Maxterms ($M_i$: `1 -> A'`), $\Sigma m = \Pi (\text{remaining } M)$ (`2024_FN_Q62`).
+  - Converting non-canonical SOP/POS to canonical & complementing (`2021_FN_Q64`).
+  - **Dual vs Complement:** $(F^D)' = F(\bar{x}_1, \dots, \bar{x}_n)$.
+  - **Counting Special Functions of $n$ vars:** Total ($2^{2^n}$), **Self-Dual ($2^{2^{n-1}}$)**, Neutral ($\binom{2^n}{2^{n-1}}$), Symmetric.
+- **GATE-level items:** $\Sigma m \leftrightarrow \Pi M$ & variable independence (`2024_FN_Q62`), complementing factored POS into SOP (`2021_FN_Q64`), and counting self-dual/symmetric functions.
+- **Diagrams needed:** `MATRIX` (3-var Truth Table splitting `1`-rows into $\Sigma m$ and `0`-rows into $\Pi M$, `2024_FN_Q62`); `COMPARE` (`Dual` vs `Complement` on `2021_FN_Q64`).
+- **Hand traces:** Converting `F = (X+Y+Z)(X'+Y)(Y'+Z)` to $\overline{F}$ in 3 equivalent forms (`2021_FN_Q64`); verifying `F = XY + YZ + XZ` = $\Sigma(3,5,6,7) = \Pi(0,1,2,4)$ (`2024_FN_Q62`).
+- **Common mistakes:** Applying De Morgan to `(X+Y+Z)(X'+Y)(Y'+Z)` by keeping `·` between the complemented factors (`2021_FN_Q64(A)`!); inverting minterm variable rules inside maxterms (`0 -> A'` instead of `0 -> A`).
+
+---
+
+`CONTINUE FROM CHAPTER 03`
+## PART 5 (Continued) · Chapters 03 to 06
+
+### Chapter 03 · Minimization (`K-Maps`, `Tabular` and `Universal Gates`) *(Old Ch 02)*
+
+#### Lesson 03.1 · Karnaugh Maps (`2–5` Vars), Don't Cares, Prime/Essential PIs & Quine-McCluskey
+- **Tag:** `[MUST]` — Core 2-mark generator (`2026_AN_Q40`, `2026_FN_Q48`, `2025_FN_Q42`, `2025_AN_Q43`, `2021_AN_Q49`, `2018_FN_Q59`, `2017_AN_Q41`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 01.1 (Gray Code), Lesson 02.2 (SOP/POS).
+- **Beginner must-see:** Algebraically simplifying 4-variable expressions (`AB'CD + ...`) is error-prone! A **Karnaugh Map (K-Map)** folds the 16-row truth table into a `4×4` magic square whose edges wrap around like a globe (`00, 01, 11, 10` Gray order!) — so any rectangle of `1, 2, 4, 8, 16` adjacent `1`s automatically deletes changing variables visually!
+- **Finer points:**
+  - **MSB/LSB Map Coordinates (`2026_AN_Q40`, `2025_FN_Q42`):** Label rows (`MSB`) and columns (`LSB`) explicitly; cell corners `0..15`.
+  - **SOP (`1`s) vs POS (`0`s, `2017_AN_Q41`)** + **Don't Cares (`d`)** (`use ONLY to enlarge a group of 1s/0s; never cover a pure d group!`).
+  - **Prime Implicants (`PI`) vs Essential Prime Implicants (`EPI`) (`2018_FN_Q59`):** EPI covers at least ONE real `1`-minterm no other PI can cover (`2018_FN_Q59`: `3` EPIs).
+  - **Cyclic Ties & Multiple Minimal SOPs (`2026_FN_Q48`):** Finding ALL valid minimal covers (`B` and `D` in `2026_FN_Q48`!).
+  - **Partial Constraints (`2021_AN_Q49`):** Translating `f(w,0,0,z) = 1`, `f(1,x,1,z) = x + z`, `f(w,1,y,z) = wz + y` straight onto K-map squares -> `x'y' + xy + wz` (`6` literals!).
+  - **5-Variable K-Maps & Quine-McCluskey Tabular Method (`[SHOULD]`):** Grouping minterms by bit-count `0..4` -> merging `1`-bit diffs -> Prime Implicant Chart (`syllabus: tabular method`!).
+- **GATE-level items:** Minimal SOP/POS (`2026_AN_Q40`, `2025_FN_Q42`, `2017_AN_Q41`), multiple minimal SOPs (`2026_FN_Q48`), K-map reading (`2025_AN_Q43`), counting EPIs (`2018_FN_Q59`: `3`), and partial constraints (`2021_AN_Q49`: `6` lits).
+- **Diagrams needed:** `MATRIX` + `FRAMES` (`4×4` K-Map coordinates, corner wraps, EPI stars in `2018_FN_Q59`, cyclic tie chains in `2026_FN_Q48`, and `2021_AN_Q49` cell filling); `TRACE` (4-var Quine-McCluskey merge table & PI chart).
+- **Hand traces:** Minimizing `2026_FN_Q48` (both minimal covers), `2025_FN_Q42`, `2018_FN_Q59` (`3` EPIs), `2017_AN_Q41` (`POS`), and `2021_AN_Q49` (`6` lits).
+- **Common mistakes:** Forgetting Gray jump `11` before `10` (swapping columns 2 and 3!); forcing a `d`-cell to be covered when all real `1`s are covered (`2018_FN_Q59`); picking redundant non-minimal PIs; picking only ONE minimal cover in an MSQ (`2026_FN_Q48`).
+
+#### Lesson 03.2 · Minimum `NAND` / `NOR` Gate Implementations & Checkerboard Patterns
+- **Tag:** `[MUST]` — High-yield 2-mark NATs (`2019_FN_Q49`, `2017_FN_Q26`, `2020_FN_Q54`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 02.1, Lesson 03.1.
+- **Beginner must-see:** Real factories hate stocking 7 different chips — they build everything out of ONE cheap chip (**2-input `NAND`** or **2-input `NOR`**)! Two golden tricks make gate counting instant: **Minimal SOP turns straight into `NAND-NAND`**, while **Minimal POS turns straight into `NOR-NOR`** (`2019_FN_Q49`)!
+- **Finer points:**
+  - **2-Level Conversions (`Complements Available` vs `Not Available`):**
+    - `SOP -> NAND-NAND` (`AND-OR` becomes `NAND-NAND`!).
+    - `POS -> NOR-NOR` (`OR-AND` becomes `NOR-NOR`, `2019_FN_Q49`: `B'D' + BD = (B+D')(B'+D)` = **3** 2-input NORs!).
+  - **XOR (`4` NAND / `5` NOR) & XNOR (`5` NAND / `4` NOR) Implementations!**
+  - **Checkerboard K-Map Pattern (`2019_FN_Q49`):** Alternating `1`s in K-Map = `XOR` / `XNOR` -> convert to POS for NOR!
+  - **Multi-Level Factoring (`>2` levels) to Beat `2`-Level Gate Count** when fan-in is strictly limited to **2 inputs**.
+- **GATE-level items:** Minimum 2-input NOR gates (`2019_FN_Q49`: `3`, `2017_FN_Q26`: `1`) and reading NAND/NOR circuit diagrams back into minterms (`2020_FN_Q54`).
+- **Diagrams needed:** `CIRCUIT` + `FRAMES` (Bubble-pushing `SOP -> NAND-NAND`, `POS -> NOR-NOR` for `2019_FN_Q49` `3` NORs, and `XOR` built from `4` 2-input NANDs vs `5` NORs).
+- **Hand traces:** Factoring `\Sigma(0, 2, 5, 7, 8, 10, 13, 15)` into `B'D' + BD -> (B+D')(B'+D) -> 3 NOR gates` (`2019_FN_Q49`).
+- **Common mistakes:** Trying to convert SOP directly into NOR gates (costs 4+ gates instead of 3 in `2019_FN_Q49`!); forgetting `4`-input `AND`/`OR` needs a tree of `3` `2`-input gates when question says `"2-input gates only"`!
+
+---
+
+### Chapter 04 · Combinational Circuits and Hazards *(Old Ch 03)*
+
+#### Lesson 04.1 · Adders, Subtractors, Comparators, Decoders, MUXes & Static Hazards
+- **Tag:** `[MUST]` — Core 1–2 mark circuit analysis & synthesis (`2026_AN_Q59`, `2025_AN_Q31`, `2024_FN_Q17`, `2024_AN_Q46`, `2024_FN_Q49`, `2023_FN_Q44`, `2022_FN_Q40`, `2021_AN_Q56`, `2020_FN_Q25`, `2020_FN_Q26`, `2019_FN_Q22`, `2019_FN_Q56`).
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 01.2, Lesson 03.1.
+- **Beginner must-see:** Combinational circuits have **NO memory** — output depends ONLY on the present inputs (`like a light switch!`)! A **Multiplexer (`2^n : 1`)** is a selector train track (`S` chooses which `I_k` wire rides to `Y`), a **Decoder (`n : 2^n`)** lights up ONE exact output wire per binary input (`minterm generator!` — also used for RAM Chip-Select `2019_FN_Q22`!), and **Static Hazards** happen when a fast wire beats a slow `NOT` gate causing a momentary `0->1->0` glitch (`2024_FN_Q17`)!
+- **Finer points:**
+  - **Arithmetic Blocks:** Half/Full Adder (`S = A⊕B⊕C, C = AB+BC+CA`), Half/Full Subtractor (`Diff, Borrow = A'B`), 2's Comp `M`-controlled Adder-Subtractor, 2-bit Magnitude Comparator (`XNOR`), BCD `+6` Adder (`[SHOULD]`).
+  - **Multiplexers (`2026_AN_Q59`, `2024_FN_Q49`, `2023_FN_Q44`, `2020_FN_Q25`):**
+    - `N` inputs need `ceil(log_2 N)` select lines (`32 -> 5`, `2020_FN_Q25`).
+    - $(n+1)$-variable Implementation Table (`{0, 1, Z, Z'}`), cascaded MUX trees (`M1, M2, M3`, `2024_FN_Q49`, `2023_FN_Q44`!).
+  - **Decoders, Encoders & Priority Encoders (`2026_AN_Q59`, `2022_FN_Q40`, `2020_FN_Q26`, `2019_FN_Q22`):**
+    - `1024` words -> `10 : 1024` decoder (`m+n = 1034`, `2020_FN_Q26`), cascading decoders with Enable (`5` of `2:4` build `4:16`).
+    - **Active-High** (`+ OR`) vs **Active-Low** (`+ NAND`) minterm synthesis (`2026_AN_Q59`).
+    - **Chip-Select Address Ranges (`2019_FN_Q22`):** Fix CS-decoded MSBs -> sweep unpinned LSBs `0..1` (`C800..CFFF`).
+  - **Combinational Hazards & Glitches (`2024_FN_Q17`):** Static-1 (dips to `0` on `1->1`), **Static-0 (spikes to `1` on `0->0`, `2024_FN_Q17`)**, Dynamic; eliminating via redundant K-map consensus terms.
+  - **Code Converters (`B <-> G`) & Programmable Logic (`ROM / PAL / PLA`) (`[SHOULD]`).**
+- **GATE-level items:** Decoder+MUX combinations (`2026_AN_Q59`: `6`, `2024_FN_Q49`: `4`, `2023_FN_Q44`), `1 KB` decoder `m+n` (`2020_FN_Q26`: `1034`), `32:1` select lines (`2020_FN_Q25`: `5`), DDS decoder vs MUX identification (`2022_FN_Q40`), Chip-Select range (`2019_FN_Q22`: `C800–CFFF`), and Static-0 glitch (`2024_FN_Q17`).
+- **Diagrams needed:** `CIRCUIT` (FA, Adder-Subtractor, `4:1` MUX implementation table, Active-High/Low Decoder, Priority Encoder, Chip-Select `2019_FN_Q22`); `TIMELINE` (Static-0 glitch pulse when `X: 0->1` across `NOT` delay, `2024_FN_Q17`).
+- **Hand traces:** Tracing `2023_FN_Q44` (`(1,1,0,1,1,1,0,0)` on `8:1` MUX), `2019_FN_Q22` (`C800–CFFF`), `2024_FN_Q17` waveform (`0 -> 1 -> 0`), and `2019_FN_Q56` (`(f1 ∩ f2) ⊕ f3`).
+- **Common mistakes:** Swapping `S1` (MSB) and `S0` (LSB) on MUX select lines (`2026_AN_Q59`, `2023_FN_Q44`); confusing Decoder (`m : 2^m`, chooses 1 of $2^m$ lines, `2022_FN_Q40`) with MUX (`2^m : 1`, selects 1 input); forgetting gate propagation delays create real transient pulses (`2024_FN_Q17(C)`!).
+
+---
+
+### Chapter 05 · Sequential Circuits, Flip-Flops, Counters and FSMs *(Old Ch 04)*
+
+#### Lesson 05.1 · Latches vs Flip-Flops (`SR, D, JK, T`), Excitation Tables, Conversions & Timing
+- **Tag:** `[MUST]` — Prerequisite for every counter & FSM problem (`2023_FN_Q21` + FF equations & timing).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 04.1 (`2:1` MUX, NAND/NOR).
+- **Beginner must-see:** Adding a feedback wire from output back to input turns memoryless gates into a 1-bit memory cell (**Latch / Flip-Flop**)! Look at a plain **`2:1` MUX** wired back into itself (`I0 = Q, I1 = D, S = CLK`): when `CLK = 1` it follows `D`, when `CLK = 0` it freezes old `Q` — literally a **D Latch** (`2023_FN_Q21`)! Add Master-Slave or Edge-Triggering so it ONLY updates on the sharp clock tick (`↑` or `↓`), preventing Race-Around!
+- **Finer points:**
+  - **Latches (Level-Sensitive) vs Flip-Flops (Edge-Triggered):** NOR/NAND SR latch forbidden states (`S=R=1` / `S'=R'=0`); **MUX -> D-Latch (`2023_FN_Q21`)**; Master-Slave fixing `JK` Race-Around (`J=K=1` toggle oscillation).
+  - **All 4 Characteristic & Excitation Tables (`Derived, Not Memorized!`):**
+    - `D`: $Q^+ = D$ (`Excitation: D = Q^+`).
+    - `T`: $Q^+ = T \oplus Q$ (`Excitation: T = Q \oplus Q^+` — `1` iff bit flips!).
+    - `SR`: $Q^+ = S + R'Q$ ($SR = 0$).
+    - `JK`: $Q^+ = JQ' + K'Q$ (`Excitation: 0->0: 0X, 0->1: 1X, 1->0: X1, 1->1: X0`).
+  - **FF-to-FF Conversion Method** (`e.g. JK -> D`, `D -> T`, `SR -> JK`).
+  - **Timing Parameters (`[SHOULD]`):** `t_su` (Setup), `t_h` (Hold), `t_cq` (Clock-to-Q), `t_skew`, **$T_{\min} = t_{\text{cq}} + t_{\text{comb}} + t_{\text{su}} - t_{\text{skew}}$** (`f_max = 1 / T_min`), and hold check `t_cq + t_comb >= t_h + t_skew`.
+- **GATE-level items:** Identifying MUX-feedback as **D Latch** (`2023_FN_Q21`, NOT D Flip-Flop!), excitation don't-cares, and max clock frequency `f_max`.
+- **Diagrams needed:** `CIRCUIT` (`2:1` MUX feedback = D-Latch `2023_FN_Q21`, Master-Slave JK); `TIMELINE` (Level-sensitive Latch vs Edge-triggered FF waveforms + `t_su / t_h` window around clock edge); `COMPARE` (All 4 Characteristic & Excitation Tables).
+- **Hand traces:** Tracing `2023_FN_Q21` across `CLK = 1, 0` with changing `D`; converting `JK` FF to `T` and `D` FFs; computing `f_max`.
+- **Common mistakes:** Calling level-sensitive MUX feedback a **D Flip-Flop** (`2023_FN_Q21(A)` trap — it's transparent during whole `CLK=1`, so it is a **D Latch (`B`)**!); swapping `1->0` and `0->1` rows in `JK` Excitation Table.
+
+#### Lesson 05.2 · Synchronous/Asynchronous Counters, Shift Registers (`Ring/Johnson`) & FSM Design/Minimization
+- **Tag:** `[MUST]` — Almost all 2-mark Sequential PYQs (`2026_FN_Q37`, `2025_AN_Q34`, `2025_FN_Q59`, `2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2021_AN_Q42`, `2018_FN_Q32`, `2017_FN_Q59`, `2017_AN_Q45`).
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 03.1 (K-Maps), Lesson 05.1.
+- **Beginner must-see:** Connect 2, 3, or 4 flip-flops to ONE shared clock and feed their outputs through small logic gates back into their inputs — now they march through states (`00 -> 01 -> 10 -> 11`) like clockwork (**Synchronous Counter / FSM**)! Just remember ONE golden tracing rule: **before the clock ticks, compute EVERY flip-flop input using ONLY the OLD `Q` values (`2017_FN_Q59`, `2021_FN_Q55`)!**
+- **Finer points:**
+  - **Synchronous Circuit Analysis (`Circuit -> State Table/Graph`, `2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2018_FN_Q32`, `2017_FN_Q59`):**
+    - Write `D_i / T_i / J_i, K_i` formulas -> trace `Q^+` row by row from initial state -> spot reachable cycle, unreachable states (`2023_FN_Q43`), self-loops (`2018_FN_Q32`), and lock-out!
+  - **Synchronous Counter Design (`State Table -> FF Equations`, `2026_FN_Q37`, `2017_AN_Q45`):**
+    - `D` shortcut (`D_i = Q_i^+`, `2026_FN_Q37`) vs `T` shortcut (`T_i = Q_i ⊕ Q_i^+`, `2017_AN_Q45`).
+  - **Asynchronous Ripple Counters (`2025_AN_Q34`):**
+    - $n$-bit ripple counter divides clock frequency by **$2^n$** (period multiplies by $2^n$: `64 us / 16 = 4 us -> 250 kHz`, `2025_AN_Q34`!).
+    - **Up vs Down 2×2 Rule:** `(Pos-edge from Q) or (Neg-edge from Q') -> DOWN`; `(Neg-edge from Q) or (Pos-edge from Q') -> UP`! Mod-$N$ truncation via `PR'/CLR'`.
+  - **Shift Registers (`SISO, SIPO, PISO, PIPO`), Ring (`N` states) & Johnson (`2N` states) Counters.**
+  - **Mealy vs Moore FSMs (`2021_AN_Q42`) & State Minimization (`2025_FN_Q59`):**
+    - Designing 2-state Mealy machine (`t = b, y = s·b`, `2021_AN_Q42`) and sequence detectors (`1011`).
+    - **Partition Refinement State Reduction (`2025_FN_Q59`):** Group by identical present outputs (`0-equiv`), iteratively split states transitioning to different groups (`1-equiv, 2-equiv...`).
+- **GATE-level items:** Synchronous counter design with `D` (`2026_FN_Q37`) and `T` (`2017_AN_Q45`), coupled FF tracing (`2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2018_FN_Q32`, `2017_FN_Q59`), ripple frequency division (`2025_AN_Q34`: `250 kHz`), Mealy sequence design (`2021_AN_Q42`), and FSM minimization (`2025_FN_Q59`: `5`).
+- **Diagrams needed:** `TRACE` (Coupled `T`/`D` FF Clock-Snapshot trace table `2017_FN_Q59` & `2021_FN_Q55`); `GRAPHPIC` (State transition graph showing reachable cycle vs unreachable/self-loop states, `2023_FN_Q43`, `2018_FN_Q32`); `TIMELINE` (4-bit Ripple Counter `÷2, ÷4, ÷8, ÷16` waveforms, `2025_AN_Q34`); `FRAMES` (Mealy state graph `2021_AN_Q42` + Partition Refinement table `2025_FN_Q59`).
+- **Hand traces:** Solving `2026_FN_Q37` (`D` saturating up/down), `2017_AN_Q45` (`T` saturating up), `2025_AN_Q34` (`250 kHz`), and `2021_AN_Q42` (`t=b, y=sb` across `00100011...`).
+- **Common mistakes:** Updating `Q_0` first and feeding the NEW `Q_0` into `T_1` in the same clock cycle (`2017_FN_Q59`, `2021_FN_Q55`!); using `2^4 = 16` wrong direction (`64 × 16` instead of `64 / 16` in `2025_AN_Q34`!); writing `D_1 = Q_1^+` wrongly when `P=0` vs `P=1` up/down control flips (`2026_FN_Q37`!).
+
+---
+
+### Chapter 06 · Computer Arithmetic: Fixed and Floating Point
+
+#### Lesson 06.1 · Fixed-Point Fractions, Signed / Sign-Magnitude Overflow & Saturation
+- **Tag:** `[MUST]` — Very high frequency (`2026_FN_Q22`, `2026_AN_Q28`, `2024_FN_Q18`, `2022_FN_Q18`, `2019_FN_Q33`, `2018_FN_Q43`, `2017_FN_Q11`, `2017_FN_Q24`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 01.2, Lesson 04.1 (Adders).
+- **Beginner must-see:** Fixed-size registers (`4`, `8`, `32` bits) have strict speed-limit walls (`-8..+7` for 4-bit 2's complement)! Whenever an addition or subtraction pushes the true mathematical answer outside those walls, the sign bit flips into lies (**Arithmetic Overflow**, `2026_AN_Q28`, `2017_FN_Q11`) — and in **Fixed-Point Fractions**, decimal numbers like `0.1` NEVER fit cleanly unless their fraction is built strictly out of `1/2, 1/4, 1/8, ...` (`2018_FN_Q43`)!
+- **Finer points:**
+  - **Unsigned Fixed-Point `i . f` (`2017_FN_Q24`, `2018_FN_Q43`):** Range `0` to $2^i - 2^{-f}$; exact decimal representability iff reduced fraction has power-of-2 denominator $\le 2^f$ (`12.1` & `3.001` fail `2018_FN_Q43`!).
+  - **2's Complement Overflow Rules (`2026_AN_Q28`, `2024_FN_Q18`, `2022_FN_Q18`, `2017_FN_Q11`):**
+    1. Range check: sum/diff lies outside `[-2^{n-1}, +2^{n-1} - 1]`.
+    2. Sign-flip check: `(+)+(+) -> (-)` or `(-)+(-) -> (+)` (`A_{n-1} B_{n-1} \bar{S}_{n-1} + \bar{A}_{n-1} \bar{B}_{n-1} S_{n-1}`, `2017_FN_Q11`).
+    3. Carry check: **`C_{n-1} ⊕ C_n`** (NEVER `C_n` alone! `2017_FN_Q11(A)` trap!).
+    - Remember: `A - B` in 2's complement adds `A + (-B)`, so watch for `-(-2^{n-1})` (`-(-8)` overflows 4 bits)!
+  - **Sign-Magnitude Arithmetic & Overflow (`2026_FN_Q22`, `2019_FN_Q33`):** `n`-bit magnitude is `0..2^{n-1}-1`; adding two same-sign numbers (or `X - Y` with opposite signs!) can hit $2(2^{n-1} - 1)$, requiring **`n + 1` bits** to never overflow (`2019_FN_Q33`)!
+- **GATE-level items:** Sign-Mag overflow MSQ (`2026_FN_Q22`) & bit width (`2019_FN_Q33`: `n + 1`), 4-bit/5-bit 2's complement overflow (`2026_AN_Q28`, `2024_FN_Q18`, `2022_FN_Q18`), hardware overflow gate (`2017_FN_Q11`), fixed-point range (`2017_FN_Q24`), and exact decimal check (`2018_FN_Q43`).
+- **Diagrams needed:** `MEMORY` (Number line showing 4-bit `[-8, +7]` overflow cliffs + unsigned `i.f` bit weights); `CIRCUIT` (8-bit RCA with `C_6 ⊕ C_7` and `A_7 B_7 S_7'` overflow gates, `2017_FN_Q11`).
+- **Hand traces:** Tracing `2026_FN_Q22` (`X = -52, Y = +76 -> X - Y = -128` overflows 8-bit Sign-Mag `[-127, +127]`!), `2026_AN_Q28` (`B, D`), `2024_FN_Q18` (`A - B = +16`), and `2018_FN_Q43`.
+- **Common mistakes:** Checking `C_out = 1` alone for 2's complement overflow (`2017_FN_Q11(A)`!); confusing `8-bit Sign-Mag` min (`-127`) with `8-bit 2's Comp` min (`-128`) in `2026_FN_Q22` (`-128` DOES overflow Sign-Magnitude!); forgetting subtraction `X - Y` overflows when signs are OPPOSITE (`2026_FN_Q22`, `2024_FN_Q18`).
+
+#### Lesson 06.2 · IEEE 754 Floating-Point Format (`Single/Double`) & Arithmetic (`+, ×, ÷`)
+- **Tag:** `[MUST]` — Highest-density Hard/Medium NAT & MSQ unit (`2026_AN_Q34`, `2026_FN_Q36`, `2025_AN_Q49`, `2024_AN_Q23`, `2023_FN_Q45`, `2022_FN_Q41`, `2021_AN_Q17`, `2021_FN_Q65`, `2020_FN_Q59`, `2017_AN_Q12`).
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 06.1.
+- **Beginner must-see:** Fixed-point cannot hold both atom sizes ($10^{-15}$) and galaxy distances ($10^{25}$)! **IEEE 754 Floating Point** stores scientific notation in binary: **`(-1)^S × (1.M) × 2^{E - 127}`**! Why store `E + 127` (`Biased`) instead of 2's complement? Because biased `E` lets hardware sort positive floats using a plain unsigned integer comparator — and `E = 0` is specially reserved for `0.0` and tiny subnormals, making **`E = 1, M = 0`** the smallest normalized positive number (`2^{-126}`, `2021_AN_Q17`)!
+- **Finer points:**
+  - **Single Precision (`32-bit: 1 S | 8 E [bias 127] | 23 M`) & Double Precision (`64-bit: 1 S | 11 E [bias 1023] | 52 M`).**
+  - **The 5 IEEE 754 Regions:**
+    1. `E = 0, M = 0` -> `±0.0`.
+    2. `E = 0, M != 0` -> **Denormalized/Subnormal**: `(-1)^S × (0.M) × 2^{-126}` (`2^{-149}` smallest subnormal).
+    3. `1 <= E <= 254` -> **Normalized**: `(-1)^S × (1.M) × 2^{E - 127}` (smallest positive normalized = **`E = 00000001, M = 0`**, `2021_AN_Q17`!).
+    4. `E = 255, M = 0` -> `±∞`.
+    5. `E = 255, M != 0` -> `NaN`.
+  - **Top-3-Hex-Digit Speed-Read (`2026_AN_Q34`, `2025_AN_Q49`, `2021_FN_Q65`, `2017_AN_Q12`):** Decode bits `[31..20]` (`S | 8-bit E | top 3 bits of M`) in 10 seconds!
+  - **IEEE 754 Arithmetic (`2026_FN_Q36`, `2023_FN_Q45`, `2020_FN_Q59`):**
+    - **Add/Sub (`2026_FN_Q36`):** Align smaller exponent to larger (`shift 1.M right by ΔE`), add/sub, normalize back to `1.xxxx`.
+    - **Multiply (`2023_FN_Q45`):** `S = S_1 ⊕ S_2`, `E = E_1 + E_2 - 127`, multiply `(1.M_1) × (1.M_2)` & normalize (`if >= 2, >>1 & E++`).
+    - **Divide (`2020_FN_Q59`):** `S = S_1 ⊕ S_2`, `E = E_1 - E_2 + 127`, divide `(1.M_1) / (1.M_2)` & normalize!
+- **GATE-level items:** Hex <-> Decimal (`2026_AN_Q34`: `-60.25`, `2025_AN_Q49`, `2021_FN_Q65`: `-7.75`, `2017_AN_Q12`: `2.27×10^{-1}`), smallest normalized (`2021_AN_Q17` — fix key `C` -> `A`!), Hex Addition (`2026_FN_Q36`: `35E80000`), Hex Multiply (`2023_FN_Q45`: `0xC15C2EF4`), and Hex Divide (`2020_FN_Q59`: `0xC0800000`).
+- **Diagrams needed:** `MEMORY` (32-bit `1 | 8 | 23` field bar + 5-Region Number Line zooming near `0` & `2^{-126}`); `FRAMES` (`0x35C00000 + 0x34A00000` exponent alignment + hidden `1.` shifting, `2026_FN_Q36`; `P × Q` & `R1 / R2` exponent bias pipeline).
+- **Hand traces:** Tracing `2026_AN_Q34` (`-60.25`), `2026_FN_Q36` (`35E80000`), `2025_AN_Q49` (`X=-9, Y=6, Z=12`), `2023_FN_Q45` (`0xC15C2EF4`), and `2020_FN_Q59` (`40 / -10 = -4`).
+- **Common mistakes:** Forgetting the **hidden leading `1.`** before shifting mantissa right during addition (`2026_FN_Q36` gives `35C80000` or `35CC0000` traps if hidden `1` is forgotten!); forgetting `±0` / denormals sit at `E = 0` when picking smallest *normalized* (`2021_AN_Q17`!); adding biased exponents `E_1 + E_2` without subtracting `127`!
+
+---
+
+`CONTINUE FROM PART 6`
+## PART 6. EVERY PYQ LISTED BELOW (Batch 1: Questions #1 to #35)
+
+*(Re-solved and checked one by one. Note the 4 verified mis-transcriptions/key bugs and 25 missing figures!)*
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 1 | `2026_AN_Q16` | Ch 02 / L02.1 | Fundamental Boolean Algebra axioms (Complement Law `a · a' = 0`). | `a · a' = 1` (`B`) is FALSE (`a · a' = 0`; `a + a' = 1`). | **CORRECT (B).** | Clean. |
+| 2 | `2026_FN_Q21` | Ch 02 / L02.1 | Simplifying XOR/XNOR expressions (`1`-input vs `2`-input negation rules). | Under printed `(P + Q) ⊕ (P'Q)`, `F` simplifies to `P` (matches neither `A` nor `C`!). With intended `(P' + Q) ⊕ (P'Q)`, `(P' + P'Q + Q) -> P'Q + Q`? Wait: `(P'+Q) = P'Q' + P'Q + PQ`; XOR with `P'Q` removes `P'Q`, leaving `P'Q' + PQ = P ⊙ Q = (P ⊕ Q)' = P ⊕ Q'`! | **FACT-DOUBT (MIS-TRANSCRIPTION)!** Printed `(P + Q) ⊕ (\overline{P}Q)` evaluates to `P`, contradicting official **A, C** (`\overline{P \oplus Q}`). Real GATE 2026 had **`(\overline{P} + Q) \oplus (\overline{P}Q)`**! | **MIS-TRANSCRIPTION:** Missing overline on first `P`: `(P + Q)` should be `(\overline{P} + Q)`! |
+| 3 | `2026_FN_Q22` | Ch 06 / L06.1 | 8-bit **Sign-Magnitude** addition/subtraction overflow (`X = -52, Y = +76`). | `X = 1 0110100 (-52)`, `Y = 0 1001100 (+76)`. `8`-bit Sign-Mag range is `[-127, +127]`: `X + Y = +24` (ok); `X - Y = -128` (**OVERFLOW!**); `-X + Y = +128` (**OVERFLOW!**); `-X - Y = -24` (ok)! | **CORRECT (B, C).** Trap: `-128` fits in 2's Comp, yet overflows 8-bit Sign-Magnitude! | Clean. |
+| 4 | `2026_AN_Q28` | Ch 06 / L06.1 | 4-bit **2's Complement** overflow (`range [-8, +7]`). | `N1 = -5, N2 = -3, N3 = -6, N4 = -7`: `N1+N2 = -8` (fits!); `N2+N3 = -9` (**OVERFLOW!**); `N3-N4 = +1` (fits!); `N1+N4 = -12` (**OVERFLOW!**). | **CORRECT (B, D).** | Clean. |
+| 5 | `2026_AN_Q34` | Ch 06 / L06.2 | Decoding 32-bit IEEE 754 Hex `0xC2710000` to decimal. | `1 | 10000100 (132 -> +5) | 11100010...` = `-(1.1110001_2) × 2^5 = -(111100.01_2) = -(60 + 1/4) = -60.25`! | **CORRECT (-60.25).** | Clean. |
+| 6 | `2026_FN_Q36` | Ch 06 / L06.2 | IEEE 754 single-precision Hex Addition `X + Y` (`35C00000 + 34A00000`). | `X = +1.5 × 2^{107-127}` (`E=107, M=.10`), `Y = +1.25 × 2^{105-127}` (`E=105, M=.01`). Shift `Y` right by `2`: `0.0101` (`hidden 1 shifted right!`) + `1.1000` = `1.1101 × 2^{107-127}` -> `E=107 (0x358...)`, `M=.1101 -> E80000` -> `0x35E80000` (`C`)! | **CORRECT (C: 35E80000).** | Clean. |
+| 7 | `2026_FN_Q37` | Ch 05 / L05.2 | Designing 2-bit saturating up/down counter (`P=0` up, `P=1` down) using `D` flip-flops. | `D_1 = Q_1^+`, `D_0 = Q_0^+`. Verify `B` directly from state transition rule! When `P=0` (saturating up: `00->01->10->11->11`): `D_1 = Q_1 + Q_0`, `D_0 = Q_0' + Q_1`! When `P=1` (saturating down: `00->00, 01->00, 10->01, 11->10`): `D_1 = Q_1 Q_0`, `D_0 = Q_1 Q_0'`! Combining `P=0` & `P=1` gives `D_1 = P'Q_1 + P'Q_0 + Q_1 Q_0` and `D_0 = P'Q_0' + P'Q_1 + Q_1 Q_0'` (`B`)! | **CORRECT (B).** Solvable from text even though `[IMAGE_Q_37_1]` is missing! | **MISSING FIGURE** (`[IMAGE_Q_37_1]`, solvable from text). |
+| 8 | `2026_AN_Q40` | Ch 03 / L03.1 | Minimal SOP for `F(A,B,C,D) = \Sigma m(0,1,2,3,8,9,10,11)`. | Binary forms are `00xx` (`A'B'`) and `10xx` (`AB'`) -> all `B = 0`, independent of `A, C, D` -> `B'` (`B`). | **CORRECT (B: `B'`).** | Clean. |
+| 9 | `2026_FN_Q48` | Ch 03 / L03.1 | Finding ALL minimal SOP covers of cyclic 4-var K-Map. | EPIs: `P'S` (`1,3,5,7`) and `QR'` (`4,5,12,13`). Remaining uncovered `{2, 10, 14}` form 3-minterm chain covered by TWO 2-pair choices: `P'Q'R (2) + PRS' (10,14)` (`B`) OR `PQS' (12,14) + Q'RS' (2,10)` (`D`)! | **CORRECT (B, D).** Both have 4 terms / 11 literals (`A` & `C` miss `14` or `2`!). | Clean. |
+| 10 | `2026_AN_Q59` | Ch 04 / L04.1 | Counting `1`-outputs across 16 inputs of Active-High `2:4` Decoder + `4:1` MUX. | Need wiring diagram `[IMAGE_Q_59_1]` to confirm which decoder lines feed `I0..I3`. | **CANNOT VERIFY** (Key: 6). Circuit `[IMAGE_Q_59_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_59_1]`). |
+| 11 | `2025_FN_Q24` | Ch 02 / L02.1 | Boolean Majority function `X(a, b, c) = ab + bc + ca` identities. | Use `a=b` (`X(a,a,z) = a`) vs `a!=b` (`X(0,1,z) = z`): **A** fails `(1,1,0,0,0 -> X(1,1,0)=1 vs X(1,0,0)=0)`! **B**: if `a=b` gives `a` on both sides; if `a!=b` gives `X(0,1,X(0,1,c)) = c` (**TRUE**)! **D**: `X(a, X(a,b,c), a c + ... -> a)`? Check `X(a, c, c) = c`! So `X(a, X(a,b,c), c)`: if `a=c`, `X(a,a,a) = a = X(a,b,a)`; if `a!=c`, `X(0, X(0,b,1), 1) = X(0, b, 1) = b = X(0,b,1)` (**TRUE**)! | **CORRECT (B, D).** `C` fails on `a=1,b=0,c=0,d=0`. | Clean. |
+| 12 | `2025_FN_Q25` | Ch 01 / L01.2 | Sign-extending 4-bit `-6` (`1010`) to 8-bit & 16-bit 2's complement. | Copy MSB `1` leftward (`B: 1111 1010`, `D: 1111 1111 1111 1010`), NOT `1000...` (`A, C` are Sign-Mag trap!). | **CORRECT (B, D).** | Clean. |
+| 13 | `2025_AN_Q31` | Ch 04 / L04.1 | Equivalent Boolean expressions for a given logic gate circuit. | Need gate circuit `[IMAGE_Q_31_1]`. (Note `A, B, C` are all equivalent to `(XY)' = X' + Y'`!). | **CANNOT VERIFY** (Key: A, B, C). Diagram `[IMAGE_Q_31_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_31_1]`). |
+| 14 | `2025_AN_Q34` | Ch 05 / L05.2 | 4-bit asynchronous ripple counter frequency division (`÷ 16`). | Last FF period = `64 us` -> input clock period = `64 / 16 = 4 us` -> clock frequency = `1 / 4 us = 250 kHz`! | **CORRECT (250).** | Clean. |
+| 15 | `2025_FN_Q42` | Ch 03 / L03.1 | 4-var K-Map minimal SOP for `\Sigma(0,2,4,8,10,11,12)` (no don't-cares). | `{0,4,8,12} -> b1'b0'`; `{0,2,8,10} -> b2'b0'`; remaining `11 (1011)` pairs only with `10 (1010)` -> `b3 b2' b1` (`A`)! | **CORRECT (A).** | Clean. |
+| 16 | `2025_AN_Q43` | Ch 03 / L03.1 | Reading minimal/unminimized SOP expressions from a 4-var K-Map diagram. | Need K-map `[IMAGE_Q_43_1]`, AND note Option A only prints 3 `\overline{x}\overline{z}` minterms (missing `\overline{w}\overline{x}\overline{y}\overline{z}` = `0000`) compared to `D` (`\overline{x}\overline{z} + xz`)! | **CANNOT VERIFY** (Key: A, D). Missing `[IMAGE_Q_43_1]` + **MIS-TRANSCRIPTION** in Option A (dropped `\overline{w}\overline{x}\overline{y}\overline{z}`). | **MISSING FIGURE** + **MIS-TRANSCRIPTION** in Option A (`4`-term sum truncated to 3). |
+| 17 | `2025_AN_Q49` | Ch 06 / L06.2 | Decoding 3 IEEE 754 Hex values and checking linear relations. | `R_X (0xC1100000)` -> `1 | 10000010(130->+3) | .001` = `-1.125 × 8 = -9.0`; `R_Y (0x40C00000)` -> `+1.5 × 4 = +6.0`; `R_Z (0x41400000)` -> `+1.5 × 8 = +12.0`! Check: `4(-9+6)+12 = 0` (`A`), `2(6)-12 = 0` (`B`), `4(-9)+3(12) = 0` (`C`)! | **CORRECT (A, B, C).** | Clean. |
+| 18 | `2025_AN_Q50` | Ch 02 / L02.1 | Boolean algebraic simplification & Consensus Theorem (`AB + A'C + BC = AB + A'C`). | **B** = Consensus (`TRUE`); **C** = `(A+C)(A'+B) = AB + A'C` (`TRUE`); **D** drops outer complement `{...}'` AND prime on `C'`! | **B, C VERIFIED; FACT-DOUBT on Option D** (Official B, C, D). Under printed Option D without `{}'` and `\overline{C}`, LHS != RHS! | **MIS-TRANSCRIPTION:** Option D dropped `{}'` & `\overline{C}`; Option A also dropped prime on `C` in `\overline{A}\overline{B}\overline{C}`. |
+| 19 | `2025_FN_Q59` | Ch 05 / L05.2 | FSM state minimization from transition table. | Need state table `[IMAGE_Q_59_1]` to perform partition refinement. | **CANNOT VERIFY** (Key: 5). Table `[IMAGE_Q_59_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_59_1]`). |
+| 20 | `2025_FN_Q60` | Ch 05 / L05.2 | Counting distinct reachable states in a coupled D-FF state loop. | Need D-FF circuit `[IMAGE_Q_60_1]`. (Also note `7 to 8` tolerance covers initial-state dependence if cycle has 7 or 8 states). | **CANNOT VERIFY** (Key: 7 to 8). Circuit `[IMAGE_Q_60_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_60_1]`). |
+| 21 | `2024_FN_Q18` | Ch 06 / L06.1 | 5-bit 2's complement (`[-16, +15]`) overflow detection (`A = +10, B = -6`). | `A - B = 10 - (-6) = +16 > +15` -> **Overflow** (`B`)! (`B - A = -16` fits!; `2*B = -12` fits!). | **CORRECT (B: `A - B`).** | Clean. |
+| 22 | `2024_AN_Q23` | Ch 06 / L06.2 | Comparing IEEE 754 bit patterns to pick the largest floating-point value. | Need option bit patterns `[IMAGE_Q_23_A..D]`. | **CANNOT VERIFY** (Key: B). All format/option images are missing. | **MISSING FIGURES** (`[IMAGE_Q_23_1]`, `[IMAGE_Q_23_A..D]`). |
+| 23 | `2024_FN_Q17` | Ch 04 / L04.1 | Combinational **Static-0 Hazard** glitch due to gate propagation delays. | Need circuit `[IMAGE_Q_17_1]` (`Y = X · X'` with NOT delay -> `0` ideally `A`, transient `1` pulse when `X: 0 -> 1` `C`!). | **CANNOT VERIFY** (Key: A, C). Circuit `[IMAGE_Q_17_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_17_1]`). |
+| 24 | `2024_AN_Q32` | Ch 02 / L02.1 | Identifying **FALSE** basic Boolean laws (`x + 1 = x`, `x · x = 0`). | Watch `"FALSE"`! `x + 1 = 1` (not `x`, `B`) and `x · x = x` (not `0`, `C`). | **CORRECT (B, C).** | Clean. |
+| 25 | `2024_FN_Q62` | Ch 02 / L02.2 | Converting `F = \Sigma(3, 5, 6, 7)` to Maxterms `\Pi(0, 1, 2, 4)` and Majority SOP. | `3,5,6,7` = at least 2 of `(X,Y,Z)` are `1` -> `XY + YZ + XZ` (`B`), complement is `0,1,2,4` (`A`). | **CORRECT (A, B).** | Clean. |
+| 26 | `2024_AN_Q60` | Ch 01 / L01.1 | Comparing `(224)_5 = 64_{10}` against radices `10, 8, 16, 7`. | `2×25 + 2×5 + 4 = 64`: `64_{10}` (`A`), `100_8 = 64` (`B`), `121_7 = 49 + 14 + 1 = 64` (`D`); `50_{16} = 80` (`C` false). | **CORRECT (A, B, D).** | Clean. |
+| 27 | `2024_AN_Q46` | Ch 04 / L04.1 | Evaluating combinational circuit combining `f1, f2, f3, f4` minterm functions. | Need circuit `[IMAGE_Q_46_1]`. | **CANNOT VERIFY** (Key: C, D). Circuit `[IMAGE_Q_46_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_46_1]`). |
+| 28 | `2024_FN_Q49` | Ch 04 / L04.1 | Counting `(A, B, C)` combos giving `Y = 1` across 3 `2:1` MUXes (`X1=1,X2=1,X3=0,X4=0`). | Need MUX tree `[IMAGE_Q_49_1]` (likely `M1 = 1, M2 = 0`, `M3` selects `M1` when `C=0` -> `4` combos of `A, B`!). | **CANNOT VERIFY** (Key: 4). Circuit `[IMAGE_Q_49_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_49_1]`). |
+| 29 | `2023_FN_Q21` | Ch 05 / L05.1 | Recognizing a `2:1` MUX with output fed back to `I0` (`I1=D, S=CLK`) as a **D Latch**. | Level-sensitive feedback holds state while `CLK=0` and passes `D` while `CLK=1` -> **D Latch** (`B`, NOT edge-triggered Flip-Flop `A`!). | **CORRECT (B)** from standard circuit description (`[IMAGE_Q_21_1]` missing). | **MISSING FIGURE** (`[IMAGE_Q_21_1]`). |
+| 30 | `2023_FN_Q32` | Ch 01 / L01.1 | Converting `(132)_4` to radix-5 (`110_5`). | `16 + 12 + 2 = 30_{10} = 1×25 + 1×5 + 0 = (110)_5`. | **CORRECT (110).** | Clean. |
+| 31 | `2023_FN_Q43` | Ch 05 / L05.2 | Identifying unreachable `(Q1, Q2, Q3)` state in coupled `T`/`D` FF circuit. | Need circuit `[IMAGE_Q_43_1]`. | **CANNOT VERIFY** (Key: A: `(0,0,1)`). Circuit `[IMAGE_Q_43_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_43_1]`). |
+| 32 | `2023_FN_Q44` | Ch 04 / L04.1 | Finding `X0..X7` inputs to two `4:1` + one `2:1` MUX tree implementing `A + A'C' + AB'C`. | Need select-line wiring `[IMAGE_Q_44_1]` (with `A` at `M3` & `B,C` at `M1,M2`: `A=0 -> C'` (`1,0,1,0`? Wait `(1,1,0,1)` for `A=0`?! Then `(C,B)` vs `(B,C)` wiring matters!)). | **CANNOT VERIFY** (Key: C). Diagram `[IMAGE_Q_44_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_44_1]`). |
+| 33 | `2023_FN_Q45` | Ch 06 / L06.2 | IEEE 754 single-precision Hex Multiplication `P × Q` (`0xC1800000 × 0x3F5C2EF4`). | `P = -1.0 × 2^4`, `Q = +1.M × 2^{-1}`. Sign `= 1`, Exponent `= 4 + (-1) + 127 = 130 (10000010)`, Mantissa `= 1.0 × 1.M = 5C2EF4` -> `0xC15C2EF4` (`C`). | **CORRECT (C: 0xC15C2EF4).** | Clean. |
+| 34 | `2022_FN_Q18` | Ch 06 / L06.1 | 4-bit 2's complement addition overflow (`[-8, +7]`). | `R1 = 1100 (-4)`, `R2 = 1010 (-6)` -> `-10 < -8` -> **Overflow** (`B`). | **CORRECT (B).** | Clean. |
+| 35 | `2022_FN_Q40` | Ch 04 / L04.1 | Identifying decoders `P, Q` (`10:2^{10}`, `5:2^5`) and multiplexer `T` (`2:1`) in DDS. | `P` decodes 10-bit addr into `1024`-word RAM; `Q` decodes 5-bit addr into `32`-word reg file; `T` picks between `S` or `R` via `M` (`C`!). Solvable from text despite missing `[IMAGE_Q_40]`. | **CORRECT (C).** | **MISSING FIGURE** (`[IMAGE_Q_40]`, solvable from text). |
+
+---
+
+`CONTINUE FROM PART 6 (PYQ #36)`
+## PART 6 (Continued) · Batch 2: Questions #36 to #69
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 36 | `2022_FN_Q41` | Ch 06 / L06.2 | Comparing 3 IEEE 754 Hex values (`A, B, C`) in registers. | Need register hex table `[IMAGE_Q_41]`. | **CANNOT VERIFY** (Key: B: `C = A + B`). Table `[IMAGE_Q_41]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_41]`). |
+| 37 | `2021_AN_Q17` | Ch 06 / L06.2 | Smallest **normalized positive** number in IEEE 754 single precision (`2^{-126}`). | `E = 0, M = 0` (`C`) is **`+0.0`** (NOT normalized!!); **`E = 1` (`00000001`), `M = 0`** (`A`) is the smallest normalized positive number ($2^{-126}$)! | **FACT-DOUBT (OFFICIAL KEY SHUFFLE ERROR)!** Bank marks **C** (`+0.0`) as `✔ official`, whereas in this document's options **`A` (`exponent=00000001, mantissa=0`)** is the only mathematically correct answer! | **MISSING FIGURE** (`[IMAGE_Q_17_1]`) + **WRONG KEY LETTER (`C` -> `A`)**. |
+| 38 | `2021_AN_Q56` | Ch 04 / L04.1 | Selecting logic circuit realizing `f(x,y,z) = \Sigma m(0,1,3,4,5,6)`. | Need option circuits `[IMAGE_Q_56_A..D]`. | **CANNOT VERIFY** (Key: A). Circuit images are missing. | **MISSING FIGURES** (`[IMAGE_Q_56_A..D]`). |
+| 39 | `2021_FN_Q44` | Ch 01 / L01.1 | Converting `(210)_3` to hexadecimal (`15_{16}`). | `2×9 + 1×3 = 21_{10} = 1×16 + 5 = (15)_{16}` (`A`). | **CORRECT (A: 15).** | Clean. |
+| 40 | `2021_AN_Q36` | Ch 01 / L01.1 | Fractional binary-to-decimal conversion (`0.1101_2 = 0.8xy5_{10}`). | `1/2 + 1/4 + 1/16 = 0.5 + 0.25 + 0.0625 = 0.8125` -> `x=1, y=2 -> x+y = 3`. | **CORRECT (3).** | Clean. |
+| 41 | `2021_FN_Q65` | Ch 06 / L06.2 | Decoding IEEE 754 binary components (`S=1, E=10000001, F=11110...`). | `E = 129 -> +2`; `-1.1111_2 × 2^2 = -111.11_2 = -(7 + 0.75) = -7.75`. | **CORRECT (-7.75).** | Clean. |
+| 42 | `2021_FN_Q55` | Ch 05 / L05.2 | Next three states of a 3-bit T-FF counter starting at `000`. | Need T-FF schematic `[IMAGE_Q_55_1]`. | **CANNOT VERIFY** (Key: A: `011, 101, 000`). Diagram `[IMAGE_Q_55_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_55_1]`). |
+| 43 | `2021_AN_Q42` | Ch 05 / L05.2 | Designing 2-state **Mealy machine** replacing 1st `1` of every run of `1`s with `0`. | `s` tracks whether previous bit was `1` (`t = b`), and outputs `1` ONLY when already in `1`-run (`s=1`) and seeing `1` (`b=1`) -> `y = s · b` (`B`)! | **CORRECT (B: `t = b, y = sb`).** | Clean. |
+| 44 | `2021_FN_Q64` | Ch 02 / L02.2 | Finding complement `\overline{F}` of factored POS `F = (X+Y+Z)(X'+Y)(Y'+Z)`. | De Morgan turns `(A)(B)(C)` into `A' + B' + C'` (OR, not AND `A`!) -> `X'Y'Z' + XY' + YZ'` (`D`), which simplifies to `XY' + Z'` (`B`) and `(X + Z')(Y' + Z')` (`C`)! | **CORRECT (B, C, D).** | Clean. |
+| 45 | `2021_AN_Q49` | Ch 03 / L03.1 | Minimizing 4-var function from partial equations (`f(w,0,0,z)=1`, etc.). | Union of minterms `{0,1,6,7,8,9,11,13,14,15}` -> covers cleanly with three 2-literal quads `x'y' (0,1,8,9) + xy (6,7,14,15) + wz (9,11,13,15)` = `6` literals! | **CORRECT (6).** Trap: missing the `wz` quad leaves `10` literals! | Clean. |
+| 46 | `2020_FN_Q25` | Ch 04 / L04.1 | Select lines needed for a `32:1` Multiplexer (`\log_2 32 = 5`). | `2^5 = 32` -> `5` select lines. | **CORRECT (5).** | Clean. |
+| 47 | `2020_FN_Q26` | Ch 04 / L04.1 | `m + n` for decoder addressing `1 KB` (`1024 B`) RAM (`10 : 1024`). | `1 KB = 1024 = 2^{10}` -> `m = 10`, `n = 1024`, `m + n = 1034`. | **CORRECT (1034).** | Clean. |
+| 48 | `2020_FN_Q54` | Ch 03 / L03.2 | Extracting minterm list `z(a, b, c)` from a gate schematic. | Need circuit diagram `[IMAGE_Q_54]`. | **CANNOT VERIFY** (Key: B). Circuit `[IMAGE_Q_54]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_54]`). |
+| 49 | `2020_FN_Q59` | Ch 06 / L06.2 | IEEE 754 single-precision Hex Division `R1 / R2` (`0x42200000 / 0xC1200000`). | `R1 = +1.25 × 2^5 = +40`; `R2 = -1.25 × 2^3 = -10` -> `R3 = -4.0 = -1.0 × 2^2 = 0xC0800000` (`B`). | **CORRECT (B: 0xC0800000).** | Clean. |
+| 50 | `2019_FN_Q22` | Ch 04 / L04.1 | Hex address range enabled by DRAM Chip-Select (`CS`) gate logic. | Need CS gate circuit `[IMAGE_Q_22]`. | **CANNOT VERIFY** (Key: A: `C800 to CFFF`). Circuit `[IMAGE_Q_22]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_22]`). |
+| 51 | `2019_FN_Q17` | Ch 01 / L01.2 | 16-bit 2's complement representation of `-28`. | `+28 = 0000 0000 0001 1100` -> keep up to rightmost `1`, flip left = `1111 1111 1110 0100` (`C`). | **CORRECT (C).** | Clean. |
+| 52 | `2019_FN_Q18` | Ch 02 / L02.1 | Identifying invalid XOR identity (`(x+y) ⊕ z = x ⊕ (y+z)`). | Test `x=1, y=1, z=0`: LHS = `1 ⊕ 0 = 1`, RHS = `1 ⊕ 1 = 0` (`B` fails!). | **CORRECT (B).** | Clean. |
+| 53 | `2019_FN_Q33` | Ch 06 / L06.1 | Minimum bits to represent `Z = X - Y` without overflow in $n$-bit Sign-Magnitude. | Opposite-sign subtraction reaches magnitude $2(2^{n-1}-1) = 2^n - 2$, requiring `n` magnitude bits + `1` sign bit = `n + 1` bits (`C`). | **CORRECT (C: `n + 1`).** | Clean. |
+| 54 | `2019_FN_Q56` | Ch 04 / L04.1 | Finding minterms of `f` from AND + XOR circuit on `f1, f2, f3`. | Need schematic `[IMAGE_Q_56]` (note: `(f1 ∧ f2) ⊕ f3` = `{2,8,14} ⊕ {2,7,11,14} = {7,8,11}` matches Option `A`!). | **CANNOT VERIFY** (Key: A). Circuit `[IMAGE_Q_56]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_56]`). |
+| 55 | `2019_FN_Q49` | Ch 03 / L03.2 | Minimum 2-input NOR gates for `\Sigma(0, 2, 5, 7, 8, 10, 13, 15)` (complements available). | K-map checkerboard gives `B'D' + BD`; rewrite as **POS `(B + D')(B' + D)`** -> `((B+D')' + (B'+D)')'` = **3** 2-input NOR gates! | **CORRECT (3).** | Clean. |
+| 56 | `2018_FN_Q14` | Ch 02 / L02.1 | Invalid XOR/XNOR identity (`(P ⊕ P') ⊕ Q = (P ⊙ P') ⊙ Q'`). | LHS = `1 ⊕ Q = Q'`; RHS = `0 ⊙ Q' = Q` (`Q' != Q`, `D` false!). | **CORRECT (D).** | Clean. |
+| 57 | `2018_FN_Q32` | Ch 05 / L05.2 | Counting states with a self-loop transition in a 2-D-FF sequential circuit. | Need circuit `[IMAGE_Q_32]`. | **CANNOT VERIFY** (Key: 2). Circuit `[IMAGE_Q_32]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_32]`). |
+| 58 | `2018_FN_Q43` | Ch 06 / L06.1 | Exact representability in unsigned `5.3` fixed-point binary. | `3` fraction bits represent exact multiples of `1/8 = 0.125`: `31.500` & `0.875` fit; `12.100` and `3.001` are non-terminating in base 2 (`C`). | **CORRECT (C: (iii) and (iv)).** | Clean. |
+| 59 | `2018_FN_Q59` | Ch 03 / L03.1 | Counting **Essential Prime Implicants** of `F = \Sigma m(0,2,5,7,9,11) + d(3,8,10,12,14)`. | `Q'S'` (`0,2,8,10`) uniquely owns `0`; `P'QS` (`5,7`) uniquely owns `5`; `PQ'` (`8,9,10,11`) uniquely owns `9` -> `3` EPIs (`m(2), m(7), m(11)` also covered)! | **CORRECT (3).** | Clean. |
+| 60 | `2017_AN_Q23` | Ch 01 / L01.1 | Direct Hex-to-Octal conversion via binary grouping (`BCA9_{16}`). | `1011 1100 1010 1001` -> group by 3s from right `1 | 011 | 110 | 010 | 101 | 001` = `136251_8` (`D`). | **CORRECT (D: 136251).** | Clean. |
+| 61 | `2017_FN_Q24` | Ch 06 / L06.1 | Decimal range of unsigned `i . f` fixed-point number. | Min = `0` (all zeros); Max = `2^i - 2^{-f}` (`2^i - 1` integer + `(1 - 2^{-f})` fraction, `D`). | **CORRECT (D: `0` to `2^i - 2^{-f}`).** | Clean. |
+| 62 | `2017_FN_Q11` | Ch 06 / L06.1 | Boolean overflow detector for 8-bit 2's complement addition. | Overflow happens ONLY when both inputs share sign and sum has opposite sign (`A_7 B_7 S_7' + A_7' B_7' S_7 = 1`, `C`), NOT simply `C_7 = 1`! | **CORRECT (C).** | Clean. |
+| 63 | `2017_AN_Q12` | Ch 06 / L06.2 | Approximate decimal value of 32-bit IEEE 754 `00111110011011010...`. | `S=0`, `E = 01111100 = 124 -> 2^{-3}`, `M = 1.1101101_2 \approx 1.85` -> `1.85 / 8 \approx 0.23` (`2.27 × 10^{-1}`, `C`). | **CORRECT (C).** | Clean. |
+| 64 | `2017_FN_Q26` | Ch 03 / L03.2 | Minimum 2-input NOR gates for given K-map (complements available). | Need K-map `[IMAGE_Q_26]`. | **CANNOT VERIFY** (Key: 1.0). K-Map `[IMAGE_Q_26]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_26]`). |
+| 65 | `2017_AN_Q25` | Ch 01 / L01.1 | Unknown radix `b` from roots `5, 6` of `x^2 - (13)_b x + (36)_b = 0`. | Sum of roots `5 + 6 = 11 = (13)_b = b + 3 => b = 8` (check `5 × 6 = 30 = 3×8 + 6 = (36)_8`). | **CORRECT (8.0).** | Clean. |
+| 66 | `2017_AN_Q43` | Ch 02 / L02.1 | Identifying **INCORRECT** 4-variable Boolean algebraic identity. | `C`: `(w x'(y + xz') + w' x') y = (w x' y + w x' x z' + w' x') y = x' y (w + w') = x' y` (NOT `x y'`, `C`!). | **CORRECT (C).** | Clean. |
+| 67 | `2017_AN_Q41` | Ch 03 / L03.1 | Minimum **POS** form of `f = \Sigma_m(0,1,2,3,7,8,10) + \Sigma_d(5,6,11,15)`. | Zeros `{4,9,12,13,14}` covered cleanly by two 4-cell zero-quads `(w'+z')` (`9,11d,13,15d`) and `(x'+z)` (`4,6d,12,14`) -> `A`! | **CORRECT (A).** | Clean. |
+| 68 | `2017_FN_Q59` | Ch 05 / L05.2 | Coupled `T` and `D` flip-flop outputs `Q1 Q0` after 3rd and 4th clock cycles. | Need exact gate/connection schematic `[IMAGE_Q_59]`. | **CANNOT VERIFY** (Key: B). Diagram `[IMAGE_Q_59]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_59]`). |
+| 69 | `2017_AN_Q45` | Ch 05 / L05.2 | Synchronous 2-bit saturating up-counter `T1, T0` Boolean expressions. | `00->01->10->11->11`: `Q1` flips ONLY at `01` (`Q1' Q0`), and `Q0` flips at `00, 01, 10` (`(Q1 Q0)' = Q1' + Q0'`) -> `B`! | **CORRECT (B)** from standard saturating up-counter definition (`[IMAGE_Q_45]` missing). | **MISSING FIGURE** (`[IMAGE_Q_45]`). |
+
+---
+
+## PART 7. MORE QUESTIONS NEEDED (3 New Ideas Per Lesson)
+
+### Chapter 01 · Number Representation and Codes
+- **Lesson 01.1 (`Radix Conversions & Gray Code`):**
+  1. Convert `(231.12)_4` directly into hexadecimal (`MCQ`).
+  2. In base $b$, if $(41)_b + (24)_b = (105)_b$, determine the radix $b$ (`NAT`).
+  3. Convert the 5-bit Gray code `11010` back to natural binary (`MCQ`).
+- **Lesson 01.2 (`Signed Integers & Sign Extension`):**
+  1. Find the difference between the smallest negative integer representable in 8-bit 1's complement vs 8-bit 2's complement (`NAT`).
+  2. Sign-extend the 6-bit 2's complement number `101101` to 10-bit 2's complement (`MCQ`).
+  3. Which statements compare `0` representation, range symmetry, and subtraction hardware across Sign-Mag, 1's Comp, and 2's Comp (`MSQ`)?
+
+### Chapter 02 · Logic Gates and Boolean Algebra
+- **Lesson 02.1 (`Gates, Universal Gates, Consensus & XOR`):**
+  1. Simplify $X = (A \oplus B) \odot (A' \oplus B')$ using XOR/XNOR parity rules (`MCQ`).
+  2. Which gate transformations hold under Positive-Logic to Negative-Logic conversion (`AND <-> OR`, `NAND <-> NOR`, `XOR <-> XNOR`) (`MSQ`)?
+  3. Apply the Consensus Theorem to simplify $XY + X'Z + YZ + Y'W + XW$ (`MCQ`).
+- **Lesson 02.2 (`Canonical Forms, Dual vs Complement & Counting`):**
+  1. How many **self-dual** Boolean functions exist on 4 variables (`NAT`)?
+  2. Find the **Dual** vs **Complement** of $F(A, B, C) = A B' + B C$ and count shared minterms (`NAT`).
+  3. Convert `F(A, B, C) = A + B'C` into Product of Maxterms ($\Pi M$) form (`MCQ`).
+
+### Chapter 03 · Minimization
+- **Lesson 03.1 (`K-Maps, EPIs & Quine-McCluskey`):**
+  1. Given $F(A, B, C, D) = \Sigma m(1, 3, 4, 5, 10, 11, 12, 13, 14, 15)$, count Prime Implicants vs Essential Prime Implicants (`NAT`).
+  2. Using Quine-McCluskey on `F = \Sigma m(0, 1, 2, 5, 6, 7)` (cyclic 3-var K-Map!), count how many minimal SOP forms exist (`NAT`).
+  3. Find the minimal SOP expression of a 5-variable Boolean function $\Sigma m(0, 1, 4, 5, 16, 17, 20, 21, 25, 29)$ (`MCQ`).
+- **Lesson 03.2 (`Minimum NAND/NOR & Checkerboards`):**
+  1. Find the minimum number of **2-input NAND** gates required to implement $F(A,B,C,D) = (A + B)(C + D)$ (complements available) (`NAT`).
+  2. Express $X = A \oplus B \oplus C$ (3-input XOR) using minimum 2-input NAND gates (no complements available) (`NAT`).
+  3. Compare minimum 2-input NOR gates for $F = \Sigma m(1, 3, 5, 7)$ vs $G = \Sigma m(0, 3, 5, 6)$ (`NAT`).
+
+### Chapter 04 · Combinational Circuits and Hazards
+- **Lesson 04.1 (`Adders, MUXes, Decoders & Hazards`):**
+  1. Implement $F(A, B, C) = \Sigma m(0, 2, 5, 7)$ using a single `4:1` MUX with select lines `(A, B)` (`MCQ`).
+  2. How many `2:4` decoders with Enable inputs are required to construct a `5:32` decoder (`NAT`)?
+  3. Identify which redundant term added to $F = AB + A'C$ eliminates its Static-1 Hazard (`MCQ`).
+
+### Chapter 05 · Sequential Circuits, Flip-Flops, Counters & FSMs
+- **Lesson 05.1 (`Latches, Flip-Flops, Conversions & Timing`):**
+  1. Convert a `D` flip-flop into a `JK` flip-flop and write the combinational expression for `D` (`MCQ`).
+  2. Given $t_{\text{cq}} = 3\text{ ns}$, $t_{\text{comb}} = 7\text{ ns}$, $t_{\text{su}} = 2\text{ ns}$, $t_{\text{h}} = 1\text{ ns}$, and clock skew $0$, find maximum safe clock frequency in MHz (`NAT`).
+  3. Contrast Level-Triggered `D`-Latch vs Positive-Edge-Triggered `D`-FF on output waveform changes during `CLK = 1` (`MSQ`).
+- **Lesson 05.2 (`Counters, Shift Registers & FSMs`):**
+  1. A 4-bit synchronous Johnson counter starts at `0000`: find its state after 6 clock pulses (`MCQ`).
+  2. Using an `n`-bit Mod-10 asynchronous ripple counter (each FF `t_pd = 15 ns`) resetting via `NAND`, compute worst-case glitch propagation time (`NAT`).
+  3. Minimize a 6-state Mealy state table using partition refinement and count minimum states (`NAT`).
+
+### Chapter 06 · Computer Arithmetic: Fixed and Floating Point
+- **Lesson 06.1 (`Fixed-Point & Signed/Sign-Mag Overflow`):**
+  1. Add `10110 (-10)` and `10011 (-13)` in 5-bit 2's complement and determine `C_in` into MSB, `C_out` from MSB, and `V` overflow flag (`MSQ`).
+  2. Find the smallest positive decimal step representable in unsigned `4.4` fixed-point format (`NAT`).
+  3. Compare exact binary termination of `0.625`, `0.3`, `0.1875`, and `0.2` in 4-bit fractional fixed-point (`MSQ`).
+- **Lesson 06.2 (`IEEE 754 Format & Arithmetic`):**
+  1. Represent `-0.15625` (`-5/32`) in IEEE 754 single-precision hexadecimal (`MCQ`).
+  2. Compute the smallest positive **subnormal (denormal)** value representable in IEEE 754 single precision as a power of 2 (`MCQ`).
+  3. Multiply `0x40400000` (`+3.0`) by `0x40A00000` (`+5.0`) in IEEE 754 single precision (checking mantissa carry normalization `1.5 × 1.25 -> 1.875` vs `3.0 × 3.0`) and report result hex (`MCQ`).
+
+---
+
+## PART 8. WHAT IS MISSING FROM THE SUBJECT
+
+Because `Part B.2` lists **"none | not written"** for ALL 6 chapters and misplaces `Number representation` at Chapter 05, virtually the entire syllabus is missing from `Part B.2` right now! Specifically, the rewrite MUST build from zero:
+
+1. **Correct Chapter Order:** Placing **Number Representation & Codes (`Ch 01`)** BEFORE Boolean Algebra, K-Maps, Adders, and Binary Counters!
+2. **Number Representation & Arithmetic Depth (`33` marks in bank!):** Fractional base conversions (`2021_AN_Q36`), base-to-base (`2024_AN_Q60`, `2023_FN_Q32`, `2021_FN_Q44`), `2^k` Hex-Octal grouping (`2017_AN_Q23`), unknown-radix quadratics (`2017_AN_Q25`), Gray/BCD codes, Sign extension (`2025_FN_Q25`), **Signed & Sign-Magnitude overflow rules (`2026_FN_Q22`, `2026_AN_Q28`, `2024_FN_Q18`, `2019_FN_Q33`, `2017_FN_Q11`)**, Fixed-point `i.f` (`2018_FN_Q43`, `2017_FN_Q24`), **All 5 IEEE 754 regions (`2021_AN_Q17` — fix `C` -> `A`!)**, Hex <-> Float (`2026_AN_Q34`, `2025_AN_Q49`), and **IEEE 754 `+`, `×`, `÷` (`2026_FN_Q36`, `2023_FN_Q45`, `2020_FN_Q59`)**!
+3. **Boolean Algebra & Minimization Depth (`33` marks in bank!):** Logic gates & bubble-pushing, Consensus (`2025_AN_Q50`), **XOR/XNOR parity rules (`2026_FN_Q21`, `2019_FN_Q18`, `2018_FN_Q14`)**, Majority case-splits (`2025_FN_Q24`), Dual vs Complement (`2021_FN_Q64`), Self-dual count, **K-map wrapping/Don't Cares/EPIs/Cyclic ties (`2026_FN_Q48`, `2021_AN_Q49`, `2018_FN_Q59`, `2017_AN_Q41`)**, **Quine-McCluskey Tabular Method** (verbatim in syllabus!), and **Min 2-input NAND/NOR implementation (`2019_FN_Q49`, `2017_FN_Q26`)**.
+4. **Combinational Circuits Depth (`18` marks in bank!):** HA/FA/Adder-Subtractor, Comparator, **`4:1` / `8:1` MUX function realization (`2024_FN_Q49`, `2023_FN_Q44`)**, Active-High/Low Decoders + Chip-Select range decoding (`2026_AN_Q59`, `2022_FN_Q40`, `2020_FN_Q26`, `2019_FN_Q22`), Priority Encoder, and **Static Hazards/Glitches (`2024_FN_Q17`)**.
+5. **Sequential Circuits Depth (`19` marks in bank!):** Latches vs Edge-Triggered FFs (`MUX->D-Latch` `2023_FN_Q21`, Race-Around), Excitation Tables & FF conversions, Setup/Hold/`f_max`, **Synchronous analysis (`2025_FN_Q60`, `2023_FN_Q43`, `2021_FN_Q55`, `2018_FN_Q32`, `2017_FN_Q59`) & design (`2026_FN_Q37`, `2017_AN_Q45`)**, **Ripple Counter `÷ 2^n` (`2025_AN_Q34`)**, Ring/Johnson counters, and **Mealy/Moore FSM design & State Minimization (`2025_FN_Q59`, `2021_AN_Q42`)**.
+6. **Fixing 4 Broken PYQs & 25 Missing Figures in `Part C`:** Fix `2021_AN_Q17` (`C -> A`), `2026_FN_Q21` (`\overline{P}+Q`), `2025_AN_Q50(D, A)`, `2025_AN_Q43(A)`, and restore the 25 missing `[IMAGE_...]` graphics!
+
+---
+
+## PART 9. WEIGHTS
+
+### Chapter Weight Tags & Comparison with the Bank (`Part B.3`)
+
+| Chapter (Reordered Logical Plan) | Proposed Weight Tag | Bank Stats (2017–2026, 15 CS Papers) | Does the Bank Weight Look Fair? |
+|---|---|---|---|
+| **Ch 01 · Number Representation & Codes** *(Moved from Ch 05!)* | **Foundation / High** (Mandatory before everything!) | Merged with Ch 06 (`26` Qs / `33` marks across **10/10 yrs** — `8` Easy!) | **Fair (once split from IEEE 754 Arithmetic).** Appears every single year; radix conversions & 2's complement give super fast Easy 1-mark wins! |
+| **Ch 02 · Logic Gates & Boolean Algebra** *(Old Ch 01)* | **High** | Merged with Ch 03 (`20` Qs / `33` marks across 8/10 yrs) | **Fair.** Algebraic laws, Majority, and XOR/XNOR MSQs appear constantly (`1`–`2` marks). |
+| **Ch 03 · Minimization (`K-Maps`, `Tabular`, `NAND/NOR`)** *(Old Ch 02)* | **Very High** | Shared inside `20` Qs / `33` marks bucket (`2.20%` of GATE!) | **Fair.** K-Maps, EPIs, POS, and 2-input NOR/NAND counts are guaranteed 2-mark value once Gray wrapping is visual. |
+| **Ch 04 · Combinational Circuits & Hazards** *(Old Ch 03)* | **Medium-High** | 12 Qs / 18 marks (`1.20%`; asked 8/10 yrs — `0` Hard Qs!) | **Fair — super safe Medium ROI!** Zero Hard questions (`2 Easy, 10 Med, 0 Hard`), mostly clean MUX, Decoder, and Chip-Select traces. |
+| **Ch 05 · Sequential Circuits, Counters & FSMs** *(Old Ch 04)* | **High** | 11 Qs / 19 marks (`1.27%`; asked 6/10 yrs — `0` Easy, `9` Med, `2` Hard!) | **Fair.** Notice `0` Easy Qs — almost all 2-markers (`Counter trace`, `Saturating D/T design`, `FSM minimization`, `Mealy`), rewarding careful clock-edge tracing! |
+| **Ch 06 · Computer Arithmetic (`Fixed & IEEE 754 Floating Point`)** | **Very High** | Shared inside `26` Qs / `33` marks (`10/10 yrs`, `5` Hard!) | **Fair — huge recent uptick in IEEE 754 Hex math!** Notice `2026_AN_Q34`, `2026_FN_Q36`, `2025_AN_Q49`, `2023_FN_Q45`, `2020_FN_Q59` test IEEE 754 arithmetic heavily (exact future split vs Ch 01: **not sure**). |
+
+### Overall Assessment of Bank Distribution (`6.9%` = ~6.9 marks/paper)
+- Across the 15 CS papers (2017–2026) in `Part B.3`, **Number Representation & Arithmetic (`33` marks)** + **Boolean Algebra & K-Maps (`33` marks)** carry **`66` of `103` marks (`64%` of Digital Logic!)**, while **Sequential (`19` marks)** and **Combinational (`18` marks)** split the remaining **`36%`** evenly!
+- Even better for a 100-day dropper: **`60` of `69` questions (`87%`) are Easy or Medium**, making Digital Logic one of the **highest accuracy-per-hour subjects** in GATE CS once Number Representation moves to Chapter 01 and those 4 broken PYQ keys/texts (`2021_AN_Q17`, `2026_FN_Q21`, `2025_AN_Q50`, `2025_AN_Q43`) are repaired! (Exact future weights beyond the 2017–2026 bank: **not sure**.)

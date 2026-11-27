@@ -17,7 +17,7 @@ Both give the same spine (a foundation chapter, then instructions, ALU and contr
 | 2024_FN_Q55 | "Overhead for an additional core is 10 ns". Execution time 10 + 90/N + 10(N−1): N = 3 gives 60 (minimum). If the overhead is 10N the minimum is still N = 3 | Key 3 robust; clarify the wording |
 | 2021_AN_Q59 | 16 cycles with forwarding, 30 without: 30/16 = 1.875, inside 1.87 to 1.88 | Key correct; state the write-then-read timing |
 | Other numbers re-solved | 2017_FN_Q53 (82 misses = 6 compulsory + 76 conflict), 2026_AN_Q56 (128 KB), 2025_AN_Q32 (13 Booth operations), 2018_FN_Q33 (59.04%), 2017_AN_Q47 (L1 0.111, L2 0.0556), 2025_AN_Q56 (261.04 µs), 2026_AN_Q57 (2.34), 2018_FN_Q60 (219) | All keys correct |
-| Figures | 9 missing: 2026_FN_Q60, 2025_FN_Q27, 2025_FN_Q53, 2025_AN_Q61, 2024_AN_Q43, 2021_FN_Q38, 2020_FN_Q30, 2017_AN_Q39, 2017_FN_Q60. Gemini says 2020_FN_Q30 is solvable from text; ChatGPT says path legality needs the figure | **Open**: restore all nine |
+| Figures (29 Nov update) | **Images exist in the app and were checked against the keys: all nine correct.** 2026_FN_Q60 = 95 (stall cycles 15 + 10 + 10 + 10 + 5 + 30 + 15), 2025_FN_Q27 = A, B, C (both muxes accept an immediate), 2025_FN_Q53 = 11.85, 2025_AN_Q61 = 3.0 ns (2.1 × 10^9 cycles in 6.3 s), 2024_AN_Q43 = 34 (opcode 8, unused 6, immediate 12), 2021_FN_Q38 = 50 (the loop stops after R3 reaches 3010 without writing it), 2020_FN_Q30 = 3, 5, 2, 1, 4 (Gemini was right that it is solvable), 2017_AN_Q39 = 4.72, 2017_FN_Q60 = −16. Original list of the nine: 2026_FN_Q60, 2025_FN_Q27, 2025_FN_Q53, 2025_AN_Q61, 2024_AN_Q43, 2021_FN_Q38, 2020_FN_Q30, 2017_AN_Q39, 2017_FN_Q60. Gemini says 2020_FN_Q30 is solvable from text; ChatGPT says path legality needs the figure | **Done** |
 | Other keys | Both reviewers agree with the official key on all text-complete questions; we re-solved the ones above only | Keep |
 
 ## 3. Syllabus check
@@ -38,6 +38,6 @@ Official line: *Instruction set and addressing modes. Design of ALU. Design of c
 
 ## 5. Next steps
 1. Fix the 2026_FN_Q38 stem; add the second accepted reading to 2020_FN_Q27.
-2. Restore the nine figures (owner).
+2. ~~Restore the nine figures~~ Done 29 Nov (checked against the pictures in the app).
 3. Correct the difficulty tallies if Gemini's table is reused anywhere.
 4. Tag the 72 PYQs to lessons and pilot the cache chapter first (largest mark share).

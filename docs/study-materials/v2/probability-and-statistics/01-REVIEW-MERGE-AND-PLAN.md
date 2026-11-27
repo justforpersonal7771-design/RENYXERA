@@ -9,7 +9,7 @@ Good plan and a correct chapter order (mean, median, mode and standard deviation
 | Question | Problem | Status |
 |---|---|---|
 | 2026_AN_Q14 | Stem prints "random variable .. ?" for "random variable X?" | Fix |
-| 2021_FN_Q57 | The channel graph is missing, so the Bayes answer cannot be checked | **Open**: restore the figure |
+| 2021_FN_Q57 | The picture exists in the app (H→H 0.3, H→L 0.7, L→H 0.8, L→L 0.2). P(R = H) = 0.1 × 0.3 + 0.9 × 0.8 = 0.75; P(S = H given R = H) = 0.03 / 0.75 = **0.04**, the key | **Verified** |
 | 17 of the 19 NAT questions | Re-solved (2021_FN_Q57 needs its figure; 2018_FN_Q54 was not re-solved): 2026_FN_Q58 = 4.25, 2026_AN_Q63 = 1/2 (enumeration of 64 outcomes), 2025_FN_Q32 = 0.50, 2025_FN_Q56 = 0.951, 2025_FN_Q58 = 19/63 = 0.3016, 2025_AN_Q64 = 0.5 (four square-invariant polynomials, two with equal roots), 2025_AN_Q65 = 0.74, 2024_FN_Q46 = 0.375, 2021_FN_Q32 = 0.368, 2021_AN_Q15 = 15.49, 2020_FN_Q50 = 0.5, 2019_FN_Q16 = 85/169 = 0.503, 2019_FN_Q53 = 4.25, 2019_FN_Q55 = 0.8, 2018_FN_Q25 = 0.0231, 2017_FN_Q14 = 0, 2017_AN_Q52 = 54 | All correct |
 | MCQ and MSQ keys | Gemini says CORRECT for all; not re-solved | Keep |
 

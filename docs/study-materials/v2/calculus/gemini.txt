@@ -1,0 +1,341 @@
+## PART 1. FEELINGS
+
+1. Looking at `Part B.2` gave me a familiar drop in my stomach: **all 4 chapters say `"none | not written"`**, and there is zero **Chapter 00** refreshing high-school functions (`|x|`, `e^x`, `\ln(1/x)`, `sin/cos`, odd/even symmetry) for a student who barely passed math years ago!
+2. Even worse, **`2026_FN_Q46` in Part C has a fatal typo that turns a true key into an outright mathematical lie**: it dropped the prime **`'`** on `f'` in Options C and D, claiming **`f` is NOT differentiable over $\mathbb{R}$** when $f(x)$ IS differentiable everywhere (`f'(0^-) = f'(0^+) = 0`)!
+3. If I trusted `Part C` blindly on Question 3, I would throw away everything I just learned about Left-Hand and Right-Hand derivatives and feel totally tricked!
+4. When I read `2026_AN_Q64` (counting discontinuities of a decimal-digit function = `40`), `2024_FN_Q15` (`max{x, x^3}`), `2024_AN_Q35` (`King's property`), `2023_FN_Q31` (a **triple integral**, not even mentioned in `Part B.2`!), and `2018_FN_Q26` (`\sin(\pi^2/16)` without a calculator!), I froze completely.
+5. Also look at `Part B.3`: **`Limits, Continuity & Differentiability` carries `12` of `21` marks (`57%` of Calculus!)**, while `Maxima & Minima` is only **`2` marks across 15 papers (`2` Qs!)** — yet `Part B.2` gives zero priority tags or study hours for my 100-day sprint!
+6. And look: out of 18 Calculus questions in 15 papers, there are **ZERO Easy questions (`0` Easy, `14` Medium, `4` Hard!)** — every single question has a sneaky trap!
+7. Still, `Calculus` is only `1.4%` of GATE CS (`~1.4` marks/paper), so a clear, visual 5-day guide would let me grab these marks without wasting weeks on JEE-level calculus!
+8. **Would I pay ₹149 for this right now? NO.**
+9. Why? Nothing is written yet in `Part B.2`, there is no Pre-Calculus warm-up for logs/trig/`|x|`, Triple Integrals & King's Property aren't even hinted at, and `2026_FN_Q46` teaches a false `f` vs `f'` rule.
+10. Fix `2026_FN_Q46` (`f'` not `f`), add Chapter 00 (graphs, `|x|`, logs, trig values/series), draw every discontinuity/corner/tangent/area picture, and mark `[MUST]` vs `[LATER]` — then I will happily pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (Missing Ch 00) | Jumps straight into `Limits` and `c_2 \ln(1/x)` (`2026_FN_Q32`) without refreshing **Graphs of Core Functions (`x^2, x^3, |x|, e^x, \ln x, \sin x`)**, **Logarithm rules (`\ln(1/x) = -\ln x \to +\infty` as `x -> 0^+`)**, **Even/Odd functions (`2026_AN_Q27`, `2023_FN_Q31`)**, and **Exact Trig Values + Small-Angle Series (`2018_FN_Q26`)**! | MISSING-PREREQUISITE | Add **Chapter 00: Pre-Calculus Toolkit (Piecewise `|x|`, Logs, Exponentials, Trig & Even/Odd Symmetry)** before Ch 01. | HIGH |
+| 2 | `Part B.2` (All 4 chapters `"none"`) | Zero written topics, zero subtopics, zero reading hours, and zero `[MUST]`/`[SHOULD]`/`[LATER]` priority tags for a 100-day dropper (`1.4%` total exam weight!). | STEP-SKIPPED | Replace this blank stub with the full lesson-by-lesson syllabus + time/priority tags (Part 5). | HIGH |
+| 3 | `Part C` (`2026_FN_Q46` Critical Typo!) | **FATAL `FACT-DOUBT` / MIS-TRANSCRIPTION!** Options C and D print `"f continuous"` and `"f is not differentiable over R"` instead of **`f' continuous`** and **`f' is not differentiable over R`**! As printed, $f(x) = -(|x/2| - x)^2$ HAS derivative $f'(0) = 0$ on BOTH sides, making printed Option D mathematically FALSE! | FACT-DOUBT | Fix `2026_FN_Q46` Option C to **`f' is continuous over \mathbb{R}`** and Option D to **`f' is not differentiable over \mathbb{R}`**! | HIGH |
+| 4 | `Ch 01 Limits` (What a Limit Actually Means + One-Sided Limits `LHL = RHL`) | Never explains why $\lim_{x \to a} f(x)$ ignores $f(a)$ itself ("walking near `a` from Left & Right"), or why **LHL = RHL = finite number** must hold (`\ln(1/x) -> +\infty` as `x -> 0^+` breaks continuity unless `c_2 = 0`, `2026_FN_Q32`!). | UNEXPLAINED-WORD | Draw a road-bridge picture showing Left walker (`x -> a^-`) and Right walker (`x -> a^+`) meeting at height `L` even if there's a pothole at `a`. | HIGH |
+| 5 | `Ch 01 Limits` (The 7 Indeterminate Forms & When Algebraic Factoring/Rationalizing Beats L'Hôpital!) | Never lists **`0/0, \infty/\infty, 0\cdot\infty, \infty-\infty, 1^\infty, 0^0, \infty^0`** — or teaches **Factorization (`2019_FN_Q34`)**, **Rationalization (`2021_FN_Q54`)**, **Standard Limits (`\frac{e^{kx}-1}{x} -> k`, `2022_FN_Q34`)**, and **`1^\infty = e^{\lim g(f-1)}` exponential shortcut**! | MISSING-GATE-CONCEPT | Put a 7-Form Selector Chart + Standard Limits Card solving `2022_FN_Q34`, `2021_FN_Q54`, `2019_FN_Q34`, and `2017_FN_Q42`! | HIGH |
+| 6 | `Ch 01 Limits` (L'Hôpital's Rule — Exact Conditions & When It Loops/Fails!) | Beginners apply L'Hôpital blindly on NON-`0/0` fractions (or apply quotient rule `(f/g)'` instead of `f'/g'`!!), and don't know when L'Hôpital fails (`\frac{x + \sin x}{x}` as `x -> \infty` oscillates!). | MISSING-FINER-POINT | Put a bold warning: **`f'(x) / g'(x)`, NOT quotient rule — and ONLY for `0/0` or `\infty/\infty`!** + show 1 infinite-oscillation trap. | HIGH |
+| 7 | `Ch 01 Continuity` (3 Conditions, Types of Discontinuities & Digit-Step Functions `2026_AN_Q64`!) | Doesn't list Removable, Jump, and Infinite discontinuities (`f(a)` defined, limit exists, equal!) — OR teach **Interval/Digit-Step Functions (`2026_AN_Q64`: `2, 3` merge into `[0.d_1 2, 0.d_1 4)` so ONLY `4` jumps per tenth = `40`!)**! | MISSING-GATE-CONCEPT | Draw the 3 Discontinuity Types + sketch `2026_AN_Q64` inside `[0.0, 0.1)` showing why `0.02, 0.04, 0.06, 0.08` jump while `0.03` & `0.07` stay smooth (`4 × 10 = 40`)! | HIGH |
+| 8 | `Ch 01 Differentiability` (LHD = RHD, Corner/Cusp/Vertical Tangent & Piecewise Joins `2025_FN_Q31`) | Never teaches why **Continuity is necessary (`NOT sufficient`) for Differentiability**, how **`max{f, g}` (`2024_FN_Q15`: `max{x, x^3}`)** and **`|g(x)|`** create sharp corners where curves cross, or how to solve piecewise constants (`2025_FN_Q31`: match `f(1^-) = f(1^+)` AND `f'(1^-) = f'(1^+)` -> `a=5, b=-2`)! | MISSING-GATE-CONCEPT | Draw `x` and `x^3` crossing at `-1, 0, 1` (`2024_FN_Q15`) highlighting the 3 sharp `V`-corners + trace `2025_FN_Q31`! | HIGH |
+| 9 | `Ch 01 Differentiability` (Shortcut Rule vs `LHD/RHD` Definition Trap!) | Beginners differentiate piecewise formulas directly (`f'(0^-) = f'(0^+)`): warn that direct derivative limits work ONLY when $f$ is **already continuous** at `a` (if discontinuous at `a`, `f'` formulas can still falsely match even though `f` is NOT differentiable!!)! | MISSING-FINER-POINT | Show a broken discontinuous step function where `f'(0^-) = f'(0^+) = 0` yet `f` isn't even continuous (`must check Continuity FIRST!`)! | HIGH |
+| 10 | `Ch 01 Derivatives` (Standard Rules: Product, Quotient, Chain, Implicit, Inverse & Log Diff) | Zero review of basic differentiation rules (`(uv)'`, `(u/v)'`, Chain rule `\cos(x^2)·2x`, `(t \ln t)'`, `\sqrt{x^3+1}'`, `2020_FN_Q17`, `2023_FN_Q28`)! A back-bencher who forgot `(d/dx) \ln x = 1/x` can't even start Ch 02! | MISSING-PREREQUISITE | Add a 1-lesson Derivatives Toolbox (12 standard formulas + Chain Rule steps) right inside Ch 01! | HIGH |
+| 11 | `Ch 02 Maxima/Minima` (Increasing/Decreasing Sign Test `f'(x) >= 0` & `2020_FN_Q17`!) | Doesn't define **Increasing vs Strictly Increasing** (`f'(x) >= 0` on `(a, b)`, `2020_FN_Q17`: checking `2x - cos x` at `x = 0` gives `-1 < 0`, killing `x^2 - sin x`!)! | MISSING-GATE-CONCEPT | Draw a sign-chart line for `f'(x)` across `[0, 1]` and test all 3 functions of `2020_FN_Q17` (`e^{-x}, x^2 - \sin x, \sqrt{x^3+1}`). | HIGH |
+| 12 | `Ch 02 Maxima/Minima` (Critical Points, 1st vs 2nd Derivative Test, Endpoints & Non-Differentiable Extrema!) | Misses: (1) **Critical points include BOTH `f'(x) = 0` AND where `f'(x)` fails to exist (`|x|`)**, (2) **Local vs Global Extrema on closed `[a, b]`** (must check endpoints `f(a), f(b)`!), (3) **1st Derivative Sign Change (`+ -> -` Max, `- -> +` Min, `2026_FN_Q46`!)** vs **2nd Derivative Test (`2023_FN_Q28`)**, and (4) What if $f''(c) = 0$ (Inflection vs higher-even derivative test)! | MISSING-GATE-CONCEPT | Build a Complete Extrema Flowchart (`Critical points + Endpoints -> 1st Deriv Sign or 2nd Deriv Test -> Inflection fallback`) solving `2023_FN_Q28` & `2026_FN_Q46`! | HIGH |
+| 13 | `Ch 03 MVT` (Rolle's Theorem, Lagrange's MVT & Inequality Bounds `2021_AN_Q63`!) | Doesn't draw **Rolle's (`horizontal tangent when f(a)=f(b)`)**, **Lagrange's MVT (`tangent parallel to secant chord`, `2021_AN_Q63`: `f'(x) <= 2 => f(3) <= 19`)**, or **Cauchy's MVT** — OR state the exact **3 hypotheses (`continuous on [a,b], differentiable on (a,b)`)** and classic root-counting trick! | MISSING-GATE-CONCEPT | Draw the secant chord + parallel tangent `c` for LMVT (`2021_AN_Q63`), Rolle's Theorem, and 1 root-counting example! | HIGH |
+| 14 | `Ch 03 MVT / Series` (Taylor & Maclaurin Series + Calculator-Free Trig Approx `2018_FN_Q26`!) | `2018_FN_Q26` requires computing $\frac{1}{2}\sin(\pi^2/16) \approx 0.289$! Without knowing **Maclaurin Series (`\sin u = u - u^3/3! + u^5/5!`, `e^x`, `\cos x`, `\ln(1+x)`)**, students cannot estimate `\sin(0.616)` to 3 decimal places without a scientific calculator (or verify calculator-free bounds)! | MISSING-GATE-CONCEPT | Teach the 5 Maclaurin Series (`e^x, sin x, cos x, ln(1+x), 1/(1-x)`) for BOTH Taylor approximations (`2018_FN_Q26`) AND hard limits! | HIGH |
+| 15 | `Ch 04 Integration` (Indefinite Techniques: Substitution, `ILATE` By Parts & Partial Fractions!) | Doesn't teach **Substitution (`x \cos(x^2) dx -> u = x^2`, `2018_FN_Q26`)**, **Integration by Parts (`ILATE`: `\int t \ln t dt`, `2025_AN_Q12`: `\sqrt{e}`)**, or **Partial Fractions** (`1 / (x^2 - a^2)`)! | MISSING-GATE-CONCEPT | Trace `2018_FN_Q26` (`u = x^2`) and `2025_AN_Q12` (`ILATE` on `t \ln t`) step by step! | HIGH |
+| 16 | `Ch 04 Integration` (Definite Properties: Symmetry `[-a, a]`, King's Rule & Periodicity `2026_AN_Q27`, `2024_AN_Q35`!) | Doesn't list the 5 Golden Definite Integral Properties: **Even/Odd `[-a, a]` (`2026_AN_Q27`, `2023_FN_Q31`)**, **King's Property $\int_a^b f(x)dx = \int_a^b f(a+b-x)dx$ (`2024_AN_Q35`: `I = 1`)**, **Queen's Property (`[0, 2a]`)**, **Splitting at `|x|` corners**, and **Leibniz Rule (differentiating integral limits)**! | MISSING-GATE-CONCEPT | Build a 6-Rule Definite Integral Cheat Card solving `2026_AN_Q27`, `2024_AN_Q35`, and 1 Leibniz limit question! | HIGH |
+| 17 | `Ch 04 Integration` (Double & Triple Integrals + Order of Integration `2023_FN_Q31`!) | `Part B.1` says just `"Integration"`, yet `2023_FN_Q31` tests a **Triple Integral** $\int_{-3}^3 \int_{-2}^2 \int_{-1}^1 (4x^2y - z^3)\,dz\,dy\,dx$ (`0` by odd symmetry)! Also need **Double Integrals over triangles (`change of order`)**! | MISSING-GATE-CONCEPT | Add a concise lesson on Double & Triple Integrals (Rectangular symmetry `2023_FN_Q31` + triangular region change-of-order)! | HIGH |
+| 18 | `Ch 04 Integration` (Area Between Curves & Improper Integrals `e^{-\lambda x}`!) | Connect Definite Integrals to **Area between two curves (`\int |f - g| dx`)** and **Improper Integrals (`\int_0^\infty e^{-x} dx`)** linking directly to Probability PDFs (`Ch 02/04` Prob)! | MISSING-FINER-POINT | Show why `\int_{-1}^1 x dx = 0` (signed net area) whereas geometric area uses `2 \int_0^1 x dx = 1`. | MEDIUM |
+| 19 | `Part B.1` (Syllabus Check: Multivariable Calculus Scope Note!) | Note that GATE CS syllabus differs from GATE EC/EE/ME: NO Vector Calculus (`curl, div, Stokes`) and NO heavy PDEs/ODEs, yet **1-var Calculus + basic Triple/Double Integrals (`2023_FN_Q31`)** ARE tested (`plus check multivariable critical points brief [LATER] note`). | UNCLEAR-ENGLISH | Add a clear `"GATE CS vs EC/ME Scope Note"` in Part B.1 so 100-day CS students don't accidentally study Stokes/Gauss divergence for 2 weeks! | HIGH |
+| 20 | `Part B.2` (Old Standard Warning) | All 4 chapters are `none | not written`, and 100% of the 18 PYQs are Medium/Hard (`0` Easy!) — meaning visual curves, step-by-step algebra, and trap warnings are essential! | UNCLEAR-ENGLISH | Write Ch 00–04 using graph sketches, derivative sign-charts, and step-by-step traces (Parts 4 & 5). | MEDIUM |
+
+*(Adding 62+ more razor-sharp beginner gaps across Ch 00–04 so Part 2 clears **80+ rows** cleanly!)*
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 21 | `Ch 00` (Piecewise & Absolute Value `|g(x)|` Unpacking!) | In `2026_FN_Q46` (`(|x/2| - x)(x - |x/2|)`), beginners don't know how to split `|u|` into two clean `if x >= 0 / if x < 0` cases (`-x^2/4` vs `-9x^2/4`)! | MISSING-PREREQUISITE | Teach the 2-step `"Zero-Point Split"` for unpacking ANY absolute-value formula (`|x| = x` if `>=0`, `-x` if `<0`). | HIGH |
+| 22 | `Ch 00` (`max(f, g)` & `min(f, g)` Curve Sketching `2024_FN_Q15`) | Beginners don't see how `max(x, x^3)` stitches together pieces of `y = x` and `y = x^3` by tracing whichever curve sits **higher** on each sub-interval! | NEEDS-DIAGRAM | Draw `y = x` (blue) and `y = x^3` (red) crossing at `-1, 0, 1`, highlighting the upper envelope `max(x, x^3)` in bold (`2024_FN_Q15`)! | HIGH |
+| 23 | `Ch 00` (Logarithm & Exponential Boundary Limits `e^{+\infty}, e^{-\infty}, \ln(0^+), \ln(1/x)`) | In `2026_FN_Q32`, beginners guess `\ln(1/x)` approaches `0` or `1` as `x -> 0^+` instead of seeing `1/x -> +\infty` so `\ln(1/x) -> +\infty`! | MISSING-PREREQUISITE | Draw `y = e^x` and `y = \ln x` side by side with glowing boundary arrows at `0^+`, `1`, and `±\infty`! | HIGH |
+| 24 | `Ch 00` (Even vs Odd Functions Algebra `f(-x) = ±f(x)`) | Show how `odd × even = odd`, `odd × odd = even`, `x^2` is even, `x^3` & `ax` & `z^3` are odd (`2026_AN_Q27`, `2023_FN_Q31`), and `1` is even! | MISSING-PREREQUISITE | Add a 4-rule Even/Odd Multiplication Table in Ch 00. | MEDIUM |
+| 25 | `Ch 00` (Basic Radian Trig Values & `cos(x)` Range on `[0, 1]`) | In `2020_FN_Q17` (`2x - \cos x` on `[0, 1]`), `2017_AN_Q33` (`\sin(\pi/4) = 1/\sqrt{2}`), and `2018_FN_Q26` (`\pi/4`), beginners mix degrees (`45°`) with radians (`0.785`)! | MISSING-PREREQUISITE | Put a `0, \pi/6, \pi/4, \pi/3, \pi/2, \pi` Radian Value Table + `cos(0)=1, cos(1)≈0.54` note in Ch 00! | MEDIUM |
+| 26 | `Ch 01` (How `\sqrt{x}` Substitution Simplifies Limits `2022_FN_Q34`) | In `2022_FN_Q34` (`\sqrt{x} / (1 - e^{2\sqrt{x}})`), beginners differentiate `\sqrt{x}` directly (`1/(2\sqrt{x})`) and drown in nested fractions instead of substituting `u = \sqrt{x} -> 0^+`! | STEP-SKIPPED | Show BOTH `u = \sqrt{x}` substitution (clean 2-line solution) AND direct L'Hôpital (`2022_FN_Q34`). | MEDIUM |
+| 27 | `Ch 01` (Why `0 / 0` Can Equal `0`, `1`, `108/7`, or `DNE`!) | Beginners think `0 / 0` is always `1` or always `0` or always `undefined`! Show 3 contrasting `0/0` limits giving `0`, `108/7` (`2019_FN_Q34`), and `DNE` (`x / |x|`)! | UNEXPLAINED-WORD | Put a `"Why 0/0 Is Called Indeterminate"` 3-example box right before L'Hôpital! | HIGH |
+| 28 | `Ch 01` (Using Standard Limits `(e^{ku} - 1)/u -> k` Without L'Hôpital!) | Notice `(e^{2u}-1)/(2u) -> 1` solves `2022_FN_Q34` in 3 seconds (`u / (1 - e^{2u}) = -1 / (2 · (e^{2u}-1)/(2u)) = -1/2`)! | NEEDS-EXAMPLE | List the 6 Standard One-Line Limit Templates (`sin x/x`, `(1-cos x)/x^2 = 1/2`, `(e^x-1)/x`, `ln(1+x)/x`, `(x^n-a^n)/(x-a)`, `(1+a/x)^x = e^a`). | HIGH |
+| 29 | `Ch 01` (Infinite Limits vs Non-Existent Oscillating Limits!) | Contrast `1/x^2 -> +\infty` (diverges to `+\infty`) vs `1/x` at `0` (`-\infty` left vs `+\infty` right!) vs `\sin(1/x)` (oscillates `-1..+1` -> DNE). | UNEXPLAINED-WORD | Draw `1/x`, `1/x^2`, and `\sin(1/x)` near `x = 0`. | MEDIUM |
+| 30 | `Ch 01` (Types of Discontinuity: Removable, Jump, Infinite, Oscillatory) | Explain WHY `f(x) = (x^2-1)/(x-1)` has a removable hole (redefinable!), whereas `2026_AN_Q64` has Jump discontinuities (`0 <-> 1`). | NEEDS-DIAGRAM | Draw the 4 Discontinuity Sketches (`Hole`, `Step Jump`, `Vertical Asymptote`, `Rapid Oscillation`). | MEDIUM |
+| 31 | `Ch 01` (Decimal Boundary Edge Case in `2026_AN_Q64` (`0.1999... = 0.2`)!) | In `2026_AN_Q64`, explain why `0.d_1 2000...` (`d_2 = 2`) equals `1` from the right (`0.d_1 20001 -> d_2 = 2`) and `0` from the left (`0.d_1 19999 -> d_2 = 1`), creating an unambiguous step jump at `0.d_1 2` (`and similarly 0.d_1 4, 0.d_1 6, 0.d_1 8`), while `0.d_1 29999` vs `0.d_1 30001` are BOTH `1` (`continuous!`)! | STEP-SKIPPED | Draw a zoomed number line from `0.00` to `0.10` coloring `[0.02, 0.04)` and `[0.06, 0.08)` height `1` and the rest `0` (`2026_AN_Q64`)! | HIGH |
+| 32 | `Ch 01` (Intermediate Value Theorem `IVT` Inside Continuity!) | Notice `IVT` (`if f continuous on [a,b] and k between f(a), f(b), then f(c)=k`) is the sibling of `MVT` and proves roots exist (`Bolzano's theorem: f(a)·f(b) < 0 => root in (a,b)`)! | MISSING-GATE-CONCEPT | Draw `IVT` crossing horizontal line `y = k` and show root-existence test (`f(a)·f(b) < 0`)! | HIGH |
+| 33 | `Ch 01` (Higher-Order Continuity & Differentiability of `f'` vs `f` `2026_FN_Q46`!) | Using the corrected `2026_FN_Q46` (`f(x) = -(|x/2| - x)^2`), show how a piecewise function (`-x^2/4` vs `-9x^2/4`) can be **`C^1` (continuous AND differentiable once at `0`!)** while **`f'` has a corner (`-x/2` vs `-9x/2`, NOT twice-differentiable at `0`!)**! | NEEDS-DIAGRAM | Plot BOTH $f(x)$ (smooth glued parabola peak at `0`) and $f'(x)$ (bent V-line slopes `-1/2` vs `-9/2` meeting at `(0,0)`) side-by-side (`2026_FN_Q46`)! | HIGH |
+| 34 | `Ch 01` (Why `|x|` Isn't Differentiable at `0`, Yet `x |x|` IS!) | Classic companion to `2026_FN_Q46`: draw `|x|` (sharp corner, not diff at `0`) vs `x |x|` (smooth S-curve `x^2 / -x^2`, diff once at `0`, NOT diff twice!). | NEEDS-EXAMPLE | Compare `|x|`, `x|x|`, and `(|x/2|-x)(x-|x/2|)` in one 3-row table! | MEDIUM |
+| 35 | `Ch 01` (Algebra of Continuity & Differentiability: `Sum, Product, Composition`!) | What if `f` is continuous and `g` is discontinuous — can `f + g` or `f · g` EVER be continuous? (`f + g` NO; `f · g` YES — e.g. `x · (Dirichlet)` at `x = 0`!!). | MISSING-FINER-POINT | Add a `"Continuous + Discontinuous vs Continuous × Discontinuous"` Quick Truth Table! | MEDIUM |
+| 36 | `Ch 01` (Derivative of Inverse Function `(f^{-1})'(y) = 1 / f'(x)`!) | Standard GATE/Engineering Math formula when $f^{-1}$ cannot be solved explicitly (`e.g. f(x) = x^3 + x => (f^{-1})'(2) = 1 / f'(1) = 1/4`). | MISSING-GATE-CONCEPT | Show 1 inverse-derivative calculation (`f(1)=2 => (f^{-1})'(2) = 1/f'(1)`). | MEDIUM |
+| 37 | `Ch 01` (Logarithmic Differentiation for `x^x` & `(f(x))^{g(x)}`) | Briefly teach taking `\ln` before differentiating variable powers like `x^x` (`(x^x)' = x^x (1 + \ln x)`). | STEP-SKIPPED | Trace differentiating `y = x^x` in 3 lines. | LOW |
+| 38 | `Ch 02` (Why `2020_FN_Q17` Needs `f'(x) >= 0` EVERYWHERE on `[0, 1]`, Not Just `f(1) > f(0)`!) | Notice for `II: x^2 - sin x`, `f(0) = 0` and `f(1) = 1 - sin 1 > 0`, so `f(1) > f(0)`! Yet near `x = 0`, `f'(x) = 2x - cos x < 0` (dips negative first!) — breaking *"increasing everywhere in `[0, 1]`"* (`2020_FN_Q17`)! | NEEDS-DIAGRAM | Plot `x^2 - sin x` on `[0, 1]` zooming into `[0, 0.5]` showing it dipping below `0` before climbing back up (`2020_FN_Q17`)! | HIGH |
+| 39 | `Ch 02` (Does `f'(c) = 0` Guarantee a Local Max or Min? `x^3` Saddle!) | Show `f(x) = x^3` at `x = 0`: `f'(0) = 0`, `f''(0) = 0`, yet NO local max or min (**Point of Inflection**)! Contrast with `x^4` (`min`!). | NEEDS-EXAMPLE | Compare `x^3` (saddle inflection), `x^4` (flat min), and `x^3 + 15x^2 - 33x - 36` (`2023_FN_Q28`). | MEDIUM |
+| 40 | `Ch 02` (Why `2026_FN_Q46` Has Local Max at `0` Even Though `f''(0)` Doesn't Exist!) | Students panic when `f''(0)` doesn't exist! Show that **1st Derivative Sign (`f' > 0` left, `f' < 0` right)** OR direct inequality **`f(x) <= 0 = f(0)`** proves local/global max at `0` immediately (`2026_FN_Q46`)! | NEEDS-EXAMPLE | Show `f(x) = -(|x/2| - x)^2 <= 0 = f(0)` proving global & local max in 1 line! | HIGH |
+| 41 | `Ch 02` (Concavity & Points of Inflection: `f''(x) > 0` Cup Up vs `< 0` Cup Down) | Explain `f'' > 0` ("holds water = Minimum") vs `f'' < 0` ("spills water = Maximum") vs sign change in `f''` = Inflection Point! | NEEDS-DIAGRAM | Draw smiley/cup-up (`f'' > 0`) vs frowny/cup-down (`f'' < 0`) mnemonic. | LOW |
+| 42 | `Ch 02` (Absolute / Global Extrema on Closed Interval `[a, b]` vs Open `(a, b)`) | Explain Extreme Value Theorem (`continuous on closed [a,b] GUARANTEES global max & min`) vs unbounded `x^3 + 15x^2 - 33x - 36` (`local max & min exist, NO global max/min!`, `2023_FN_Q28`)! | MISSING-FINER-POINT | Compare `Local` vs `Global` extrema on `2023_FN_Q28` (`local min/max exist; global ±∞`) vs `f` on `[-2, 2]`. | MEDIUM |
+| 43 | `Ch 03` (Why `Rolle's Theorem` & `LMVT` Fail When Sharp Corner Exists: `|x|` on `[-1, 1]`!) | Classic MVT conceptual trap: `f(x) = |x|` is continuous on `[-1, 1]` with `f(-1) = f(1) = 1`, yet NO point has `f'(c) = 0` because differentiability fails at `0`! | NEEDS-DIAGRAM | Draw `|x|` on `[-1, 1]` showing flat chord at height `1` with zero horizontal tangents anywhere! | HIGH |
+| 44 | `Ch 03` (`LMVT` Speed-Limit Analogy: Average Speed vs Instantaneous Speed `2021_AN_Q63`) | Explain `2021_AN_Q63` (`f'(x) <= 2, f(-3)=7 => f(3) <= 19`) as a car trip: *"If your speedometer NEVER exceeds `2 km/min` for `6 minutes`, you can travel AT MOST `12 km` (`7 + 12 = 19`)!"* | MISSING-PREREQUISITE | Draw the speed-limit analogy & secant-line upper bound for `2021_AN_Q63`! | HIGH |
+| 45 | `Ch 03` (Cauchy's Mean Value Theorem `(f(b)-f(a))/(g(b)-g(a)) = f'(c)/g'(c)`) | State Cauchy's MVT cleanly (2-function ratio generalization of LMVT, which literally proves L'Hôpital's Rule!). | MISSING-FINER-POINT | Show 1 Cauchy MVT check on `f(x)=x^2, g(x)=x^3` on `[1, 2]`. | LOW |
+| 46 | `Ch 03` (Using Taylor Series to Solve `0/0` Limits in 5 Seconds!) | Show why `\frac{x - \sin x}{x^3}` takes 3 rounds of L'Hôpital (`slow!`), whereas replacing `\sin x = x - x^3/6` gives `1/6` in **2 seconds**! | STEP-SKIPPED | Compare 3-step L'Hôpital vs 1-line Taylor substitution on `(x - sin x)/x^3`. | MEDIUM |
+| 47 | `Ch 04` (Integration: Why `+ C` Disappears in Definite Integrals & Fundamental Theorem `FTC`!) | Explain **Fundamental Theorem of Calculus Part 1 (`d/dx \int_a^x f(t) dt = f(x)`)** and **Part 2 (`\int_a^b f(x) dx = F(b) - F(a)`)**, plus **`\int_a^b f(x) dx = 0` when `a = b` (`2025_AN_Q12` check at `x = 1`)**! | MISSING-PREREQUISITE | Draw `A(x) = \int_a^x f(t) dt` slice of width `dx` proving `A'(x) = f(x)` visually! | MEDIUM |
+| 48 | `Ch 04` (ILATE Priority Rule in Integration by Parts `2025_AN_Q12`) | In `2025_AN_Q12` (`\int_1^x t \ln t\,dt`), students pick `u = t, dv = \ln t\,dt` and get stuck! Teach **`I - L - A - T - E`** (`Inverse trig, Log, Algebraic, Trig, Exponential`) so `u = \ln t` is picked immediately! | STEP-SKIPPED | Write out `I-L-A-T-E` mnemonic and contrast `u = \ln t` (works in 2 lines) vs `u = t` (stuck!). | HIGH |
+| 49 | `Ch 04` (Changing Limits Directly During Substitution `2018_FN_Q26`) | When substituting `u = x^2` in `\int_0^{\pi/4} x \cos(x^2)\,dx` (`2018_FN_Q26`), show changing limits `[0, \pi/4] -> [0, \pi^2/16]` directly without converting back to `x`! | STEP-SKIPPED | Trace `u = x^2, du = 2x dx` with limits transformed `[0, \pi^2/16]` (`2018_FN_Q26`). | MEDIUM |
+| 50 | `Ch 04` (King's Property $\int_a^b f(x)dx = \int_a^b f(a+b-x)dx$ `2024_AN_Q35`!) | In `2024_AN_Q35` (`f(x) = 1 - f(2 - x)`), show why flipping $x \mapsto a + b - x$ reflects the curve horizontally across midpoint $(a+b)/2$ without changing the area! | NEEDS-DIAGRAM | Draw `f(x)` on `[0, 2]` reflected across `x = 1` (`f(x) + f(2-x) = 1` rectangle of height `1`, width `2` -> half = `1`, `2024_AN_Q35`)! | HIGH |
+| 51 | `Ch 04` (Using Odd/Even Symmetry on Multi-Variable / Triple Integrals `2023_FN_Q31`!) | In `2023_FN_Q31`, students waste 4 minutes computing triple antiderivatives (`4x^2 y z - z^4/4`...) when checking odd symmetry on symmetric `[-a, a]` kills `4x^2 y` (odd in `y`) AND `z^3` (odd in `z`) in **3 seconds (`0`)**! | NEEDS-TRACE | Trace `2023_FN_Q31` by splitting `4x^2 y` (`\int_{-2}^2 y dy = 0`) minus `z^3` (`\int_{-1}^1 z^3 dz = 0`)! | HIGH |
+| 52 | `Ch 04` (Leibniz Rule for Differentiating Under an Integral Sign!) | Standard GATE/Engg Math formula: $\frac{d}{dx} \int_{g(x)}^{h(x)} f(t)\,dt = f(h(x))h'(x) - f(g(x))g'(x)$ (frequently combined with L'Hôpital on $\lim_{x\to 0} \frac{\int_0^{x^2} \cos t\,dt}{x^2}$!). | MISSING-GATE-CONCEPT | Add Leibniz Integral Rule box + 2 worked examples (direct derivative + L'Hôpital limit!). | HIGH |
+| 53 | `Ch 04` (Changing Order of Integration in Double Integrals over Non-Rectangular Regions!) | Show how to sketch region `0 <= x <= 1, x <= y <= 1` and swap `dy dx` to `dx dy` (`0 <= y <= 1, 0 <= x <= y`) when an inner integral like `\int e^{y^2} dy` is impossible in original order! | MISSING-GATE-CONCEPT | Draw the triangular region with vertical strip (`dy dx`) vs horizontal strip (`dx dy`)! | MEDIUM |
+| 54 | `Ch 04` (Walli's / Reduction Formula for `\int_0^{\pi/2} \sin^n x \, dx` — Light Shortcut) | Useful 10-second shortcut for trigonometric definite integrals (`[LATER]` Engg Math completeness). | MISSING-FINER-POINT | Add a 1-box Walli's formula card (`\int_0^{\pi/2} \sin^n x \cos^m x dx`). | LOW |
+| 55 | `Ch 01` (Limit of Exponential `1^\infty` Form `e^{\lim g(x)(f(x)-1)}`!) | Never forget `(1 + 2/x)^{3x} -> e^6` (`1^\infty` form)! Beginners take `1^\infty = 1`! | MISSING-GATE-CONCEPT | Show `1^\infty != 1` with 2 examples solved via `e^{\lim g(f-1)}`! | HIGH |
+| 56 | `Ch 01` (Checking Piecewise Continuity at ALL Boundary Points + Domain Holes!) | When `f(x)` has denominator `(x-2)` or multiple split points (`2025_FN_Q31`, `2024_FN_Q15`), teach checking EVERY split point AND denominator zero! | STEP-SKIPPED | Give a 3-point Continuity Checklist (`Denominators = 0`, `Split boundaries`, `Inside |...| corners`). | MEDIUM |
+| 57 | `Ch 01` (Why `f'(0^-) = f'(0^+) = 0` in `2026_FN_Q46` Yet `f''(0)` Fails!) | Connect `2026_FN_Q46` directly to **2nd-order differentiability**: plot `f(x)` (smooth glue of `-x^2/4` and `-9x^2/4`) vs `f'(x)` (`-x/2` and `-9x/2`, sharp bend at `0`!) so the typo vs true calculus is crystal clear! | NEEDS-DIAGRAM | Overlay `-x^2/4` & `-9x^2/4` parabola branches meeting horizontally at `(0,0)` (`slope 0` on both sides!). | HIGH |
+| 58 | `Ch 02` (Word Optimization Problems: Min Surface Area / Max Box Volume!) | Briefly include 2 classic 1-variable optimization setups (e.g., max rectangle area inside perimeter/semicircle) so `"Maxima and Minima"` isn't just abstract polynomials! | NEEDS-EXAMPLE | Work 1 geometry max/min problem (`open box` or `rectangle under curve`). | LOW |
+| 59 | `Ch 04` (Approximating `\sin(0.616)` Without Calculator in `2018_FN_Q26`!) | Notice `2018_FN_Q26` explicitly says `"assuming \pi = 3.14"` and gives tolerance `0.27 to 0.30` — show students how 2 terms of Maclaurin (`0.616 - 0.616^3/6 = 0.577`) OR linear interpolation between `\sin(30°) = 0.5` and `\sin(45°) = 0.707` nails `0.289` even if the GATE virtual calculator isn't opened! | NEEDS-TRACE | Show BOTH virtual-calculator trig entry (Rad mode!) AND 2-term Maclaurin hand check for `2018_FN_Q26`! | MEDIUM |
+| 60 | `Ch 00` (Checking Virtual Scientific Calculator Mode: Radians vs Degrees!) | Warn students about the #1 GATE exam blunder: computing `\sin(\pi^2/16)` in **DEGREE** mode (`0.0054`) instead of **RADIAN** mode (`0.578`) on the virtual calculator (`2018_FN_Q26`)! | MISSING-FINER-POINT | Put a glowing warning box: **`Calculus ALWAYS uses RADIANS — check your virtual calculator is in RAD mode!`** | HIGH |
+| 61 | `Ch 01` (`x -> -\infty` Sign Trap with `\sqrt{x^2} = |x| = -x`!) | Standard GATE/calculus trap: as `x -> -\infty`, `\sqrt{x^2}` equals **`-x`**, NOT `+x` (`e.g. \lim_{x\to-\infty} \frac{\sqrt{x^2+1}}{x} = -1`)! | MISSING-GATE-CONCEPT | Work `\lim_{x \to -\infty} \sqrt{x^2 + 3x} / x = -1` highlighting `\sqrt{x^2} = |x|`. | HIGH |
+| 62 | `Ch 01` (Squeeze / Sandwich Theorem for `x^2 \sin(1/x)`!) | Show why $\lim_{x \to 0} x^2 \sin(1/x) = 0$ (and why `x^2 \sin(1/x)` IS differentiable at `0`, while `x \sin(1/x)` is continuous yet NOT differentiable at `0`!)! | MISSING-GATE-CONCEPT | Draw `\pm x^2` parabolic funnel squeezing `x^2 \sin(1/x)` down to `0`. | MEDIUM |
+| 63 | `Ch 02` (Global Max/Min of `R \sin(\pi x / 2) + S` & Periodic Functions `2017_AN_Q33`) | Link `2017_AN_Q33` to trig derivatives (`(d/dx)\sin(kx) = k \cos(kx)` chain rule factor `k = \pi/2`!). | STEP-SKIPPED | Highlight the chain-rule multiplier `\pi/2` when differentiating `R \sin(\pi x / 2)` (`2017_AN_Q33`). | MEDIUM |
+| 64 | `Ch 03` (Multivariable Partial Derivatives & Saddle Points — Light `[LATER]` Scope Check) | Add a tiny 1-page `[LATER]` awareness box on `f_x = f_y = 0` and Hessian `rt - s^2` just in case a 2-variable extrema appears, marked clearly as `[LIGHT / CHECK SYLLABUS]`. | MISSING-FINER-POINT | Add a 1-box summary of `rt - s^2` (`>0, r>0` min; `>0, r<0` max; `<0` saddle). | LOW |
+| 65 | `Ch 04` (Symmetry Shortcut for `\int_a^b f(x) dx` When `f` Has Vertical/Rotational Symmetry) | In `2024_AN_Q35` (`f(x) + f(2-x) = 1`), explain that `f(x)` is symmetric about the point `(1, 1/2)` — so the area on `[0, 2]` equals the rectangle `2 × (1/2) = 1`! | NEEDS-DIAGRAM | Draw a curve rotating 180° around `(1, 0.5)` inside the `2 × 1` box (`2024_AN_Q35`). | MEDIUM |
+| 66 | `Ch 01` (Factoring Higher-Degree Polynomials at `x = 1` or `x = a` via Synthetic Division `2017_FN_Q42`) | In `2017_FN_Q42`, compare factoring `x^7 - 2x^5 + 1` via synthetic division vs 1-step L'Hôpital (`7x^6 - 10x^4` / `3x^2 - 6x`) — proving why L'Hôpital saves massive algebra when degree is `7`! | NEEDS-EXAMPLE | Compare factoring vs 1-line L'Hôpital on `2017_FN_Q42` (`1`) and `2019_FN_Q34` (`108/7`). | LOW |
+| 67 | `Ch 02` (Why `f(x) = x^3 + 15x^2 - 33x - 36` Has Local Extrema Without Being Bounded `2023_FN_Q28`) | Beginners confuse `"no global max"` (`lim -> +\infty`) with `"does not have a local max"` (`2023_FN_Q28(A)`!)! | UNEXPLAINED-WORD | Plot cubic `S`-curve of `2023_FN_Q28` circling the hill at `x = -11` (`Local Max`) and valley at `x = 1` (`Local Min`) while ends go to `±\infty`! | HIGH |
+| 68 | `Ch 01` (Checking All Conditions of `2026_FN_Q32` Continuity at `x = 0`: `0^-`, `0`, `0^+`!) | In `2026_FN_Q32`, explicitly check `LHL = f(0) = 3` (since `otherwise` covers `x <= 0`), leaving ONLY `RHL` (`x -> 0^+`) to match `3` (`c_2 = 0, c_1 = 3`). | NEEDS-TRACE | Trace `LHL`, `f(0)`, and `RHL` cleanly in 3 separate rows for `2026_FN_Q32`. | MEDIUM |
+| 69 | `Ch 04` (Evaluating `\int x \ln x dx` & `\int \ln x dx` — Classic Logarithmic Integrals) | Beginners try `\int \ln x dx = 1/x` (differentiating instead of integrating!!)! Show `1 · \ln x` via By Parts (`x \ln x - x`) alongside `2025_AN_Q12` (`t \ln t`)! | MISSING-FINER-POINT | Put a warning: **`d/dx (\ln x) = 1/x`, whereas `\int \ln x\,dx = x \ln x - x` (via `ILATE` with `1`)!** | HIGH |
+| 70 | `Ch 04` (Recognizing When Definite Integrals Split Around `0` or Crossing Points!) | Show integrating `\int_{-2}^3 |x| dx` by splitting at `0` (`\int_{-2}^0 (-x)dx + \int_0^3 x dx = 2 + 4.5 = 6.5`) and `\int_0^2 |x - 1| dx`! | NEEDS-EXAMPLE | Draw `|x - 1|` V-triangle from `0` to `2` (`two triangles of area 1/2 + 1/2 = 1`). | MEDIUM |
+| 71 | `Ch 01` (Using `f(x)` Piece Borders in `2024_FN_Q15` `max(x, x^3)`: Check Endpoints `-1, 0, 1`!) | Beginners only check `x = 0` on `max(x, x^3)` and forget `-1` and `+1` (`C: {0, 1}` trap in `2024_FN_Q15`!) because `(-1)^3 = -1` ALSO crosses! | STEP-SKIPPED | Solve `x = x^3 => x(x-1)(x+1) = 0` completely to find ALL 3 crossing points (`-1, 0, 1`, `2024_FN_Q15`)! | HIGH |
+| 72 | `Ch 03` (How Many Roots Can `f'(x)` Have Between Roots of `f(x)` — Rolle's Corollary!) | Show Rolle's root-separation theorem: between any 2 real roots of $f$, $f'$ has at least 1 real root $\implies$ if $f'$ has at most $k$ roots, $f$ has at most $k + 1$ real roots! | MISSING-GATE-CONCEPT | Solve `"how many real roots can x^5 + x + 1 = 0 have?"` (`f'(x) = 5x^4 + 1 > 0 => at most 1 root!`) using Rolle's corollary! | HIGH |
+| 73 | `Ch 01` (Checking Left vs Right Limits of `e^{1/x}` at `x = 0`!) | Classic continuity trap: `e^{1/x} -> +\infty` as `x -> 0^+`, yet `e^{1/x} -> 0` as `x -> 0^-`! (`unlike e^x`, `1/x` flips sign across `0`!). | NEEDS-EXAMPLE | Contrast `e^{1/x}` at `0^-` (`e^{-\infty} = 0`) vs `0^+` (`e^{+\infty} = +\infty`). | MEDIUM |
+| 74 | `Ch 00` (Why `x^3 < x` on `(0, 1)` While `x^3 > x` on `(-1, 0)`!) | Beginners think raising a number to power 3 ALWAYS makes it bigger! Show on a number line why fractions `(1/2)^3 = 1/8 < 1/2` shrink and negatives `(-1/2)^3 = -1/8 > -1/2` grow (`2024_FN_Q15`)! | MISSING-PREREQUISITE | Plot `x` and `x^3` at `x = -2, -0.5, 0.5, 2` so `2024_FN_Q15` intervals make instant sense! | HIGH |
+| 75 | `Ch 02` (Sign Chart Method for Polynomial & Rational Inequalities!) | Beginners fail `f'(x) > 0` (`3(x+11)(x-1) > 0`) and `(Y-2)(Y+1) >= 0` (`2019_FN_Q55`)! Teach the `"Wavy Curve / Sign-Flip"` number-line method! | MISSING-PREREQUISITE | Draw the Wavy Curve sign chart (`+ | - | +`) on roots `-11` and `1` (`2023_FN_Q28`) and `-1, 2` (`2019_FN_Q55`). | HIGH |
+| 76 | `Ch 04` (Antiderivative Constant Verification Check!) | Teach a 3-second sanity check after EVERY indefinite integration: **differentiate your answer** (`d/dx (t^2/2 ln t - t^2/4) = t ln t + t/2 - t/2 = t ln t`, `2025_AN_Q12`!)! | STEP-SKIPPED | Demonstrate differentiating back on `2025_AN_Q12` (`t \ln t`) and `2018_FN_Q26` (`1/2 \sin(x^2)`). | LOW |
+| 77 | `Ch 01` (Composite Function Discontinuity Propagation!) | If `g(x)` has discontinuities or `f(u)` is undefined at `u = 0` (`1 / (x^2 - 1)` or `1 / (1 - f(x))`), find ALL discontinuity points of `f(g(x))` by solving inner denominator AND outer denominator! | MISSING-GATE-CONCEPT | Trace finding discontinuities of `1 / (1 - 1/(1 - x))` (`x = 1` AND `x = 0`!). | MEDIUM |
+| 78 | `Ch 02` (Derivative of Monotonic Functions & `f'(x) = 0` at Isolated Points!) | Explain why $f(x) = x^3$ is STILL strictly increasing everywhere on $\mathbb{R}$ even though $f'(0) = 0$ at one isolated point (`2020_FN_Q17`: `\sqrt{x^3+1}` has `f'(0) = 0`, yet `f'(x) > 0` on `(0, 1]` -> strictly increasing on `[0, 1]`!)! | MISSING-FINER-POINT | Clarify `"f'(x) >= 0 and not identically 0 on any subinterval => strictly increasing"` (`2020_FN_Q17(III)`!). | MEDIUM |
+| 79 | `Ch 03` (Checking `f'(c) = 0` vs `f(b) - f(a)` Sign in LMVT Inequalities!) | In `2021_AN_Q63` (`f'(x) <= 2`), contrast upper bound (`f'(x) <= M => f(b) <= f(a) + M(b-a)`) with lower bound (`f'(x) >= m => f(b) >= f(a) + m(b-a)`). | NEEDS-EXAMPLE | Solve a 2-sided bound (`1 <= f'(x) <= 3` on `[0, 4]`, `f(0)=2 -> 6 <= f(4) <= 14`). | LOW |
+| 80 | `Ch 04` (Symmetry of Triple Integrals Over Non-Symmetric Bounds Trap!) | Warn students in `2023_FN_Q31`: odd-symmetry shortcut `= 0` ONLY works when integration limits are **`[-a, a]` symmetric around `0`** (if limits were `[0, 2]`, `4x^2 y` is NOT `0`!)! | MISSING-FINER-POINT | Put `[-2, 2]` (odd -> `0`) vs `[0, 2]` (must integrate!) side-by-side (`2023_FN_Q31`). | MEDIUM |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Because `Part B.2` lists **"none | not written"** for all 4 chapters, here is everything a complete GATE CS Calculus book must cover against the GATE CS syllabus (`Part B.1`), `Part C` (18 PYQs), Thomas' Calculus, Stewart, Made Easy, GateWallah, and NPTEL:
+
+1. **Chapter 00: Pre-Calculus Toolkit (Functions, `|x|`, Logs, Trig, Symmetry & Wavy Curve)** *(missing prerequisite!)*
+   - **Sub-topics:** Unpacking `|g(x)|` (`2026_FN_Q46`) & `max/min` envelopes (`2024_FN_Q15`); Power inequalities on `(0, 1)` & `(-1, 0)`; `e^x` & `\ln(x)` boundary behaviour (`\ln(1/x) -> +\infty`, `2026_FN_Q32`); Even & Odd function arithmetic (`2026_AN_Q27`, `2023_FN_Q31`); Radian Trig values + virtual-calculator RAD warning (`2018_FN_Q26`); **Wavy Curve Sign-Chart Method** (`2023_FN_Q28`).
+   - **Syllabus line:** Prerequisite for all 4 lines of `Calculus`.
+   - **How often GATE asks it:** Embedded in virtually every Calculus PYQ (`2026_FN_Q32`, `2026_FN_Q46`, `2024_FN_Q15`, `2018_FN_Q26`; exact standalone count: not sure).
+   - **Typical question type:** MCQ/NAT (prerequisite algebra inside every problem).
+   - **Zero-level prerequisite:** High-school algebra & graphs.
+
+2. **Chapter 01: Limits, Continuity and Differentiability (`12` of `21` marks in bank!)**
+   - **Sub-topics:** One-sided limits (`LHL = RHL`), 7 indeterminate forms, Factorization (`2019_FN_Q34`), Rationalization (`2021_FN_Q54`), `\sqrt{x}` substitution (`2022_FN_Q34`), **L'Hôpital's Rule & failure traps (`2017_FN_Q42`)**, Standard limits (`(e^{kx}-1)/x`, `1^\infty` `e^{\lim g(f-1)}`), `x -> -\infty` `\sqrt{x^2} = |x| = -x`, Squeeze Theorem; **Continuity (`LHL = f(a) = RHL`), Discontinuity types, Composite discontinuities, Digit/Step discontinuity counting (`2026_AN_Q64`: `40`), Intermediate Value Theorem (IVT)**; **Differentiability (`LHD = RHD`, checking continuity first!), Corners of `|g(x)|` & `max{f, g}` (`2024_FN_Q15`), Piecewise parameters (`2025_FN_Q31`), Higher-order `f'` continuity vs non-differentiability (`2026_FN_Q46` — fix `f -> f'`!), Inverse function derivative, Differentiation toolbox (Chain/Product/Quotient/Log)**!
+   - **Syllabus line:** `Limits, continuity and differentiability`.
+   - **How often GATE asks it:** Highest weight in Calculus (`Part B.3`: `9` Qs / `12` marks across 7/10 years = **`57%` of Calculus marks!**).
+   - **Typical question type:** NAT/MCQ/MSQ (evaluate limit, find continuous/diff constants, count non-diff/discontinuous points, properties of `f` and `f'`).
+   - **Zero-level prerequisite:** Ch 00.
+
+3. **Chapter 02: Maxima, Minima and Monotonicity (`Ch 02`)**
+   - **Sub-topics:** **Increasing / Decreasing via $f'(x) \ge 0$ (`2020_FN_Q17`: isolated `f'(0)=0` OK, negative dip fails!)**; Critical points (`f'=0` AND `f'` undefined!); **1st Derivative Sign-Change Test (`2026_FN_Q46`) & 2nd Derivative Test (`2023_FN_Q28`)**; Inflection points (`f''` sign flip); **Local vs Global Extrema on `[a, b]` vs $\mathbb{R}$ (`2023_FN_Q28`)**; Word optimization (`[LATER]`/`[SHOULD]`); Light 2-var Hessian check (`[LATER]`).
+   - **Syllabus line:** `Maxima and minima`.
+   - **How often GATE asks it:** Occasionally (`Part B.3`: `2` Qs / `2` marks in 2/10 years, plus overlaps into `2026_FN_Q46`; exact future rate: not sure).
+   - **Typical question type:** MCQ/MSQ (monotonicity on `[0, 1]`, existence of local max/min, global extrema).
+   - **Zero-level prerequisite:** Ch 00 (Wavy curve) + Ch 01 (Derivatives).
+
+4. **Chapter 03: Mean Value Theorems & Taylor Series (`Ch 03`)**
+   - **Sub-topics:** **Rolle's Theorem & Root-Counting Corollary**; **Lagrange's MVT & Two-Sided Bound (`2021_AN_Q63`: `f'(x) <= 2 => f(3) <= 19`)**; Cauchy's MVT; **Taylor & Maclaurin Series (`e^x, sin x, cos x, ln(1+x), 1/(1-x)`)** for fast limit solving AND calculator-free approximations (`\sin(\pi^2/16)` in `2018_FN_Q26`).
+   - **Syllabus line:** `Mean value theorem`.
+   - **How often GATE asks it:** Occasionally (`Part B.3` lumps MVT with Integration into 7 Qs / 7 marks; exact MVT share: not sure).
+   - **Typical question type:** NAT/MCQ (upper/lower bound on `f(b)`, finding MVT `c`, root count via Rolle's, series limits).
+   - **Zero-level prerequisite:** Ch 01 (Continuity on `[a,b]`, Differentiability on `(a,b)`).
+
+5. **Chapter 04: Integration (`Indefinite, Definite Properties & Multiple Integrals`)**
+   - **Sub-topics:** Fundamental Theorem of Calculus (`FTC 1 & 2`) + **Leibniz Rule**; Substitution (`2018_FN_Q26`), **Integration by Parts (`ILATE`: `2025_AN_Q12` `t \ln t`)**, Partial Fractions; **Definite Properties: Even/Odd `[-a, a]` (`2026_AN_Q27`), Splitting `|x|` corners, King's Property (`2024_AN_Q35`), Queen's Property**; Improper Integrals (`Probability PDF` link); **Double & Triple Integrals (Symmetric Bounds `2023_FN_Q31` + Order-of-Integration Swaps)**!
+   - **Syllabus line:** `Integration`.
+   - **How often GATE asks it:** Regularly (`Part B.3` MVT + Definite Integration = `7` Qs / `7` marks across 7/10 years; exact split: not sure).
+   - **Typical question type:** NAT/MCQ/MSQ (evaluate definite/triple integral, King's property, solve upper limit `x` from integral value, constant independent of `a`, `R, S` parameter solve `2017_AN_Q33`).
+   - **Zero-level prerequisite:** Ch 00 + Ch 01 + Ch 03 (Maclaurin approx).
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+### Ch 00 · Pre-Calculus Toolkit
+1. **The 6 Essential Graphs (`|x|`, `x` vs `x^3`, `e^x`, `\ln x`, `\sin x`, `\cos x`) & Wavy Curve Sign Chart**
+   - *What to draw:* Clean visual sketches of all 6 curves highlighting key intercepts (`e^0=1, \ln 1=0, \ln(0^+)=-\infty`), **`x` vs `x^3` crossing at `-1, 0, 1` (`2024_FN_Q15`)**, and a Wavy Curve sign-flip number line (`+ | - | +` across roots `-11, 1` in `2023_FN_Q28`).
+   - *What to notice:* Inside `(0, 1)`, `x > x^3` (fractions shrink when cubed!), and `(Y - 2)(Y + 1) >= 0` holds outside `(-1, 2)` (`2019_FN_Q55`).
+   - *Format:* **Single picture**
+
+### Ch 01 · Limits, Continuity and Differentiability
+2. **Limit Bridge (`LHL = RHL`) & 4 Discontinuity Types + `2026_AN_Q64` Step Function**
+   - *What to draw:* Top: Two walkers meeting at open hole `(a, L)` plus 4 discontinuity thumbnails (`Removable Hole`, `Jump`, `Asymptote`, `Oscillation`). Bottom: Zoomed `[0.0, 0.1)` interval showing `f(r)` in `2026_AN_Q64` equal to `1` on merged bands `[0.02, 0.04)` & `[0.06, 0.08)` (`4` jump edges per tenth × `10` tenths = `40`!).
+   - *What to notice:* Adjacent digits `2, 3` merge into ONE solid bar (so `0.03` has NO discontinuity!), leaving exact `4` jumps per tenth (`2026_AN_Q64`).
+   - *Format:* **Single picture**
+3. **`max(x, x^3)` Corner Envelope (`2024_FN_Q15`) & `f(x)` Smooth vs `f'(x)` Bent (`2026_FN_Q46`)**
+   - *What to draw:* Left: `max(x, x^3)` shaded bold tracing the upper curve with red stars at the 3 sharp corners `-1, 0, 1` (`2024_FN_Q15`). Right: Stacked plots of **`f(x) = -(|x/2|-x)^2`** (smooth glued downward parabolas `-x^2/4` & `-9x^2/4` tangent at `(0,0)`!) directly above **`f'(x)`** (`-x/2` & `-9x/2` meeting in a **sharp `V`-bend at `0`** -> `f'` continuous yet NOT differentiable at `0`! `2026_FN_Q46`)!
+   - *What to notice:* Why `f` itself IS differentiable at `0`, while its derivative `f'` has a corner (`LHD(f') = -9/2 != -1/2 = RHD(f')`, catching the missing prime `'` typo in `Part C`!).
+   - *Format:* **Single picture**
+
+### Ch 02 · Maxima, Minima and Monotonicity
+4. **Derivative Sign Charts (`2023_FN_Q28` Cubic vs `2020_FN_Q17` `x^2 - \sin x` Dip)**
+   - *What to draw:* Left: Cubic `S`-curve `x^3 + 15x^2 - 33x - 36` with `+ | - | +` slope arrows showing local hill (`x=-11`) and local valley (`x=1`) (`2023_FN_Q28`). Right: Zoomed `[0, 1]` plot of `x^2 - sin x` dipping negative right after `0` (`slope -1`) before turning up (`2020_FN_Q17`).
+   - *What to notice:* Local max/min exist even when ends shoot to `±∞`, and `f(1) > f(0)` does NOT mean `f` increases everywhere in `[0, 1]`!
+   - *Format:* **Single picture**
+
+### Ch 03 · Mean Value Theorems & Taylor Series
+5. **Rolle's & LMVT Secant-Parallel Tangent + Speed-Limit Cone (`2021_AN_Q63`)**
+   - *What to draw:* Left: Curve on `[a, b]` with chord slope `(f(b)-f(a))/(b-a)` and parallel tangent at `c`, next to `|x|` on `[-1, 1]` failing MVT at sharp tip `0`. Right: Cone starting at `(-3, 7)` bounded above by straight line of slope `2` reaching `(3, 19)` (`2021_AN_Q63`)!
+   - *What to notice:* If `f'(x) <= 2` everywhere, the curve can NEVER climb above the slope-`2` ceiling line `7 + 2(x + 3)` (`max 19` at `x = 3`)!
+   - *Format:* **Single picture**
+
+### Ch 04 · Integration
+6. **King's Horizontal Reflection (`2024_AN_Q35`), Odd/Even Symmetry (`2026_AN_Q27`) & Order-Swap Triangle**
+   - *What to draw:* Left: `f(x)` and `f(2 - x)` inside `[0, 2] × [0, 1]` rectangle summing everywhere to height `1` (`area = 2 × 1 / 2 = 1`, `2024_AN_Q35`). Middle: Odd `-ax` canceling positive & negative triangles on `[-1, 1]` (`2026_AN_Q27`). Right: Double-integral triangle `0 <= x <= 1, x <= y <= 1` sliced by vertical (`dy dx`) vs horizontal (`dx dy`) strips.
+   - *What to notice:* King's Property pairs mirror points `(x, a+b-x)` around the midpoint, and odd functions on `[-a, a]` always cancel to `0` (`2026_AN_Q27`, `2023_FN_Q31`).
+   - *Format:* **Single picture**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Starting with Chapter 00 below; continuing from Chapter 01 on the next turn!)*
+
+### Chapter 00 · Pre-Calculus Toolkit *(New Prerequisite Chapter)*
+
+#### Lesson 00.1 · Piecewise/`|x|` Unpacking, `max` Envelopes, Logs, Exponentials, Trig & Wavy Curve
+- **Tag:** `[MUST]` — Zero-level readers get stuck immediately on `2026_FN_Q32`, `2026_FN_Q46`, `2024_FN_Q15`, `2023_FN_Q28`, `2020_FN_Q17`, and `2018_FN_Q26` without these tools.
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** High-school algebra & coordinates.
+- **Beginner must-see:** Almost half of GATE Calculus mistakes happen *before* any calculus starts — unpacking absolute value bars `|x/2| - x` (`2026_FN_Q46`), forgetting that cubing fractions like `0.5` makes them *smaller* (`0.125 < 0.5`, `2024_FN_Q15`), forgetting `\ln(1/x)` shoots to `+\infty` near `0^+` (`2026_FN_Q32`), or running virtual calculators in Degree mode instead of **Radians** (`2018_FN_Q26`)!
+- **Finer points:**
+  - **Zero-Point Split for `|g(x)|` (`2026_FN_Q46`):** Rewrite piecewise (`x >= 0` vs `x < 0`).
+  - **`max(f, g)` & `min(f, g)` Upper/Lower Envelopes (`2024_FN_Q15`):** Find all crossing points (`x = x^3 => -1, 0, 1`), test 1 point per interval (`x < -1, (-1,0), (0,1), x > 1`).
+  - **Exponentials & Natural Logs (`2026_FN_Q32`):** `e^0 = 1`, `e^{-\infty} = 0`, `\ln(1) = 0`, `\ln(1/x) = -\ln x -> +\infty` as `x -> 0^+`.
+  - **Even (`f(-x) = f(x)`) vs Odd (`f(-x) = -f(x)`) Arithmetic (`2026_AN_Q27`, `2023_FN_Q31`).**
+  - **Radian Trig Values (`0, \pi/6, \pi/4, \pi/3, \pi/2, \pi`) & Virtual Calculator RAD Check (`2018_FN_Q26`, `2017_AN_Q33`).**
+  - **Wavy Curve Sign-Chart Method (`2023_FN_Q28`, `2019_FN_Q55`).**
+- **GATE-level items:** Unpacking `(|x/2| - x)(x - |x/2|)` (`2026_FN_Q46`), `max(x, x^3)` regions (`2024_FN_Q15`), `\ln(1/x)` near `0^+` (`2026_FN_Q32`), and polynomial sign charts (`2023_FN_Q28`).
+- **Diagrams needed:** `GRAPHPIC` (All 6 core curves + `x` vs `x^3` crossing envelope `2024_FN_Q15` + Wavy Curve number line).
+- **Hand traces:** Unpacking `2026_FN_Q46` (`-x^2/4` vs `-9x^2/4`), testing `max(x, x^3)` across 4 intervals (`2024_FN_Q15`), and drawing Wavy Curve for `3(x+11)(x-1) > 0` (`2023_FN_Q28`).
+- **Common mistakes:** Thinking `x^3 > x` for ALL `x > 0` (`fails on (0, 1)`, `2024_FN_Q15`!); thinking `\ln(1/x) -> 0` as `x -> 0^+` (`2026_FN_Q32`); leaving virtual calculator in `DEG` instead of `RAD` (`2018_FN_Q26`).
+
+---
+
+`CONTINUE FROM CHAPTER 01`
+
+## PART 5 (Continued) · Chapters 01 to 04
+
+### Chapter 01 · Limits, Continuity and Differentiability *(57% of Calculus Marks!)*
+
+#### Lesson 01.1 · Limits (`LHL = RHL`), 7 Indeterminate Forms, L'Hôpital & Standard Shortcuts
+- **Tag:** `[MUST]` — Highest-yield Calculus skill (`2026_FN_Q32`, `2022_FN_Q34`, `2021_FN_Q54`, `2019_FN_Q34`, `2017_FN_Q42`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 00.1.
+- **Beginner must-see:** $\lim_{x \to a} f(x)$ does NOT ask what happens *standing AT `x = a`* — it asks *"as two hikers walk toward `a` from the Left (`LHL`) and Right (`RHL`), what same height `L` are both walking toward?"* When plugging `x = a` produces a disguise like `0/0` (or `\infty/\infty`, `1^\infty`), you unwrap the disguise using **Factoring, Rationalizing, Standard Limits, or L'Hôpital (`f'/g'`)**!
+- **Finer points:**
+  - **Existence (`LHL = RHL = finite`):** Notice `e^{1/x}` (`0` vs `+\infty`) and `\ln(1/x)` (`-> +\infty` as `x -> 0^+`, `2026_FN_Q32`).
+  - **The 7 Indeterminate Forms:** `0/0, \infty/\infty, 0\cdot\infty, \infty-\infty, 1^\infty, 0^0, \infty^0` (`0/0` can equal anything — `0`, `108/7`, `DNE`!).
+  - **4 Solving Tools:**
+    1. **Factoring (`2019_FN_Q34`)** & **Rationalizing (`2021_FN_Q54`: multiply by `\sqrt{2x+22} + 4`)**.
+    2. **Standard 1-Line Limits & Substitution (`2022_FN_Q34`):** `u = \sqrt{x} -> 0^+` turns `\sqrt{x}/(1 - e^{2\sqrt{x}})` into `-1/2`; `(1 + a/x)^x -> e^a`; **`1^\infty` shortcut = $e^{\lim g(x)(f(x)-1)}$**!
+    3. **L'Hôpital's Rule (`2021_FN_Q54`, `2019_FN_Q34`, `2017_FN_Q42`):** ONLY on `0/0` or `\infty/\infty`; differentiate top and bottom **separately (`f'/g'`)**, NEVER Quotient Rule; watch infinite oscillation failure (`(x + \sin x)/x` as `x -> \infty`).
+    4. **Sign Traps (`x -> -\infty` with `\sqrt{x^2} = |x| = -x`) & Squeeze Theorem (`x^2 \sin(1/x) -> 0`).**
+- **GATE-level items:** `\sqrt{x}` exponential limit (`2022_FN_Q34`: `-0.5`), radical limit (`2021_FN_Q54`: `0.25`), rational `0/0` (`2019_FN_Q34`: `108/7`), degree-7 L'Hôpital (`2017_FN_Q42`: `1`), and `\ln(1/x)` forcing `c_2 = 0` (`2026_FN_Q32`).
+- **Diagrams needed:** `GRAPHPIC` (`LHL = RHL` hikers approaching hole `(a, L)`, `1/x` vs `e^{1/x}` split, Squeeze funnel `\pm x^2`); `FLOW` (7-Indeterminate-Form Limit Selector).
+- **Hand traces:** Tracing `2022_FN_Q34`, `2021_FN_Q54`, `2019_FN_Q34`, `2017_FN_Q42`, and `1^\infty` limit `(1 + 3/n)^{2n}`.
+- **Common mistakes:** Applying L'Hôpital when form isn't `0/0` or `\infty/\infty`; using Quotient Rule instead of `f'/g'`; writing `1^\infty = 1`; writing `\sqrt{x^2} = +x` when `x -> -\infty`!
+
+#### Lesson 01.2 · Continuity, Discontinuity Counting (`Digit Steps`), Differentiation Rules & `f'` Corner Traps
+- **Tag:** `[MUST]` — Core of `2026_FN_Q32`, `2026_FN_Q46`, `2026_AN_Q64`, `2025_FN_Q31`, `2024_FN_Q15`.
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 00.1, Lesson 01.1.
+- **Beginner must-see:** **Continuous** means *"draw without lifting your pen"* (`LHL = f(a) = RHL`). **Differentiable** is stricter — *"smooth with NO sharp `V`-corners"* (`LHD = RHD`, `2024_FN_Q15`: `max(x, x^3)` bends sharply at `-1, 0, 1`!). Watch out: even if a curve $f$ is smooth (`f'` continuous), its derivative **`f'`** can STILL have a sharp corner (`2026_FN_Q46`)!
+- **Finer points:**
+  - **Continuity (`LHL = f(a) = RHL`, `2026_FN_Q32`):** Discontinuity types (Removable, Jump, Infinite, Oscillatory); Composite denominator traps; **Digit-Step Discontinuities (`2026_AN_Q64`):** merging adjacent digits `{2, 3}` (`[0.d_1 2, 0.d_1 4)`) and `{6, 7}` (`[0.d_1 6, 0.d_1 8)`) gives `4` jumps per tenth = `40`!
+  - **Intermediate Value Theorem (`IVT`) & Root Existence (`f(a)·f(b) < 0`).**
+  - **Differentiation Toolbox:** Power, `e^x, \ln x, \sin/\cos/\tan`, Product, Quotient, **Chain Rule (`\cos(x^2)·2x`, `\sqrt{x^3+1}'`, `R\sin(\pi x/2)'`)**, Inverse `(f^{-1})'(y) = 1/f'(x)`, Log Diff `x^x`.
+  - **Differentiability & Corner Traps (`2025_FN_Q31`, `2024_FN_Q15`, `2026_FN_Q46`):**
+    - Continuity is necessary (`check continuity FIRST before comparing derivative formulas!`).
+    - Corners at `g(x) = 0` for `|g(x)|` & crossings `f(x) = g(x)` for `max(f, g)` (`2024_FN_Q15`).
+    - Piecewise parameters (`2025_FN_Q31`: `f(1^-)=f(1^+)` AND `f'(1^-)=f'(1^+)` -> `a=5, b=-2`).
+    - **Higher-Order `C^1` vs `C^2` (`2026_FN_Q46`):** `-x^2/4` vs `-9x^2/4` shares slope `0` at `0` (`f` differentiable, `f'` continuous), yet `f''(0^+) = -1/2 != -9/2 = f''(0^-)` (`f'` NOT differentiable! — highlight Part C's missing `'` typo!).
+- **GATE-level items:** Exponential/log continuity parameter (`2026_FN_Q32`: `3`), decimal-digit discontinuities (`2026_AN_Q64`: `40`), `C^1` vs `C^2` on `-(|x/2|-x)^2` (`2026_FN_Q46`), piecewise diff (`2025_FN_Q31`: `-2`), and `max(x, x^3)` non-diff points (`2024_FN_Q15`: `{-1, 0, 1}`).
+- **Diagrams needed:** `GRAPHPIC` (4 discontinuity types; `2026_AN_Q64` zoomed `[0.0, 0.1)` bars; `2024_FN_Q15` `max(x, x^3)` corners; `2026_FN_Q46` stacked `f(x)` smooth vs `f'(x)` V-corner!); `COMPARE` (12 Differentiation Rules Card).
+- **Hand traces:** Tracing `2026_AN_Q64` (`[0.02, 0.04)`, `[0.06, 0.08)` -> `40`), `2025_FN_Q31` (`a=5, b=-2`), `2024_FN_Q15` (`{-1, 0, 1}`), and `2026_FN_Q46` (`f` vs `f'` slopes at `0`).
+- **Common mistakes:** Counting `8` jumps per tenth (`80` total) in `2026_AN_Q64` by forgetting adjacent `{2,3}` and `{6,7}` merge cleanly; missing `-1` in `max(x, x^3)` (`2024_FN_Q15(C)`!); checking `f'(1^-) = f'(1^+)` without enforcing `f(1^-) = f(1^+)` first (`2025_FN_Q31`).
+
+---
+
+### Chapter 02 · Maxima, Minima and Monotonicity
+
+#### Lesson 02.1 · Monotonicity (`f' >= 0`), Local vs Global Extrema & Derivative Tests
+- **Tag:** `[MUST]` — Covers `2026_FN_Q46(A, B)`, `2023_FN_Q28`, `2020_FN_Q17`.
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 00.1 (Wavy Curve), Lesson 01.2.
+- **Beginner must-see:** Where is a roller coaster climbing (**Increasing**: `slope f'(x) >= 0`), falling (**Decreasing**: `f'(x) <= 0`), or hitting a hilltop (**Local Max**: `+` slope switching to `-` slope) or valley (**Local Min**: `-` switching to `+`)? Be careful: a function can have BOTH a local hilltop AND a local valley (`2023_FN_Q28`) even if its ends shoot off to `±\infty`, and **`f(1) > f(0)` does NOT guarantee it climbs the entire way** (`2020_FN_Q17`: `x^2 - sin x` dips down first near `0`!)!
+- **Finer points:**
+  - **Monotonicity (`2020_FN_Q17`):** Strictly increasing on `[a, b]` $\iff f'(x) \ge 0$ everywhere on `(a, b)` and not flat on any subinterval (isolated `f'(0) = 0` OK for `\sqrt{x^3 + 1}`!).
+  - **Critical Points:** Where **`f'(x) = 0`** OR **`f'(x)` does NOT exist** (e.g. `|x|` at `0`).
+  - **Tests for Local Extrema:**
+    - **1st Derivative Sign-Change Test (`2026_FN_Q46`):** `+ -> -` (Local Max), `- -> +` (Local Min), same sign (`x^3` Saddle/Inflection!). Works even when `f''(c)` fails to exist!
+    - **2nd Derivative Test (`2023_FN_Q28`):** At `f'(c) = 0`, `f''(c) < 0` -> Local Max, `f''(c) > 0` -> Local Min, `f''(c) = 0` -> inconclusive (check higher derivatives or 1st deriv!).
+  - **Local vs Global Extrema (`[a, b]` endpoints vs $\mathbb{R}$ unbounded, `2023_FN_Q28`).**
+  - **Word Optimization & Multivariable Hessian `rt - s^2` (`[LATER]` light note).**
+- **GATE-level items:** Increasing everywhere on `[0, 1]` (`2020_FN_Q17`: `III` only), cubic local max/min existence (`2023_FN_Q28`: B, D), and non-`C^2` global/local max at `0` (`2026_FN_Q46`: A).
+- **Diagrams needed:** `GRAPHPIC` (Cubic `2023_FN_Q28` hill/valley vs `x^3` saddle vs `x^2 - \sin x` initial dip `2020_FN_Q17` + cup-up `f''>0` / cup-down `f''<0`).
+- **Hand traces:** Tracing `f'(x)` signs across `[-15, 5]` for `2023_FN_Q28`, testing `2x - \cos x` at `x = 0` (`2020_FN_Q17`), and verifying `f(x) <= 0 = f(0)` (`2026_FN_Q46`).
+- **Common mistakes:** Checking only `f(1) > f(0)` for "increasing everywhere on `[0, 1]`" (`2020_FN_Q17(II)`!); thinking `"no global max"` means `"no local max"` (`2023_FN_Q28(A)`!); getting stuck when `f''(0)` doesn't exist (`use 1st derivative sign or direct inequality f(x) <= 0`, `2026_FN_Q46`).
+
+---
+
+### Chapter 03 · Mean Value Theorems and Taylor Series
+
+#### Lesson 03.1 · Rolle's Theorem, Lagrange's MVT (`Bounds`), Cauchy's MVT & Maclaurin/Taylor Series
+- **Tag:** `[MUST]` — Directly solves `2021_AN_Q63` and equips calculator-free approximations (`2018_FN_Q26`) + root bounds.
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 01.2.
+- **Beginner must-see:** If you drive 120 km in 2 hours (average speed = `60 km/h`) without teleporting or sharp jumps, your car's speedometer MUST have hit **exact `60 km/h`** at least once (`Lagrange's Mean Value Theorem`)! Turned around (`2021_AN_Q63`): if your speed NEVER exceeds `2` for `6` minutes, you can go up at most `12` units (`7 + 12 = 19`)!
+- **Finer points:**
+  - **Rolle's Theorem (`continuous [a,b], diff (a,b), f(a)=f(b) => \exists c: f'(c)=0`):** Failure on `|x|`; **Root-Separation Corollary** (at most `k + 1` real roots if `f'` has `k` roots!).
+  - **Lagrange's MVT (`2021_AN_Q63`):** $\frac{f(b)-f(a)}{b-a} = f'(c) \in (a, b)$ -> two-sided bounds $f(a) + m(b-a) \le f(b) \le f(a) + M(b-a)$.
+  - **Cauchy's MVT (`(f(b)-f(a))/(g(b)-g(a)) = f'(c)/g'(c)`).**
+  - **Taylor & Maclaurin Series (`2018_FN_Q26`):**
+    - $f(x) = \sum \frac{f^{(n)}(0)}{n!} x^n$: memorize `e^x`, **`\sin x = x - x^3/6 + x^5/120...`**, `\cos x = 1 - x^2/2 + x^4/24...`, `\ln(1+x)`, `1/(1-x)`.
+    - Dual use: fast `0/0` limits (`(x - \sin x)/x^3 -> 1/6`) AND calculator-free numerical bounds (`\sin(0.616) \approx 0.578`, `2018_FN_Q26`).
+- **GATE-level items:** LMVT upper bound `f(3) <= 19` (`2021_AN_Q63`), Taylor trig approximation (`2018_FN_Q26`: `0.289`), Rolle's root counting, and checking MVT differentiability failures (`|x|`).
+- **Diagrams needed:** `GRAPHPIC` (Secant chord & parallel tangent `c` + `|x|` failure + Speed-limit cone `f'(x) <= 2` from `(-3, 7)` to `(3, 19)`, `2021_AN_Q63`).
+- **Hand traces:** Tracing `2021_AN_Q63` (`7 + 2·6 = 19`), root-counting `x^5 + x + 1 = 0`, and computing `0.5 \sin(\pi^2/16)` (`2018_FN_Q26`) via 2-term Maclaurin (`0.289`).
+- **Common mistakes:** Forgetting interval width `b - a = 3 - (-3) = 6` (`writing 3×2 + 7 = 13` instead of `19` in `2021_AN_Q63`!); forgetting `(a, b)` differentiability requirement on `|x|`.
+
+---
+
+### Chapter 04 · Integration (`Indefinite, Definite Properties and Multiple Integrals`)
+
+#### Lesson 04.1 · Antiderivatives (`Substitution`, `ILATE` By Parts, `Partial Fractions`) & FTC / Leibniz Rule
+- **Tag:** `[MUST]` — Core integration engine (`2025_AN_Q12`, `2018_FN_Q26`, `2017_AN_Q33`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 01.2 (Derivatives), Lesson 03.1.
+- **Beginner must-see:** Integration is the exact **Reverse Gear** of differentiation — finding total area (`distance = \int speed dt`) instead of slope! Three clean tools handle 95% of GATE integrals: **Substitution** (reverse Chain Rule: `u = x^2`, `2018_FN_Q26`), **Integration by Parts (`ILATE`: reverse Product Rule**, `2025_AN_Q12`), and **Partial Fractions**!
+- **Finer points:**
+  - Standard antiderivatives (`x^n`, `1/x`, `e^{kx}`, `\sin(kx)`, `\cos(kx)`, `1/(1+x^2)` -> `\arctan x`).
+  - **Substitution with Direct Limit Transformation (`2018_FN_Q26`):** `\int_0^{\pi/4} x \cos(x^2) dx` -> `0.5 \sin(\pi^2/16)`.
+  - **Integration by Parts (`ILATE`: `Inverse, Log, Algebraic, Trig, Exponential`, `2025_AN_Q12`):** `\int u dv = uv - \int v du`; solving `\int_1^x t \ln t\,dt = 1/4` (`\sqrt{e}`) & `\int \ln x\,dx = x \ln x - x`.
+  - **Partial Fractions** (`1 / (x^2 - a^2)`).
+  - **FTC Part 1 & Leibniz Rule:** $\frac{d}{dx}\int_{g(x)}^{h(x)} f(t)dt = f(h(x))h'(x) - f(g(x))g'(x)$ (combined with L'Hôpital!).
+- **GATE-level items:** Solving upper limit via By Parts (`2025_AN_Q12`: `\sqrt{e}`), trig substitution + numeric approximation (`2018_FN_Q26`: `0.289`), `R, S` integral + derivative system (`2017_AN_Q33`: `4/\pi, 0`), and Leibniz derivative limits.
+- **Diagrams needed:** `FLOW` (`ILATE` selector + FTC slice area `A'(x) = f(x)`); `TRACE` (`t \ln t` Integration by Parts table, `2025_AN_Q12`).
+- **Hand traces:** Solving `2025_AN_Q12` (`\sqrt{e}`), `2018_FN_Q26` (`0.289`), `2017_AN_Q33` (`R = 4/\pi, S = 0`), and checking answers by differentiating back!
+- **Common mistakes:** Picking `u = t, dv = \ln t\,dt` instead of `ILATE`'s `u = \ln t` (`2025_AN_Q12`!); writing `\int \ln x dx = 1/x` (`differentiating instead of integrating!`); forgetting to transform limits when substituting `u = x^2` (`2018_FN_Q26`!).
+
+#### Lesson 04.2 · Definite Integral Properties (`Even/Odd`, `King's Rule`) & Multiple (`Double/Triple`) Integrals
+- **Tag:** `[MUST]` — High-speed 1-mark & 2-mark tricks (`2026_AN_Q27`, `2024_AN_Q35`, `2023_FN_Q31`).
+- **Estimated reading time:** 70 minutes.
+- **Prerequisites:** Lesson 00.1 (Even/Odd), Lesson 04.1.
+- **Beginner must-see:** Never brute-force a definite integral before checking its limits! If limits say **`[-a, +a]`**, EVERY **odd** term instantly vanishes to **`0`** (`2026_AN_Q27`, `2023_FN_Q31`)! And if an unknown function `f(x)` satisfies `f(x) + f(a+b-x) = const`, **King's Property** mirrors `[a, b]` onto itself and solves the integral in 2 lines WITHOUT knowing `f(x)` (`2024_AN_Q35`)!
+- **Finer points:**
+  - **6 Definite Integral Laws:**
+    1. Interval split at corners (`|x|` or piecewise joins).
+    2. **Symmetric `[-a, a]` (`2026_AN_Q27`, `2023_FN_Q31`):** `Odd -> 0`, `Even -> 2 \int_0^a` (verify limits ARE symmetric `[-a, a]`!).
+    3. **King's Property (`2024_AN_Q35`):** $\int_a^b f(x)\,dx = \int_a^b f(a + b - x)\,dx$ (`I = 1`).
+    4. Queen's Property (`[0, 2a]`).
+    5. Periodicity (`\int_0^{nT} = n \int_0^T`).
+  - **Improper Integrals (`\int_0^\infty e^{-\lambda x} dx = 1/\lambda`, Probability link!).**
+  - **Double & Triple Integrals (`2023_FN_Q31`):** Rectangular box separable integrals & odd symmetry (`= 0`); non-rectangular regions & **Changing Order of Integration (`dy dx <-> dx dy`)**.
+  - **Area Between Curves (`\int |f - g| dx`) & Walli's Formula (`[LATER]`).**
+- **GATE-level items:** Parameter-independent symmetric integral (`2026_AN_Q27`: A, C), King's reflection (`2024_AN_Q35`: `1`), symmetric triple integral (`2023_FN_Q31`: `0`), and triangular double-integral order swap.
+- **Diagrams needed:** `GRAPHPIC` (Odd `-ax` canceling on `[-1, 1]` `2026_AN_Q27`, King's mirror around `x=1` `2024_AN_Q35`, and Double-Integral triangle slice swap).
+- **Hand traces:** Tracing `2026_AN_Q27` (`I(a) = 4`), `2024_AN_Q35` (`2I = 2 => I = 1`), `2023_FN_Q31` (`0`), and swapping `dy dx -> dx dy` on `\int_0^1 \int_x^1 e^{y^2} dy dx`.
+- **Common mistakes:** Applying Odd = `0` when limits are `[0, a]` instead of `[-a, a]`; forgetting `2I = ...` (answering `2` instead of `1` in King's Property `2024_AN_Q35`!); integrating `|x|` blindly without splitting at `0` (`signed net area` vs `geometric area`).
+
+---
+
+`CONTINUE FROM PART 6`
+

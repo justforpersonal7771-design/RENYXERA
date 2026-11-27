@@ -54,6 +54,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 - [ ] Tag TOC / OS / CN / Algorithms PYQs to chapters
 - [ ] (you) 2020 CS Q22 answer key: "marks to all"
 - [x] Reviews merged and checked for DBMS, COA, Discrete Maths (Gemini + ChatGPT) and Compiler Design, Digital Logic, Linear Algebra, Probability (Gemini only): see each subject's `01-REVIEW-MERGE-AND-PLAN.md`
-- [ ] (you) Fix bank defects listed there (2021_FN_Q27, 2022_FN_Q51, 2025_AN_Q40, 2026_AN_Q41, 2026_FN_Q21, 2025_AN_Q43, 2021_AN_Q17 key, 2022_FN_Q45, 2026_FN_Q38) and restore the missing figures
+- [x] Bank defects corrected 29 Nov in `public/data/questions.json` and `data/Aggregated_Output.json` (11 text fixes); the database copy is `supabase/migrations/0067_bank_corrections.sql` (**owner runs it once**, it also moves the 2021_AN_Q17 key from C to A)
+- [x] Missing figures: the pictures exist in the app; keys checked against them for Databases (14), COA (9), Discrete Maths (3 of 4), Linear Algebra (1), Probability (1). Still to check: Compiler Design (11) and Digital Logic (21)
 - [ ] (you) Unlock banner check with an all-packs account
 - [ ] Live deploy check; tab bar in dark mode with several tabs

@@ -20,7 +20,7 @@ Both are strong and independently found the same three data defects. Differences
 | 2020_FN_Q52 | Distinct strings of LILAC with no letter in its original position, the two L's identical: **12** by program | Key correct; explain "identical L's" |
 | Other numbers re-solved | 2017_FN_Q41 = 271 (divisible by 3, 5 or 7 up to 500), 2019_FN_Q21 = 2 (3^51 mod 5) | Keys correct |
 | 2022_FN_Q50 | Petersen graph: A (chromatic number 3) and B (Hamiltonian path) true; D (largest independent set 3) false, it is 4. Option C needs the picture | A, B verified; C open |
-| Figures | 4 placeholders: 2024_AN_Q63, 2022_FN_Q50, 2018_FN_Q28, 2017_AN_Q28 (the last is solvable from the stated relation) | Restore three |
+| Figures (29 Nov update) | The images exist in the app. 2018_FN_Q28: the graph needs 3 colours (triangle a, b, c; a valid 3-colouring exists): key 3 correct. 2022_FN_Q50 option C: the picture is a 9-cycle plus a centre vertex, consistent with a drawing of the Petersen graph; not proven edge by edge. 2024_AN_Q63: eight vertices with many chords; key 2 (bipartite) not verified edge by edge. Original list: 2024_AN_Q63, 2022_FN_Q50, 2018_FN_Q28, 2017_AN_Q28 (the last is solvable from the stated relation) | Restore three |
 
 ## 3. Syllabus check
 Official line: *Propositional and first order logic. Sets, relations, functions, partial orders and lattices. Monoids, Groups. Graphs: connectivity, matching, colouring. Combinatorics: counting, recurrence relations, generating functions.* Both plans cover every item. Euler and Hamilton paths, planarity, Vizing's theorem and countability are not named but are asked: tag [LEGACY-ASKED]. Chapter 00 (proof techniques, modular arithmetic) is a Foundation bridge, not a syllabus item.

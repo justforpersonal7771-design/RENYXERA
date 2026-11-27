@@ -19,7 +19,7 @@ Both agree on the spine and on the verdict ("not yet a book that teaches from ze
 | 2025_AN_Q54 option D | NATURAL JOIN is correct only under set semantics or a unique (rollno, courseno) | Keep the key; state the assumption (ChatGPT's caveat is right) |
 | 2026_FN_Q65 | Superkeys of R(A,B,C,D) with candidate keys AB, AC: **6** by program | Key correct |
 | 2017_AN_Q62 | Conflict serializable schedules of two 4-operation transactions: **54** of 70 interleavings by program | Key correct |
-| Figures | 16 questions carry an image tag. Two are solvable from text (above), so **14 are truly missing**: 2025_FN_Q21, 2025_FN_Q55, 2024_FN_Q24, 2024_FN_Q35, 2023_FN_Q61, 2022_FN_Q56, 2020_FN_Q12, 2020_FN_Q45, 2019_FN_Q41, 2019_FN_Q47, 2017_AN_Q26, 2017_FN_Q31, 2017_FN_Q38, 2017_AN_Q55 | Restore from the original papers before any worked solution is published |
+| Figures (29 Nov update) | **The images exist in the app** (`public/images/<paper>/`); only the review files lacked them. Checked against the pictures: 2025_FN_Q21 (B+ tree with full root and full leaves: inserting 23 splits a leaf, splits the root, height grows: B and D), 2025_FN_Q55 = 26, 2024_FN_Q24 = diagram (iv), 2024_FN_Q35 = 2, 2023_FN_Q61 = 2, 2022_FN_Q56 = 2 (S01, S04), 2019_FN_Q41 = 5 (the query has no join condition, so the 5 students pair with the 5 qualifying marks), 2019_FN_Q47 = 1, 2017_AN_Q26 = 0, 2017_FN_Q31 = 2.6 (counts 4, 3, 3, 2, 1: ChatGPT's table was right), 2017_FN_Q38 = 4, 2017_AN_Q55 = 7, 2025_AN_Q57 = 33 under either leaf-split convention. **Two exceptions:** 2020_FN_Q12 (key 4): the Suppliers table in the picture lists S1 twice and has no S2, so as drawn the query returns 3 rows; with S2 in the second row (which the primary key implies) it returns 4, the key. 2020_FN_Q45 (key A): our own reading of the schedule picture preferred option B, but the official key is A (confirmed on a published solution), so our reading of the picture was wrong; no change. Original note: Two are solvable from text (above), so **14 are truly missing**: 2025_FN_Q21, 2025_FN_Q55, 2024_FN_Q24, 2024_FN_Q35, 2023_FN_Q61, 2022_FN_Q56, 2020_FN_Q12, 2020_FN_Q45, 2019_FN_Q41, 2019_FN_Q47, 2017_AN_Q26, 2017_FN_Q31, 2017_FN_Q38, 2017_AN_Q55 | **Done**: all 14 are now checked against the pictures in the app; only 2020_FN_Q12 has a picture defect |
 | Other keys | For every text-complete question both reviewers agree with the official key. We re-solved the four above and the B+ tree split of 2025_AN_Q57 was **not** independently re-solved (the answer 33 depends on the copy-up convention) | Keep the keys; lesson states the convention |
 
 ## 3. Syllabus check
@@ -45,6 +45,6 @@ Weights (bank, verified): Transactions/CC 15 q / 23, RA+TRC 13 / 21, SQL 10 / 17
 
 ## 5. Next steps
 1. Fix the two bank defects (remove the false figure tags; correct the wording of 2022_FN_Q56 and 2017_FN_Q31).
-2. Restore the 14 figures from the original papers (owner).
+2. ~~Restore the 14 figures~~ Done 29 Nov: the pictures were already in the app; add them to the review input if a reviewer needs them again.
 3. Add a `source` field and a note for the three assumption-dependent keys (2017_FN_Q39, 2025_AN_Q54, 2025_AN_Q57).
 4. Tag the 72 PYQs to the lessons above, then write a six-lesson pilot (ChatGPT's list: DB0.1, DB1.2, DB5.3, DB6.2, DB7.4, DB8.2).

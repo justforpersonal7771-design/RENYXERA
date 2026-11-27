@@ -1,0 +1,645 @@
+## PART 1. FEELINGS
+
+1. Looking at `Part B.2` gave me an immediate sinking feeling: **every single one of the 8 chapters says `"none | not written"`** — there isn't even a topic outline to judge yet!
+2. Worse, there is **no Chapter 0** showing the 6–7 compiler phases (`Lex -> Parse -> Semantic -> ICG -> Optimize -> CodeGen`), Front-End vs Back-End, and the **Symbol Table**, even though `2026_FN_Q27`, `2025_FN_Q12`, `2024_AN_Q17`, `2023_FN_Q11`, `2021_AN_Q38`, `2020_FN_Q35`, `2018_FN_Q18`, and `2017_AN_Q30` ALL test that exact pipeline!
+3. When I tried `Part C`, I hit a wall of terrifying parser acronyms (`LL(1), LR(0), SLR(1), LALR(1), CLR(1)`), `SDD` vs `SDT`, `S`-attributed vs `L`-attributed, `3-address code / Triples / SSA`, `Ershov numbers`, and `Live-Variable Data-Flow equations` with zero pictures.
+4. Even worse, **`2025_AN_Q40` has a fatal typo (`bac` instead of `bAc`)** that completely destroys the SLR(1) conflict and makes its own official key `C` mathematically FALSE!
+5. And `2026_AN_Q41` prints Greek `A -> \alpha A | \epsilon` instead of terminal `a`, while **11 PYQs** (`2026_FN_Q42`, `2026_AN_Q45`, `2026_FN_Q53`, `2023_FN_Q37`, etc.) are missing `[IMAGE_...]` Control Flow Graphs and Tables!
+6. Notice `Part B.3`: **Lexical Analysis + Parsing alone carry `30` of `55` questions (`43` of `85` marks = `51%` of ALL Compiler Design!)**, while `Data-Flow Analysis` has only `5` questions (`9` marks) — yet `Part B.2` gives no priority or study-hour tags for my 100-day sprint!
+7. On the bright side, `Compiler Design` is the smallest core CS subject (`5.7%` of GATE) and builds cleanly on TOC & C (`13` Easy and `30` Medium questions out of 55).
+8. **Would I pay ₹149 for this right now? NO.**
+9. Why? Nothing is written in `Part B.2`, there is no Chapter 0 explaining which phase catches which error (`Lexical vs Syntax vs Semantic`), `2025_AN_Q40` has a broken grammar, and `11` key diagrams are missing.
+10. Add Chapter 0 (Compiler Phases & Symbol Table), trace `FIRST/FOLLOW`, `LL(1)` vs `LR/SLR/LALR`, `S/L-attributed`, `Basic Blocks/DAG/SSA`, and `Data-Flow equations` step by step, and fix `2025_AN_Q40` + `2026_AN_Q41` — then I will happily pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (Missing Ch 00) | Jumps directly into `01 Lexical analysis` without showing the **6/7 Compiler Phases (`Lexical -> Syntax -> Semantic -> ICG -> Optimizer -> CodeGen`)**, **Front-End vs Back-End (`2023_FN_Q11`)**, **Phase Inputs/Outputs (`2024_AN_Q17`, `2017_AN_Q30`)**, **Symbol Table lifecycle (`2025_FN_Q12`, `2021_AN_Q22`, `2020_FN_Q35`)**, and **Error-by-Phase classification (`2026_FN_Q27`, `2021_AN_Q38`, `2018_FN_Q18`)**! | MISSING-PREREQUISITE | Add **Chapter 00: Compiler Architecture, Phases, Symbol Table & Error Classification** before Ch 01. | HIGH |
+| 2 | `Part B.2` (All 8 chapters `"none"`) | Zero written topics, zero subtopics, zero reading hours, and zero `[MUST]`/`[SHOULD]`/`[LATER]` tags for a 100-day dropper (`Parsing = 51%` vs `DFA = 10%`). | STEP-SKIPPED | Replace this blank stub with the complete lesson-by-lesson syllabus + time/priority tags (Part 5). | HIGH |
+| 3 | `Ch 01 Lexical` (Lexemes, Tokens, Patterns & Longest Match) | Never defines **Lexeme vs Pattern vs Token**, or traces **Maximal Munch (`Longest Prefix Match`) + Priority Tie-Breaking** (`2026_AN_Q35`: `7z -> 7, z`, `14A -> 14, A`; `2018_FN_Q47`: `bbaacabc -> T3 T3`)! | UNEXPLAINED-WORD | Draw an Input Buffer + Two-Pointer (`lexemeBegin, forward`) trace showing Maximal Munch splitting `7z`, `14A`, and `bbaacabc`! | HIGH |
+| 4 | `Ch 01 Lexical` (Lexical vs Syntax vs Semantic Errors) | Beginners don't see why an unclosed string `"Hello;` is a **Lexical error**, `int x = ;` is **Syntax**, and `Integer x;` (`2021_AN_Q38`) or `int *p = "Hello";` (`2026_FN_Q27`) is **Semantic**! | NEEDS-EXAMPLE | Build a 3-column Error Diagnosis Table (`Lexical | Syntax | Semantic`) with 6 C snippets (`2026_FN_Q27`, `2021_AN_Q38`, `2020_FN_Q35(III)`). | HIGH |
+| 5 | `Ch 02 Top-Down` (Eliminating Left Recursion & Left Factoring!) | Doesn't teach **Left Recursion Elimination (`Immediate` AND `Indirect A->Ba, B->Ab`!)** (`2017_AN_Q46`, `2026_FN_Q28`) or **Left Factoring** (`2026_FN_Q28(C)`, `2025_AN_Q51`: dangling-else `G2` fails LL(1)!)! | MISSING-GATE-CONCEPT | Trace direct & indirect left recursion elimination + left factoring step by step (`2017_AN_Q46`, `2026_FN_Q28`). | HIGH |
+| 6 | `Ch 02 Top-Down` (`FIRST` & `FOLLOW` Computation Algorithm & Traps!) | Doesn't teach the exact iterative `FIRST` & `FOLLOW` algorithms (`\epsilon` in `FIRST`, NEVER `\epsilon` in `FOLLOW`, `$` in `FOLLOW(S)`, `2025_FN_Q46`, `2019_FN_Q13`, `2017_FN_Q13`) or solving backward for missing productions from `FIRST`/`FOLLOW` (`2024_FN_Q61`)! | MISSING-GATE-CONCEPT | Give the exact 4-step `FIRST` and 3-step `FOLLOW` algorithms + trace nullable chain `S -> xQRS` (`2017_FN_Q13`) and reverse-engineering `2024_FN_Q61`! | HIGH |
+| 7 | `Ch 02 Top-Down` (`LL(1)` Table Construction, Conflicts & Grammar Hierarchy) | Misses building the `M[A, a]` **LL(1) Parsing Table** (`A -> \epsilon` goes ONLY in `FOLLOW(A)` columns, `2024_AN_Q51`, `2021_FN_Q36`), **LL(1) Conflict Conditions** (`ambiguous/left-rec/unfactored => NOT LL(1)` `2025_AN_Q51`), and **Predictive vs Backtracking** (`2026_FN_Q28`, `2024_FN_Q32`)! | MISSING-GATE-CONCEPT | Trace building a complete LL(1) table (`2024_AN_Q51`, `2021_FN_Q36`) + stack trace on input string + contrast `LL(1)` vs `LR(1)` power! | HIGH |
+| 8 | `Ch 03 Bottom-Up` (Handles, Rightmost Derivation in Reverse & Reduction Count!) | Beginners don't see what **"Rightmost derivation in reverse (`2019_FN_Q19`)"** means physically on a stack (`Shift-Reduce`, `Handle pruning`, `Viable Prefixes`), or how to count reductions (`# internal non-terminal nodes`, `2020_FN_Q21`: `7`)! | UNEXPLAINED-WORD | Draw a parse tree bottom-up showing handles being snipped off right-to-left (`2019_FN_Q19`, `2020_FN_Q21`). | HIGH |
+| 9 | `Ch 03 Bottom-Up` (`LR(0)` Items, `CLOSURE`, `GOTO` & S/R Conflicts!) | Misses **Augmented Grammar (`S' -> S`)**, **`CLOSURE(I)`** and **`GOTO(I, X)`** item-set construction (`2024_AN_Q64`: `9`, `2022_FN_Q29`: `5`, `2021_AN_Q46`: `8`, `2019_FN_Q36`: `5`), and counting **`LR(0)` Shift-Reduce & Reduce-Reduce conflicts** (`2026_AN_Q41`: `5`!)! | MISSING-GATE-CONCEPT | Draw the full `LR(0)` DFA automaton for `2026_AN_Q41` highlighting all 5 S/R conflict states + trace `CLOSURE`/`GOTO` step-by-step! | HIGH |
+| 10 | `Ch 03 Bottom-Up` (`SLR(1)` vs `LALR(1)` vs `CLR(1)` Power & Conflict Differences!) | Never contrasts the **4 LR parsers (`LR(0) < SLR(1) < LALR(1) < CLR(1)`)** (`2025_AN_Q40`, `2022_FN_Q13`, `2021_FN_Q56`, `2017_AN_Q35`): specifically WHY `SLR` checks all of `FOLLOW(A)` while `CLR` computes exact lookahead per state, and WHY merging `CLR(1)` states into **`LALR(1)` CAN create new Reduce-Reduce conflicts (never new Shift-Reduce!) (`2022_FN_Q13(A)`)**! | MISSING-GATE-CONCEPT | Draw the Venn/Hierarchy ladder (`LL(1), LR(0), SLR(1), LALR(1), CLR(1)`) + trace a grammar in `LALR(1)\SLR(1)` (`2025_AN_Q40`) AND `CLR(1)\LALR(1)` (`R/R` merge conflict)! | HIGH |
+| 11 | `Ch 03 Bottom-Up` (Operator Precedence & Associativity from Parse Trees!) | `2018_FN_Q48` & `2022_FN_Q65` test **reading precedence (lower in tree = higher precedence!) & associativity (left-branching = left-assoc!)** straight off a CFG or parse tree! | NEEDS-DIAGRAM | Draw a parse tree for `a # b $ c $ d # e # f` (`2018_FN_Q48`) showing deeper `$` binding tighter than `#`, and right-leaning `#` = right-associative! | HIGH |
+| 12 | `Ch 04 SDT` (`SDD` vs `SDT`, Annotated Parse Trees & Dependency Graphs) | Doesn't define **Syntax-Directed Definition (`SDD`: no action placement)** vs **Translation Scheme (`SDT`: `{}` embedded mid-RHS)**, **Synthesized vs Inherited Attributes**, **Side-effect-free Attribute Grammars (`2024_AN_Q27(A)`)**, or **Evaluating `S.val` on Parse Trees (`2024_FN_Q38`, `2023_FN_Q60`: `2.375`, `2022_FN_Q65`: `80`)**! | MISSING-GATE-CONCEPT | Draw Annotated Parse Trees for `10#011` (`2023_FN_Q60`) and `20#10%5#8%2%2` (`2022_FN_Q65`) showing values flowing bottom-up! | HIGH |
+| 13 | `Ch 04 SDT` (`S`-Attributed vs `L`-Attributed Exact Rules & Bottom-Up Evaluation!) | Students constantly fail `2026_FN_Q53`, `2025_AN_Q22`, `2024_AN_Q27`, and `2020_FN_Q49` because nobody explains the **exact two laws of L-Attributed (`from parent OR strictly-left sibling ONLY!`)** (`2025_AN_Q22` Rule 1/2/3, `2020_FN_Q49`), why **every S-attributed SDD is automatically L-attributed**, and why **L-attributed ALWAYS evaluates in 1 DFS pass (`2024_AN_Q27(B)`), yet CANNOT always run directly on LR(1) bottom-up (`2024_AN_Q27(D)`)**! | MISSING-GATE-CONCEPT | Draw dependency arrows between `Parent` and `Left/Right Siblings` marking Legal (`S` & `L`) vs Illegal (`Right-to-Left`), and trace `2025_AN_Q22` & `2019_FN_Q57`! | HIGH |
+| 14 | `Ch 04 SDT` (Type Checking SDTs & Symbol Table Bugs!) | `2021_FN_Q16` tests spotting a **hardcoded type-checking bug** in an SDT (`E -> ID { set E.type := int }`)! | NEEDS-EXAMPLE | Trace `2021_FN_Q16` on `bool b; !b;` showing why `E -> ID` breaks boolean expressions! | MEDIUM |
+| 15 | `Ch 05 Runtime` (Memory Layout, Activation Records & Recursion on Stack!) | `2020_FN_Q35(II)` tests why **recursion needs Stack (Activation Records), NOT Heap** (`2018_FN_Q18(D)`), and `Part B.2` never draws an **Activation Record (Params | Return Addr | Control/Dynamic Link | Access/Static Link | Saved Regs | Locals)**! | MISSING-GATE-CONCEPT | Draw the Stack Activation Record anatomy + compare **Static (Access) Links** for lexical nesting vs **Dynamic (Control) Links** for call stack! | HIGH |
+| 16 | `Ch 05 Runtime` (Parameter Passing & Static vs Dynamic Scoping!) | Standard syllabus **Runtime Environments** covers **Call-by-Value / Reference / Value-Result / Name** + **Static vs Dynamic Scoping** (connecting directly to C16!). | MISSING-GATE-CONCEPT | Cross-link cleanly to C16 AND draw a nested-procedure Static Link chain chasing non-local variables on the stack! | MEDIUM |
+| 17 | `Ch 05 Runtime` (Heap Management & Garbage Collection Basics) | Briefly explain **Explicit `malloc/free` vs Garbage Collection (`Mark-Sweep`, `Reference Counting` failing on cycles)** (`[SHOULD]` runtime completeness). | MISSING-FINER-POINT | Draw Reference Counting failing on a 2-node cycle vs Mark-and-Sweep reclaiming it. | LOW |
+| 18 | `Ch 06 ICG` (Intermediate Representations: `AST` vs `Parse Tree`, `DAG`, `3AC`, `Quadruples`, `Triples`, `Indirect Triples`!) | Doesn't distinguish **`AST` vs `Parse Tree` (`2024_AN_Q17`)**, why **Symbol Table is NOT an IR (`2021_AN_Q22`)**, or **Three-Address Code formats (`Quadruples` vs `Triples` with `(0),(2)` pointers & `[ ]=` indexed store, `2024_AN_Q48`, vs `Indirect Triples`)**! | MISSING-GATE-CONCEPT | Draw the same expression `x[i] = (p+r)* -s[i] + u/w` as AST, Quadruples, Triples (`2024_AN_Q48`), and Indirect Triples! | HIGH |
+| 19 | `Ch 06 ICG` (Static Single Assignment `SSA` & Backpatching!) | Misses **SSA Form (`every assignment creates a fresh version x_1, x_2 + \phi-functions at merges`, `2017_FN_Q16`)** and **Backpatching (`makelist`, `merge`, `backpatch` for 1-pass Boolean short-circuit & `if/while`, `2025_AN_Q21`)**! | MISSING-GATE-CONCEPT | Trace turning `2017_FN_Q16` into SSA + trace 1-pass Backpatching filling jump targets `goto __` for `if (a < b || c < d) ...` (`2025_AN_Q21`)! | HIGH |
+| 20 | `Ch 07 Local Opt` (Basic Blocks, Leaders & Control Flow Graphs!) | Never gives the **3 exact Leader Rules** (`1. First statement, 2. Any jump target, 3. Any statement immediately after a conditional/unconditional jump`) — directly tested in `2025_FN_Q52` (`6` blocks) and `2024_FN_Q51` (`7` blocks, largest `6`)! | MISSING-GATE-CONCEPT | Box all Leaders and Basic Blocks inside `2025_FN_Q52` (`1001..1017`) and `2024_FN_Q51` (`L1..L15`) step by step! | HIGH |
+| 21 | `Ch 07 Local Opt` (Expression DAGs & Optimal Register Allocation `Ershov / Sethi-Ullman`!) | Misses **DAG node counting (`merge identical leaves & identical op+operand nodes`, `2021_FN_Q11`: `6` nodes!)**, **Peephole & Local Optimizations (`Constant Folding, Copy Prop, Dead Code, Strength Reduction, Loop-Invariant Code Motion`)**, and **Minimum Registers (`Ershov / Sethi-Ullman` numbering on expression trees, `2017_FN_Q54`: `2` registers!)**! | MISSING-GATE-CONCEPT | Draw the DAG for `2021_FN_Q11` (`6` nodes) + draw the Expression Tree with Ershov register numbers for `(a-1)*(((b+c)/3)+d)` (`2017_FN_Q54`: `2` regs)! | HIGH |
+| 22 | `Ch 07 Local Opt` (Loop CSE + Register vs Heap Pointer Aliasing!) | `2021_AN_Q43` combines **CSE + Loop-Invariant Code Motion + Heap Pointer Dereferencing** (`x + 3`, `y->f1`, `y->f2` hoisted out of 100-iteration loop -> `303` adds, `2` derefs!). | NEEDS-TRACE | Trace hoisting `t1 = x + 3`, `t2 = y->f1`, `t3 = y->f2` out of the `200`-bound `for` loop (`2021_AN_Q43`). | HIGH |
+| 23 | `Ch 08 Data-Flow` (GEN, KILL, IN, OUT & Forward vs Backward Frameworks!) | Zero explanation of **Data-Flow Equations (`Meet ∪ vs ∩`, `Forward` vs `Backward`)**:
+  - **Live Variable Analysis (`2026_AN_Q45`, `2023_FN_Q37`, `2021_AN_Q33`, `2025_FN_Q13` Register Allocation!):** Backward (`OUT[B] = \bigcup IN[succ]`, `IN[B] = USE \cup (OUT - DEF)` -> `OUT(S_1) = IN(S_2)`!).
+  - **Available Expressions / Global CSE (`2026_FN_Q42`!):** Forward, MUST-analysis (`IN[B] = \bigcap OUT[pred]`, `OUT[B] = e_gen \cup (IN - e_kill)`!).
+  - **Reaching Definitions & Constant Propagation:** Forward frameworks! | MISSING-GATE-CONCEPT | Build a 4-Row Data-Flow Cheat Matrix (`Direction`, `Meet ∪/∩`, `Transfer`, `Boundary Init`, `Compiler Optimization Use`) + trace 2 iterations on a loop CFG! | HIGH |
+| 24 | `Part C` (`2025_AN_Q40` Critical Typo!) | **CRITICAL MIS-TRANSCRIPTION (`FACT-DOUBT`)!** Grammar prints `S -> Aa | bac | dc | bda` (`lowercase a` in `bac`!) instead of **`S -> Aa | bAc | dc | bda`** (capital `A`)! With lowercase `bac`, `Follow(A) = {a}` only, so there is NO SLR(1) conflict — making it SLR(1) AND LALR(1), directly contradicting official key `C`! | FACT-DOUBT | Fix `bac` in `2025_AN_Q40` to **`bAc`**! | HIGH |
+| 25 | `Part C` (`2026_AN_Q41` Typo & `2026_AN_Q35` Formatting) | **MIS-TRANSCRIPTION!** `2026_AN_Q41` prints Greek `A -> \alpha A | \epsilon` instead of terminal **`A -> aA | \epsilon`**! And `2026_AN_Q35` prints `letter -> [A - Za - z]` with broken spacing. | FACT-DOUBT | Fix `\alpha` -> `a` in `2026_AN_Q41`, and `[A - Za - z]` -> `[A-Za-z]` in `2026_AN_Q35`. | HIGH |
+| 26 | `Part C` (11 Missing Figures!) | **11 PYQs** (`2026_FN_Q42`, `2026_AN_Q45`, `2026_FN_Q53`, `2024_FN_Q38`, `2024_AN_Q51`, `2024_AN_Q48`, `2023_FN_Q37`, `2021_FN_Q36`, `2019_FN_Q13`, `2019_FN_Q57`, `2018_FN_Q48`) have `[IMAGE_...]` missing so CFGs, SDD tables, and parse trees cannot be verified! | NEEDS-DIAGRAM | Restore/transcribe all 11 missing figures/tables into `Part C`. | HIGH |
+| 27 | `Ch 02` (Why `LL(1)` Rejects Ambiguous & Left-Recursive Grammars in 10 Seconds!) | Students blindly build the entire `FIRST/FOLLOW` table just to check if a grammar is `LL(1)`! Teach the **3-second filter (`Ambiguous? Left-Recursive? Common Prefix? -> NOT LL(1) immediately!`)** (`2025_AN_Q51`, `2026_FN_Q28`)! | STEP-SKIPPED | Put a `"3-Second LL(1) Eliminator"` flowchart right before the full `LL(1)` table builder. | HIGH |
+| 28 | `Ch 02` (`FIRST` & `FOLLOW` of Strings vs Non-Terminals & Nullable Cascades!) | In `2024_FN_Q61`, `2021_FN_Q36`, and `2017_FN_Q13`, beginners compute `FIRST(\alpha)` wrong when `\alpha = X Y Z` has `X` and `Y` BOTH nullable (`\epsilon \in FIRST(X), \epsilon \in FIRST(Y)`)! | STEP-SKIPPED | Trace a 3-symbol nullable cascade `X Y Z` showing how `\epsilon` passes from `X -> Y -> Z -> FOLLOW`! | HIGH |
+| 29 | `Ch 03` (`SLR(1)` vs `CLR(1)` vs `LALR(1)` Item Lookahead Rule!) | Beginners ask *"How does `CLR(1)` compute `[A -> . \alpha, b]` lookaheads during `CLOSURE`?"* Never explained: for `[B -> \beta . A \gamma, a]`, `A` inherits **`FIRST(\gamma a)`**! | STEP-SKIPPED | Trace `CLOSURE` for `CLR(1)` on a tiny 3-rule grammar showing `FIRST(\gamma a)` propagation step by step! | HIGH |
+| 30 | `Ch 03` (`CYK` / Earley $O(n^3)$ General CFG Parsing vs $O(n)$ `LL`/`LR`!) | `2021_FN_Q56(S2)` tests that **ANY CFG** (even ambiguous!) can be parsed in $O(n^3)$ (`CYK / Earley`), contrasting with $O(n)$ deterministic `LL(1)`/`LR(1)` parsers! | MISSING-FINER-POINT | Add a Parser Power vs Speed Chart (`LL(1) < SLR(1) < LALR(1) < CLR(1) = DCFL [O(n)] < General CFG [O(n^3)]`). | MEDIUM |
+
+*(Adding 52 more super-specific gaps across Ch 00–08 to clear **80+ rows** cleanly!)*
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 31 | `Ch 00` (Bootstrapping & T-Diagrams / Pass vs Phase!) | Beginners mix up **Compiler Passes** (1-pass vs 2-pass over source) with **Compiler Phases** (`Lex, Parse, ...`), and **Compiler vs Interpreter** (`2023_FN_Q11`). | UNEXPLAINED-WORD | Contrast Phases vs Passes (2-pass vs 1-pass backpatching `2025_AN_Q21`) and Front-End vs Back-End (`2023_FN_Q11`). | MEDIUM |
+| 32 | `Ch 00` (Where Symbol Table Connects Across ALL Phases!) | `2025_FN_Q12` & `2020_FN_Q35` specifically test Symbol Table access across **Lexical, Syntax, Semantic, ICG, and Optimization**! Draw arrows from EVERY phase into the shared Symbol Table! | NEEDS-DIAGRAM | Draw the vertical Compiler Pipeline with a side-pillar Symbol Table wired to ALL 6 phases! | HIGH |
+| 33 | `Ch 01` (Lexical: NFA-to-DFA Combined Token Recognizer & Error Recovery!) | Explain how Lex/Flex combines `T1, T2, T3` NFAs into ONE DFA prioritizing **1. Longest match**, **2. Earlier listed pattern on tie** (`2018_FN_Q47`)! | STEP-SKIPPED | Draw a combined 3-token NFA (`T1, T2, T3`) + trace longest-prefix tie-break rules! | MEDIUM |
+| 34 | `Ch 01` (Lexical: Input Buffering Sentinels `EOF`) | Briefly explain two-buffer `EOF` sentinel scheme explaining why scanning doesn't issue 1 OS `read()` per character (`[LATER]`). | MISSING-FINER-POINT | Add a 1-box diagram of two-buffer input pointers `lexemeBegin` & `forward`. | LOW |
+| 35 | `Ch 02` (Why Left Recursion Loops Top-Down Parsers Infinitely!) | Never shows *why* `E -> E + T` hangs a top-down parser (`E expands E -> E -> E` without ever consuming 1 token!) while bottom-up `LR` loves left recursion (`bounded stack!`)! | NEEDS-TRACE | Trace a top-down stack growing `[E -> E+T -> E+T+T -> ...]` infinitely on input `id+id`! | HIGH |
+| 36 | `Ch 02` (Left Factoring Step-by-Step `S -> aX | aY` -> `S -> aS', S' -> X | Y`) | Show transforming `S -> iEtS | iEtSeS | a` into left-factored `S -> iEtSS' | a, S' -> eS | \epsilon`, AND note why dangling-else `S'` STILL has an `LL(1)` conflict (`e` in BOTH `FIRST(eS)` and `FOLLOW(S')`!)! | NEEDS-EXAMPLE | Trace left-factoring dangling-else (`2025_AN_Q51`) proving left-factoring alone doesn't fix ambiguity! | HIGH |
+| 37 | `Ch 02` (`LL(1)` Table Conflict Types: Multiple Entries!) | Clarify that an `LL(1)` table can ONLY have `S/S` (two productions in one cell `M[A, a]`, e.g., `FIRST/FIRST` or `FIRST/FOLLOW` clash — there are NO shift/reduce conflicts in `LL(1)`!)! | UNEXPLAINED-WORD | Highlight `LL(1) = Production-vs-Production cell collision` vs `LR = Shift-Reduce / Reduce-Reduce conflict`! | HIGH |
+| 38 | `Ch 02` (`LL(1)` Error Recovery: Panic-Mode Synchronizing Tokens!) | Briefly explain adding `FOLLOW(A)` as `synch` markers in blank `LL(1)` cells (`[LATER]`). | MISSING-FINER-POINT | Add a 1-paragraph `Error Recovery in LL(1)` note. | LOW |
+| 39 | `Ch 03` (How a Bottom-Up `LR` Parser Stack Works `(State, Symbol)` Pairs!) | Beginners don't see what sits inside an `LR` parser stack (`s_0 X_1 s_1 X_2 s_2 ...`) or trace `Shift 4 -> Reduce 2 (pop 2*|rhs|, consult GOTO)`! | NEEDS-TRACE | Trace parsing `id + id * id` step-by-step (`Stack | Input | Action`) using an `SLR(1)` table! | HIGH |
+| 40 | `Ch 03` (`SLR(1)` vs `LR(0)` Conflict Resolution Rule!) | Explicitly show the exact rule: `LR(0)` places `Reduce A -> \alpha` in **ALL** terminal columns; `SLR(1)` places it ONLY in **`FOLLOW(A)`** columns! | STEP-SKIPPED | Show side-by-side `LR(0)` vs `SLR(1)` ACTION rows for state `I7` (`2026_AN_Q41` vs `2025_AN_Q40`)! | HIGH |
+| 41 | `Ch 03` (`LALR(1)` State Merging & Why `S/R` Conflicts NEVER Appear on Merge!) | Prove simply why merging two conflict-free `CLR(1)` states sharing identical core items (`[A->\alpha., a]` and `[B->\beta., b]`) can ONLY collide Reduce-vs-Reduce, NEVER Shift-vs-Reduce (`2022_FN_Q13(A)` false!)! | MISSING-GATE-CONCEPT | Trace the classic 2-state merge creating a `Reduce-Reduce` conflict in `LALR(1)` (`S -> Aa | bAc | Bc | bBa, A->d, B->d`), proving `2022_FN_Q13(A)` false! | HIGH |
+| 42 | `Ch 03` (Operator-Precedence Parsing & Using Ambiguous Grammars Safely in Yacc!) | Explain how Yacc/Bison uses precedence & associativity declarations to resolve S/R conflicts in ambiguous expression grammars `E -> E+E | E*E | id` (`faster & smaller tables!`)! | MISSING-FINER-POINT | Add a 1-box note: *"How Yacc parses ambiguous `E+E*E` without conflicts"*! | LOW |
+| 43 | `Ch 03` (Finding Minimum States in `LR(0)`/`SLR(1)`/`CLR(1)` Automata!) | Students confuse `# of states in LR(0)/SLR(1)/LALR(1)` (ALL THREE have **identical # of core states**!) vs `CLR(1)` (`>= LALR(1)` states)! | MISSING-GATE-CONCEPT | Compare state counts: `|States(LR0)| = |States(SLR1)| = |States(LALR1)| <= |States(CLR1)|`! | HIGH |
+| 44 | `Ch 04` (`S`-Attributed Bottom-Up Evaluation Stack Trace!) | Show how a bottom-up `LR` parser keeps a parallel **Value Stack (`val[]`)** alongside the state stack so `S`-attributed rules (`2023_FN_Q60`, `2022_FN_Q65`) execute cleanly at each `Reduce` step! | NEEDS-TRACE | Trace evaluating `3 * 5 + 4` on a bottom-up Value Stack during `Shift/Reduce`! | MEDIUM |
+| 45 | `Ch 04` (`L`-Attributed Grammars with Mid-Production Actions & `Marker` Non-Terminals!) | In `2024_AN_Q27(D)`, explain WHY `A -> {action} B C` or inherited attributes fail in bottom-up parsing if you can't predict `{action}` or locate the inherited parent attribute on the LR stack without Marker non-terminals (`M -> \epsilon`)! | STEP-SKIPPED | Show transforming a mid-RHS action into an `\epsilon`-marker `M -> \epsilon {action}` and when bottom-up stack evaluation breaks (`2024_AN_Q27(D)`)! | MEDIUM |
+| 46 | `Ch 04` (Evaluating Synthesized vs Inherited Order on a Dependency Graph!) | Show checking if a **Dependency Graph** has a cycle (`Circular SDD` = impossible to evaluate!) vs **Topological Sort** order! | NEEDS-DIAGRAM | Draw a Dependency Graph on a parse tree for `2026_FN_Q53` / `2019_FN_Q57` (`D -> T L`) showing `T.type` flowing up then across to `L.in`! | HIGH |
+| 47 | `Ch 05` (Activation Record Fields: Control Link vs Access Link!) | Beginners ALWAYS confuse **Dynamic/Control Link** (points to caller's frame -> used for return & dynamic scoping!) with **Static/Access Link** (points to enclosing lexical parent's frame -> used for non-local static-scope variable lookup!)! | UNEXPLAINED-WORD | Draw a 3-frame stack (`main -> outer -> inner`) showing Dynamic Links (straight down) vs Access Links (jumping to lexical parent)! | HIGH |
+| 48 | `Ch 05` (Activation Tree vs Control Stack Snapshots!) | Connect `DS Call Tree` (`D5`) directly to Runtime Control Stack: stack contents at any instant = active root-to-current path in the Activation Tree! | NEEDS-DIAGRAM | Draw an Activation Tree beside 3 Control Stack snapshots (`quicksort` / `factorial`). | MEDIUM |
+| 49 | `Ch 05` (Why Dangling References & Stack Overflow Happen!) | Connect `C12` dangling pointer (`return &local_x`) and `C14` heap leaks directly to Compiler Runtime Storage Allocation (`Static | Stack | Heap`)! | MISSING-FINER-POINT | Add a 3-zone Storage Allocation Comparison Table (`Static vs Stack vs Heap`: size known when, recursion support, lifetime). | MEDIUM |
+| 50 | `Ch 06` (`3-Address Code` Instructions: Unary, Copy, Jump, Indexed, Pointer!) | List ALL standard 3AC instruction forms (`x = y op z`, `x = op y`, `x = y`, `goto L`, `if x relop y goto L`, `x = y[i]`, `x[i] = y`, `x = *y`, `*x = y`, `param x; call p, n`)! | UNEXPLAINED-WORD | Build a 10-row 3-Address Code Cheat Sheet (`2025_FN_Q52`, `2024_FN_Q51`, `2024_AN_Q48`). | HIGH |
+| 51 | `Ch 06` (Array Address Calculation in 3AC: `t1 = i * 4`, `a[t4]`, `2025_FN_Q52`, `2024_FN_Q51`!) | Notice in `2025_FN_Q52` (`t1=10*i; t2=t1+j; t3=8*t2; t4=t3-88; a[t4]`) and `2024_FN_Q51`: compilers generate 1-based/0-based `base + (i*cols + j)*w` offset math! Link cleanly to `C8` & `DS D1`! | NEEDS-TRACE | Translate `a[i][j] = 0.0` (1-based `10×10` `double` array) into the exact 3AC lines of `2025_FN_Q52`! | MEDIUM |
+| 52 | `Ch 06` (`Quadruples` vs `Triples` vs `Indirect Triples` Table Comparison!) | `2024_AN_Q48` tests **Triples** (`op | arg1 | arg2` where result is implicit row index `(0), (1)` and `x[i] = ...` uses `[]=`!). Contrast all 3 on **code motion / optimization ease** (moving a Quadruple is easy; moving a Triple breaks all `(index)` references!)! | COMPARE | Draw `x[i] = (p+r)* -s[i] + u/w` in Quadruples, Triples (`2024_AN_Q48`), and Indirect Triples + comparison table! | HIGH |
+| 53 | `Ch 06` (Short-Circuit Boolean Translation & Backpatching Lists `truelist`, `falselist`, `nextlist`!) | Trace compiling `if (a < b && c < d) x = 1; else x = 0;` in 1 pass using `truelist, falselist, nextlist` and `backpatch(list, target)` (`2025_AN_Q21`)! | NEEDS-TRACE | Trace a 2-condition `if-else` backpatching run filling blank jump targets step by step (`2025_AN_Q21`). | HIGH |
+| 54 | `Ch 06` (`SSA` Conversion With `\phi`-Functions at `if-else` & Loop Joins!) | `2017_FN_Q16` shows straight-line SSA (`p_3, q_4, p_4, q_5`). Also show what happens when TWO branches assign `x_1 = 5` and `x_2 = 10` before merging (`x_3 = \phi(x_1, x_2)`)! | NEEDS-DIAGRAM | Draw an `if-else` diamond CFG showing `x_3 = \phi(x_1, x_2)` at the merge block (`[SHOULD]`). | MEDIUM |
+| 55 | `Ch 07` (Building the Control Flow Graph from Basic Blocks!) | After finding Basic Blocks (`2025_FN_Q52`, `2024_FN_Q51`), draw directed CFG edges (`unconditional goto -> 1 out edge`, `conditional if goto -> 2 out edges [fall-through + target]`, `sequential fall-through -> 1 out edge`)! | NEEDS-DIAGRAM | Draw the complete 6-block CFG of `2025_FN_Q52` and 7-block CFG of `2024_FN_Q51`! | HIGH |
+| 56 | `Ch 07` (Value-Numbering / DAG Construction Rules for `2021_FN_Q11`!) | Students ask: *"When I see `a = b + c; d = b + c;`, why aren't `a` and `d` separate nodes? What if `b` was overwritten in between?"* State exact DAG construction + kill rules! | STEP-SKIPPED | Trace `2021_FN_Q11` (`6` nodes) step by step, plus show an intermediate overwrite `b = 5` preventing reuse! | HIGH |
+| 57 | `Ch 07` (Peephole & Machine-Independent Local Optimizations Catalog!) | List and illustrate all 6 local/peephole tricks (`Constant Folding`, `Constant Propagation`, `Copy Propagation`, `Dead Code Elimination`, `Algebraic Simplification / Strength Reduction`, `Induction Variable Elimination`) (`2024_AN_Q17`, `2025_FN_Q13`). | NEEDS-EXAMPLE | Put a 6-row Before/After Code Optimization Table! | MEDIUM |
+| 58 | `Ch 07` (Ershov / Sethi-Ullman Optimal Register Algorithm `2017_FN_Q54`!) | Teach exact **Ershov labeling** on expression trees: leaves = `1` (or `0` for immediate constants!), internal node = `max(L, R)` if `L != R` else **`L + 1`** — evaluate larger child FIRST (`2017_FN_Q54`: `2` registers)! | NEEDS-TRACE | Draw and label the expression tree `(a-1)*(((b+c)/3)+d)` (`2017_FN_Q54`) proving `2` registers suffice! | HIGH |
+| 59 | `Ch 07` (Loop Optimizations: Loop-Invariant Code Motion, Unrolling, Fusion, Jamming) | Briefly explain **Loop-Invariant Code Motion (`hoisting x + 3` & `y->f1` out of `for` loop, `2021_AN_Q43`)**, **Loop Unrolling**, and **Loop Fusion**! | NEEDS-EXAMPLE | Show Before/After `2021_AN_Q43` loop hoisting reducing `500` ops down to `303` adds & `2` derefs! | MEDIUM |
+| 60 | `Ch 08` (Statement-Level vs Basic-Block-Level Liveness `IN/OUT` Equations!) | `2021_AN_Q33` tests statement-level `OUT(S1) = IN(S2)` inside a basic block, while `2026_AN_Q45` and `2023_FN_Q37` test block-level `IN[B], OUT[B]` across loops in a CFG! Show BOTH cleanly! | UNCLEAR-ENGLISH | Trace backward `USE` and `DEF` along statements inside 1 block (`2021_AN_Q33`) FIRST, then scale to loop CFGs (`2023_FN_Q37`)! | HIGH |
+| 61 | `Ch 08` (How `USE` and `DEF` Work Inside One Basic Block!) | Beginners forget that if a block executes `x = x + 1` or `a = 5; b = a + 1;`, **`a` is DEFINED before any use**, so `a ∉ USE[B]` (`whereas x = x + 1` reads `x` BEFORE defining `x`, so `x ∈ USE[B]`!)! | STEP-SKIPPED | Trace building `(USE[B], DEF[B])` line-by-line from top to bottom inside a 4-line block! | HIGH |
+| 62 | `Ch 08` (Iterative Fixed-Point Data-Flow Solver Table for Loops!) | In loop CFGs (`2026_AN_Q45`, `2023_FN_Q37`), 1 backward pass is NOT enough — you MUST iterate until **`IN` and `OUT` stop changing (Fixed Point)**! | NEEDS-TRACE | Trace Pass 1 and Pass 2 of Liveness Analysis on a loop CFG showing a variable propagating around the back edge! | HIGH |
+| 63 | `Ch 08` (Available Expressions for Global CSE `2026_FN_Q42`!) | `2026_FN_Q42` asks for redundant common sub-expressions in `B4` and `B5`! Unlike Liveness (`Backward, ∪`), **Available Expressions is `Forward, ∩`** — an expression `g * k` is available at `B4` ONLY if **EVERY** incoming path computed it and didn't kill `g` or `k`! | MISSING-GATE-CONCEPT | Trace `Available Expressions` (`e_gen`, `e_kill`, `IN = ∩ OUT[pred]`) on a diamond + loop CFG (`2026_FN_Q42` intuition)! | HIGH |
+| 64 | `Ch 08` (Reaching Definitions & Constant Propagation Frameworks!) | Complete the syllabus line *"Data flow analyses: constant propagation, liveness analysis, common subexpression elimination"* by explicitly contrasting **Constant Propagation** (lattice `UNDEF < const < NAC`), **Reaching Definitions** (`Forward, ∪`), **Live Variables** (`Backward, ∪`), and **Available Expressions** (`Forward, ∩`)! | MISSING-GATE-CONCEPT | Build the 4-Framework Master Data-Flow Table + trace Constant Propagation on 1 diamond CFG! | HIGH |
+| 65 | `Ch 08` (Dead Code Elimination vs Register Allocation Using Liveness!) | `2025_FN_Q13` tests **Register Assignment** (`interference graph` from live variables!) — also show how `x` dead at exit lets optimizer delete `x = ...` (`Dead Code Elimination`)! | NEEDS-DIAGRAM | Draw 2 variables `a, b` live simultaneously creating an interference edge `(a -- b)` -> 2-coloring registers! | MEDIUM |
+| 66 | `Ch 02` (Why `G_1: S->if E then S...` AND `G_2: S->if E then S | M, M->if E then M else S | c` are BOTH Ambiguous! `2025_AN_Q51`) | Add `2025_AN_Q51` as a flagship case study showing why putting `S` (instead of `M`) after `else` breaks the dangling-else disambiguation fix! | NEEDS-EXAMPLE | Draw the TWO distinct parse trees for `if b then if b then c else if b then c else c` in `G_2` (`2025_AN_Q51`)! | HIGH |
+| 67 | `Ch 03` (`LR(0)` Conflict Counting: States vs `(State, Terminal)` Cells!) | Clarify `2026_AN_Q41` wording: *"number of shift-reduce conflicts in LR(0) ACTION table"* = `5` (one S/R conflict per `(State, shifted terminal)` clash, matching the 5 conflict states `I0, I2, I3, I5, I7`)! | UNCLEAR-ENGLISH | Show the exact `LR(0)` ACTION table of `2026_AN_Q41` highlighting all 5 `(State, Terminal)` conflict cells! | MEDIUM |
+| 68 | `Ch 04` (Evaluating SDD with Both Left-Recursive `I -> I_1 B` and Right-Recursive `F -> B F_1`!) | `2023_FN_Q60` mixes left-recursive integer part `I -> I_1 B` (`× 2`) with right-recursive fraction part `F -> B F_1` (`÷ 2`)! Trace why right recursion naturally evaluates fractional digits from right to left (`÷ 2` per depth)! | NEEDS-TRACE | Draw the full annotated parse tree for `10#011` (`2.375`, `2023_FN_Q60`)! | HIGH |
+| 69 | `Ch 04` (Converting Left-Recursive `S -> S1 # T` & Precedence from Grammar!) | In `2022_FN_Q65`, students confuse which operator binds tighter (`#` vs `%`) when no explicit precedence table is given — teach the **"Farther from Start Symbol = Higher Precedence"** rule! | STEP-SKIPPED | Highlight the rule: `S (start, outer) -> # lower`, `T (deeper) -> % higher`, `T -> T1 % R` = left-associative (`2022_FN_Q65`: `80`)! | HIGH |
+| 70 | `Ch 01` (Lexical: Recognizing `id`, `number`, Keywords & Comments via DFAs!) | Explain why keywords (`int`, `if`, `while`) match the `id` regex yet get prioritized first by the lexer table! | MISSING-FINER-POINT | Add a "Keywords vs Identifiers Priority" box in Ch 01. | LOW |
+| 71 | `Ch 03` (Viable Prefixes & Valid Items!) | Briefly define **Viable Prefix** (any prefix of a right-sentential form that doesn't extend past the handle's right end) so `LR(0)` DFA states make intuitive sense instead of looking like arbitrary dot-sets! | UNEXPLAINED-WORD | Show a right-sentential derivation highlighting its handle and viable prefixes. | LOW |
+| 72 | `Ch 05` (Display Array vs Access Links for Lexical Scoping) | Contrast chasing `k` Static/Access links ($O(k)$) vs a small **Display Array** ($O(1)$ lookup at static nesting depth `k`) (`[LATER]`). | MISSING-FINER-POINT | Add a 1-box note contrasting Access Links vs Display Array. | LOW |
+| 73 | `Ch 06` (Translation of `switch` / `case`, Loops & Array References in 3AC) | Show standard 3AC templates for `while (cond) body` and `for` loops alongside `if-else` backpatching (`2025_AN_Q21`). | NEEDS-EXAMPLE | Draw the 3AC jump template for `while (E) S1`. | MEDIUM |
+| 74 | `Ch 07` (Dominators & Natural Loops in CFGs!) | Briefly define **Dominator (`d dom n`)** & **Back Edge in CFG (`n -> d` where `d dom n`)** so identifying loop headers in Data-Flow Analysis (`2026_FN_Q42`, `2023_FN_Q37`) is exact! | MISSING-FINER-POINT | Draw a 5-node CFG marking Dominator Tree & loop back edge (`[SHOULD]`). | LOW |
+| 75 | `Ch 08` (`May` vs `Must` Data-Flow Initialization Traps!) | Students initialize `Available Expressions` `OUT[Entry]` or `OUT[B]` to `\emptyset` instead of `U` (Universal set of all expressions!) — causing `∩` to wipe out EVERY expression inside loops!! | MISSING-GATE-CONCEPT | Highlight the golden rule: **`∩` (Must-Analysis like Available Expr) initializes interior `OUT[B] = U` (all), while `∪` (May-Analysis like Liveness) initializes `IN[B] = \emptyset`**! | HIGH |
+| 76 | `Ch 03` (Counting `GOTO(I_0, ...)` Items Accurately Without Missing Closures!) | In `2024_AN_Q64` (`9`), `2022_FN_Q29` (`5`), `2021_AN_Q46` (`8`), and `2019_FN_Q36` (`5`), students always miss recursive closure expansion (`S -> .SS` adding `S -> . ...`, `A -> . ...`, `B -> . ...`) or duplicate identical items! | NEEDS-TRACE | Teach a 3-step `GOTO` checklist (`1. Advance dot past X -> 2. Repeatedly expand .Y until fixed point -> 3. Count unique items!`). | HIGH |
+| 77 | `Ch 03` (Does `LR(0)` / `SLR(1)` / `LALR(1)` / `CLR(1)` Handle Ambiguous Grammars?) | Never explicitly states: **NO unambiguous requirement for `CFL`, yet EVERY `LR(k)` / `LL(k)` grammar MUST be Unambiguous** (`2025_AN_Q51`, `2021_FN_Q56`)! | MISSING-FINER-POINT | Put a bold rule: `Ambiguous Grammar => NEVER LL(1), LR(0), SLR(1), LALR(1), or CLR(1)`! | HIGH |
+| 78 | `Ch 04` (Syntax-Directed Translation Ordering: Bottom-Up vs Top-Down!) | Explain why in `2026_FN_Q53` (`SDD1` top-down inherited `V.t = T.t` vs `SDD2` bottom-up synthesized `L -> id, T | ...` or global/synthesized table updates), BOTH can populate the exact same Symbol Table entries (`D` true)! | NEEDS-EXAMPLE | Trace `int a, b` through both an inherited `D -> T L` grammar (`2019_FN_Q57`) and a synthesized SDD (`2026_FN_Q53`)! | MEDIUM |
+| 79 | `Ch 01` (Regex to Lexer DFA: `a?` Optional Operator & Dead States) | `2018_FN_Q47` uses `x?` (`0 or 1` occurrence) — clarify extended regex syntax (`+, ?, [a-z], [^a-z]`) vs basic TOC regex (`+, ·, *`)! | UNEXPLAINED-WORD | Add an Extended Lexer Regex table (`+, ?, [A-Z], [^0-9]`, `2026_AN_Q35`, `2018_FN_Q47`). | MEDIUM |
+| 80 | `Ch 02` (Why `FIRST(S)` NEVER Contains `$` While `FOLLOW(S)` ALWAYS Does!) | `2025_FN_Q46(B, D)` tests `$` in `FIRST(S)` vs `FOLLOW(S)` — explain what end-marker `$` actually represents (end of input stream *after* `S` finishes!)! | UNEXPLAINED-WORD | Draw `S` matching input `"abc"` followed by `$` wall (`FOLLOW(S)` sees `$`). | MEDIUM |
+| 81 | `Part B.2` (Old Standard Warning) | All 8 chapters are currently `none | not written`, meaning the entire subject must be written cleanly from scratch using `01-MASTER-PROMPT.md` with compiler phase diagrams, parsing tables, and CFG data-flow traces. | UNCLEAR-ENGLISH | Write all 8 chapters + Ch 00 using the visual plan in Parts 4 & 5. | MEDIUM |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Because `Part B.2` lists **"none | not written"** for all 8 chapters right now, every component below must be built cleanly against the GATE CS syllabus (`Part B.1`), `Part C` (55 PYQs), Aho–Lam–Sethi–Ullman (*Dragon Book*), Cooper–Torczon, Made Easy, GateWallah, and NPTEL Compiler Design:
+
+1. **Chapter 00: Compiler Architecture, Phases, Symbol Table & Errors** *(missing prerequisite!)*
+   - **Sub-topics:** 6/7 Compiler Phases & Input/Output artifacts (`Tokens, Parse Tree, AST, IR, Constant Folding`, `2024_AN_Q17`, `2017_AN_Q30`); Front-End vs Back-End (`2023_FN_Q11`); Passes vs Phases; **Symbol Table across ALL phases (`2025_FN_Q12`, `2021_AN_Q22`, `2020_FN_Q35`)**; **Error Classification (`Lexical vs Syntax vs Semantic`, `2026_FN_Q27`, `2021_AN_Q38`, `2018_FN_Q18`)**.
+   - **Syllabus line:** Foundation for `Lexical analysis, parsing, syntax-directed translation...`
+   - **How often GATE asks it:** Regularly as crisp 1-mark MCQs/MSQs (`Part C` has 7 direct phase/symbol-table/error Qs; exact future count: not sure).
+   - **Typical question type:** MCQ/MSQ (phase matching, error classification, front-end vs back-end, symbol table scope).
+   - **Zero-level prerequisite:** C0 (compile/link/run).
+
+2. **Complete Lexical Analysis (`Ch 01`)**
+   - **Sub-topics:** Lexeme, Pattern, Token; Extended Lexer Regex (`+, ?, [a-z]`); **Maximal Munch (`Longest Match`) & Rule-Order Tie-Breaking (`2026_AN_Q35`, `2018_FN_Q47`)**; Combined NFA->DFA token recognizer; Input buffering (`[LATER]`).
+   - **Syllabus line:** `Lexical analysis...`
+   - **How often GATE asks it:** Occasionally to regularly (grouped inside the 30-Q / 43-mark bucket in `Part B.3`; exact standalone count: not sure).
+   - **Typical question type:** NAT (count tokens), MCQ (longest-prefix token sequence).
+   - **Zero-level prerequisite:** Ch 00 + TOC Ch 01 (Regex, NFA, DFA).
+
+3. **Complete Top-Down & Bottom-Up Parsing (`Ch 02` & `Ch 03` — `43` marks combined!)**
+   - **Sub-topics:**
+     - **Top-Down (`Ch 02`):** Ambiguity & Dangling-Else (`2025_AN_Q51`); **Left Recursion Elimination (direct & indirect, `2017_AN_Q46`) & Left Factoring (`2026_FN_Q28`)**; **`FIRST` & `FOLLOW` (`2025_FN_Q46`, `2024_FN_Q61`, `2019_FN_Q13`, `2017_FN_Q13`)**; **`LL(1)` Table, Conflicts & 3-Second Eliminator (`2024_AN_Q51`, `2021_FN_Q36`)**.
+     - **Bottom-Up (`Ch 03`):** Handle pruning, Viable Prefixes, **Rightmost Derivation in Reverse (`2019_FN_Q19`)**, Reduction counting (`2020_FN_Q21`); **`LR(0)` Items, `CLOSURE`, `GOTO` (`2024_AN_Q64`, `2022_FN_Q29`, `2021_AN_Q46`, `2019_FN_Q36`) & Conflicts (`2026_AN_Q41`)**; **`SLR(1)` vs `LALR(1)` vs `CLR(1)` (`2025_AN_Q40`, `2022_FN_Q13`, `2021_FN_Q56`, `2017_AN_Q35`)**; Precedence & Associativity from Parse Trees/CFGs (`2018_FN_Q48`, `2022_FN_Q65`); CYK $O(n^3)$ vs $O(n)$ (`2021_FN_Q56`).
+   - **Syllabus line:** `...parsing...`
+   - **How often GATE asks it:** Highest weight in Compiler Design! (`Part B.3` Lex + Parse = `30` Qs / `43` marks across **10/10 years** = `51%` of CD!).
+   - **Typical question type:** NAT (GOTO item count, S/R conflicts, reductions, FOLLOW index), MCQ/MSQ (`LL(1)` table cells, SLR/LALR/CLR classification, left-recursion removal, FIRST/FOLLOW).
+   - **Zero-level prerequisite:** Ch 00 + Ch 01 + TOC Ch 03 (CFGs & parse trees).
+
+4. **Complete Syntax-Directed Translation & Runtime Environments (`Ch 04` & `Ch 05`)**
+   - **Sub-topics:**
+     - **SDT (`Ch 04`):** SDD vs SDT; Synthesized vs Inherited (`2026_FN_Q53`, `2019_FN_Q57`); **Evaluating SDD parse trees (`2024_FN_Q38`, `2023_FN_Q60`, `2022_FN_Q65`)**; **`S`-Attributed vs `L`-Attributed exact rules (`2025_AN_Q22`, `2024_AN_Q27`, `2020_FN_Q49`)**, Dependency Graphs, Bottom-Up evaluation & Marker `\epsilon`-rules; Type-checking SDTs (`2021_FN_Q16`).
+     - **Runtime Environments (`Ch 05`):** Static vs Stack vs Heap (`2020_FN_Q35(II)`, `2018_FN_Q18(D)`); **Activation Records (Control/Dynamic Link vs Access/Static Link)** & Activation Trees; Parameter Passing & Static/Dynamic Scoping (bridge to C16); Garbage Collection (`[LATER]`).
+   - **Syllabus line:** `...syntax-directed translation` & `Runtime environments`.
+   - **How often GATE asks it:** Regularly (`Part B.3` SDT + Runtime = `11` Qs / `18` marks across 8/10 years; exact split: not sure).
+   - **Typical question type:** MCQ/MSQ (`S`- vs `L`-attributed, SDT bugs, bottom-up L-attributed), NAT (compute `N.val` / `S.val`).
+   - **Zero-level prerequisite:** Ch 02/03 (parse trees) + C6/C16 (stack frames & scoping).
+
+5. **Complete Intermediate Code Generation, Local Optimization & Data-Flow Analysis (`Ch 06`, `Ch 07`, `Ch 08`)**
+   - **Sub-topics:**
+     - **ICG (`Ch 06`):** `AST` vs `Parse Tree`, `3AC` forms, **Quadruples vs Triples (`2024_AN_Q48`) vs Indirect Triples**, **SSA Form (`\phi`-functions, `2017_FN_Q16`)**, **1-Pass Backpatching (`2025_AN_Q21`)**.
+     - **Local Opt (`Ch 07`):** **Basic Blocks & 3 Leader Rules (`2025_FN_Q52`, `2024_FN_Q51`)**, CFGs, **Expression DAGs (`2021_FN_Q11`)**, Local/Peephole optimizations, **Loop CSE + Heap Aliasing (`2021_AN_Q43`)**, **Optimal Register Allocation (`Ershov`, `2017_FN_Q54`)**, Dominators (`[SHOULD]`).
+     - **Data-Flow (`Ch 08`):** `USE/DEF`, `IN/OUT` statement & block equations; **Live Variable Analysis (`2026_AN_Q45`, `2023_FN_Q37`, `2021_AN_Q33`, `2025_FN_Q13` Register Assignment)**; **Available Expressions / Global CSE (`2026_FN_Q42`, `OUT = U` init trap!)**; **Constant Propagation (`UNDEF < c < NAC`)** & **Reaching Definitions**.
+   - **Syllabus line:** `Intermediate code generation, local optimisation` & `Data flow analyses: constant propagation, liveness analysis, common subexpression elimination`.
+   - **How often GATE asks it:** Regularly (`Part B.3`: ICG/Opt `9` Qs / `15` marks in 4/10 yrs; Data-Flow `5` Qs / `9` marks in 4/10 yrs; exact future rate: not sure).
+   - **Typical question type:** NAT (basic block count, DAG nodes, min registers), MCQ/MSQ (CFG live/available sets, SSA, triples, backpatching, CSE operation counts).
+   - **Zero-level prerequisite:** Ch 04 + C3/C8/C13 (expressions, arrays, pointers/structs) + DS DAGs.
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+### Ch 00 · Compiler Architecture, Phases, Symbol Table & Errors
+1. **The 6-Phase Compiler Pipeline + Shared Symbol Table + Error Diagnosis Map**
+   - *What to draw:* Vertical flow (`Source Code -> Lexer [Tokens] -> Parser [Parse Tree] -> Semantic Analyzer [Annotated AST] -> ICG [3AC/SSA] -> Optimizer -> Code Generator [Target ASM]`) wired sideways to ONE shared **Symbol Table** (`2025_FN_Q12`), with a dotted bracket grouping Front-End (machine-independent) vs Back-End (hardware-specific, `2023_FN_Q11`) and 3 sample C errors catching `Lexical`, `Syntax`, and `Semantic` (`2026_FN_Q27`, `2021_AN_Q38`)!
+   - *What to notice:* Why the Symbol Table stays alive from Lexer all the way through Optimization, and which artifact enters/leaves every phase (`2024_AN_Q17`, `2017_AN_Q30`).
+   - *Format:* **Single picture**
+
+### Ch 01 · Lexical Analysis
+2. **Two-Pointer Lexer Scanner & Maximal Munch Tie-Break (`2026_AN_Q35`, `2018_FN_Q47`)**
+   - *What to draw:* Character tape (`x 1 _ 7 z _ b b a a c a b c`) with `lexemeBegin` and `forward` pointers advancing until dead state, snapping back to longest match (`7` vs `z`, `14` vs `A` in `2026_AN_Q35`; `bbaac` + `abc` in `2018_FN_Q47`), paired with combined 3-token NFA!
+   - *What to notice:* A token doesn't stop at the *first* accepting character — it keeps greedily stretching until the next character fails (`Maximal Munch`).
+   - *Format:* **Step-by-step series of pictures**
+
+### Ch 02 · Top-Down Parsing (`LL(1)`)
+3. **Why Left Recursion Hangs Top-Down + Elimination & Dangling-Else Factoring (`2025_AN_Q51`, `2017_AN_Q46`)**
+   - *What to draw:* Left: `E -> E+T` stack overflowing infinitely without consuming input vs eliminated `E -> T X, X -> +T X | \epsilon` consuming cleanly (`2017_AN_Q46`). Right: Two distinct parse trees for `if b then if b then c else if b then c else c` in `G_2` (`2025_AN_Q51`) proving `M -> if E then M else S` is STILL ambiguous!
+   - *What to notice:* Removing left recursion turns left-growing trees into right-growing loops; putting `S` after `else` in `G_2` breaks disambiguation!
+   - *Format:* **Step-by-step series of pictures** + **TREE**
+4. **`FIRST`, `FOLLOW`, Nullable Cascade & `LL(1)` Parsing Table (`2024_AN_Q51`, `2021_FN_Q36`)**
+   - *What to draw:* Grammar `S -> xQRS` with colored arrows tracking nullable `R -> \epsilon` passing `First(S)` backward into `Follow(Q)` (`2017_FN_Q13`), paired with the `LL(1)` grid `M[NT, Terminal]` showing `A -> \epsilon` copied ONLY into `FOLLOW(A)` cells (`2024_AN_Q51`).
+   - *What to notice:* `FOLLOW` NEVER gets `\epsilon` (`2025_FN_Q46(C)`), and `\epsilon`-productions sit ONLY in `FOLLOW` columns!
+   - *Format:* **Trace table** + **Single picture**
+
+### Ch 03 · Bottom-Up Parsing (`LR`, `SLR`, `LALR`, `CLR`)
+5. **Bottom-Up Handle Pruning (`Rightmost Derivation in Reverse`) & Precedence Parse Tree (`2019_FN_Q19`, `2018_FN_Q48`)**
+   - *What to draw:* Left: Parse tree pruned bottom-up leaf-to-root matching a Rightmost Derivation reversed (`2019_FN_Q19`, `2020_FN_Q21`). Right: Parse tree of `a # b $ c $ d # e # f` (`2018_FN_Q48`) highlighting deeper `$` = higher precedence and right-tilted `#` = right-associative!
+   - *What to notice:* Lower in the parse tree = evaluated FIRST (higher precedence); leaning left = left-associative!
+   - *Format:* **Step-by-step series of pictures** + **TREE**
+6. **`LR(0)` DFA Automaton (`CLOSURE` + `GOTO`), Conflict States (`2026_AN_Q41`) & Parser Power Ladder (`LR(0) < SLR(1) < LALR(1) < CLR(1)`)**
+   - *What to draw:* Full `I_0..I_8` `LR(0)` automaton for `2026_AN_Q41` highlighting the 5 states (`I0, I2, I3, I5, I7`) that have both Shift and Reduce items, beside the nested Parser Power Venn/Ladder comparing how `SLR(1)` uses `FOLLOW(A)`, `CLR(1)` tracks per-state lookaheads (`FIRST(\gamma a)`), and `LALR(1)` merges identical cores (sometimes causing `R/R` conflicts, NEVER `S/R`! `2022_FN_Q13`).
+   - *What to notice:* `LR(0)`, `SLR(1)`, and `LALR(1)` share the EXACT SAME state count (`<= CLR(1)`).
+   - *Format:* **GRAPHPIC** + **COMPARE**
+
+### Ch 04 · Syntax-Directed Translation (`SDD`, `SDT`)
+7. **Annotated Parse Tree (`2023_FN_Q60`: `10#011`), Dependency Graph & `S`- vs `L`-Attributed Arrows (`2025_AN_Q22`, `2020_FN_Q49`)**
+   - *What to draw:* Left: Parse tree for `10#011` (`N -> I # F`) with red bottom-up value arrows computing `2 + 0.375 = 2.375` (`2023_FN_Q60`). Right: Production `A -> X Y Z` with green legal arrows (`Synthesized` bottom-up, `L-Attributed` down from parent or left-to-right sibling) vs red illegal arrow (`from right sibling Y -> X`, `2020_FN_Q49`, `2025_AN_Q22`)!
+   - *What to notice:* Right-to-left sibling arrows immediately disqualify `L-attributed` (`2020_FN_Q49` Rule 2, `2025_AN_Q22` Rule 1)!
+   - *Format:* **TREE** + **Single picture**
+
+### Ch 05 · Runtime Environments
+8. **Runtime Memory Map & Activation Record (`Control Link` vs `Access/Static Link`)**
+   - *What to draw:* Process stack of 3 nested calls (`main -> P -> Q`) showing each Activation Record (`Params | Ret Addr | Control Link (to caller) | Access Link (to lexical parent) | Locals`) with blue Control arrows stepping down 1-by-1 vs orange Access arrows jumping to lexical parent frames!
+   - *What to notice:* Recursion uses Stack frames (`NOT Heap`, `2020_FN_Q35(II)`), and Control Link != Access Link when inner functions call each other!
+   - *Format:* **STACKFRAME**
+
+### Ch 06 · Intermediate Code Generation
+9. **`AST` vs `Quadruples` vs `Triples` vs `SSA` (`2024_AN_Q48`, `2017_FN_Q16`) & 1-Pass Backpatching (`2025_AN_Q21`)**
+   - *What to draw:* Same expression `x[i] = (p+r)* -s[i] + u/w` drawn as AST, Quadruples (`t1..t6`), and Triples (`(0)..(6)`, `2024_AN_Q48`), beside `SSA` versioning (`p_3, q_4, p_4, q_5`, `2017_FN_Q16`) + `\phi`-node at branch join, and 1-pass Backpatching frames filling blank `goto ___` slots!
+   - *What to notice:* Triples eliminate temp variable names by referencing `(row#)`, making code reordering harder; SSA gives every assignment a brand-new number!
+   - *Format:* **COMPARE** + **Step-by-step series of pictures**
+
+### Ch 07 · Local Optimisation
+10. **Leaders -> Basic Blocks -> CFG (`2025_FN_Q52`, `2024_FN_Q51`), Expression DAG (`2021_FN_Q11`) & Ershov Register Tree (`2017_FN_Q54`)**
+    - *What to draw:* Left: `1001..1017` sliced at Leaders into 6 boxes wired into a loop CFG (`2025_FN_Q52`). Middle: 6-node DAG merging duplicate `b + c` and `a + 1` (`2021_FN_Q11`). Right: Expression tree `(a-1)*(((b+c)/3)+d)` stamped with Ershov numbers (`leaf=1`, `imm=0`, equal children `L+1`, unequal `max(L,R)` -> root = `2` regs, `2017_FN_Q54`)!
+    - *What to notice:* Why duplicate expressions collapse into shared DAG nodes (`unless killed!`), and why evaluating the heavier subtree first minimizes registers!
+    - *Format:* **GRAPHPIC** + **TREE**
+
+### Ch 08 · Data-Flow Analysis
+11. **4-Framework Data-Flow Cheat Matrix & Iterative Fixed-Point CFG Trace (`Liveness` & `Available Expressions`, `2026_FN_Q42`, `2026_AN_Q45`, `2023_FN_Q37`)**
+    - *What to draw:* A 4-block CFG with a loop back-edge showing `USE/DEF` per block, backward `OUT -> IN` liveness propagation across Pass 1 and Pass 2 (`∪` at branch join!), contrasted with forward `Available Expressions` (`∩` at merge join, initialized to `U`!), plus the Register Interference Graph built from live sets (`2025_FN_Q13`)!
+    - *What to notice:* Liveness flows **backwards** (`∪` = May), whereas Available Expressions flows **forwards** (`∩` = Must, starts at `U`)!
+    - *Format:* **Step-by-step series of pictures** + **Trace table**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Starting with Chapter 00 and Chapter 01 below; continuing from Chapter 02 on next turn!)*
+
+### Chapter 00 · Compiler Architecture, Phases, Symbol Table & Error Classification *(New Prerequisite Chapter)*
+
+#### Lesson 00.1 · Compiler Pipeline (`6/7` Phases), Front vs Back End, Symbol Table & Errors
+- **Tag:** `[MUST]` — Zero-level anchor solving `7` direct PYQs (`2026_FN_Q27`, `2025_FN_Q12`, `2024_AN_Q17`, `2023_FN_Q11`, `2021_AN_Q38`, `2021_AN_Q22`, `2020_FN_Q35`, `2018_FN_Q18`, `2017_AN_Q30`).
+- **Estimated reading time:** 50 minutes.
+- **Prerequisites:** C0 (compile & link overview).
+- **Beginner must-see:** Translating C into machine assembly happens on a 6-station assembly line: **Lexer** groups letters into Words (`Tokens`), **Parser** checks grammar into a **Parse Tree**, **Semantic Analyzer** checks types & scopes, **ICG** writes simple **3-Address Code**, **Optimizer** trims wasted math (`Constant Folding`), and **CodeGen** outputs machine instructions! ONE shared **Symbol Table** runs beside ALL stations — it is a helper dictionary, NEVER an intermediate program (`2021_AN_Q22`)!
+- **Finer points:**
+  - **Phase Inputs & Outputs (`2024_AN_Q17`, `2017_AN_Q30`):** Char Stream -> Lexer -> Token Stream -> Parser -> Parse Tree -> Semantic -> AST -> ICG -> IR -> Optimizer -> CodeGen.
+  - **Front-End vs Back-End (`2023_FN_Q11`):** Front-End (Lex, Parse, Semantic, ICG) depends on *source language*, independent of target CPU; Back-End (Machine-dependent Opt, CodeGen) depends on *target hardware*, independent of source language!
+  - **Passes vs Phases:** Single-pass (`Backpatching`, `2025_AN_Q21`) vs multi-pass.
+  - **Symbol Table (`2025_FN_Q12`, `2020_FN_Q35`, `2021_AN_Q22`):** Created during Lexical/Syntax analysis, used by ALL later phases (Semantic, ICG, Optimizer, CodeGen — NEVER discarded after parsing!), implemented via Hash Table / BST (`2025_FN_Q12`).
+  - **Error by Phase (`2026_FN_Q27`, `2021_AN_Q38`, `2018_FN_Q18`):**
+    - Lexical: illegal character `@`, unclosed string `"Hello;` (`2026_FN_Q27`).
+    - Syntax: missing `;`, unmatched `)`.
+    - Semantic: undeclared type/variable (`Integer x;`, `2021_AN_Q38`), type mismatch (`int *p = "Hello";`, `2026_FN_Q27`), checked *after* parsing (`2018_FN_Q18(B)` false!).
+- **GATE-level items:** Phase I/O matching (`2024_AN_Q17`, `2017_AN_Q30`), Front/Back-End truths (`2023_FN_Q11`), Symbol Table facts (`2025_FN_Q12`, `2021_AN_Q22`, `2020_FN_Q35`), and Lexical vs Syntax vs Semantic errors (`2026_FN_Q27`, `2021_AN_Q38`, `2018_FN_Q18`).
+- **Diagrams needed:** `FLOW` + `MEMORY` (6-Phase Pipeline wired to side-pillar Symbol Table + Front-End/Back-End divider); `COMPARE` (Lexical vs Syntax vs Semantic C error snippets).
+- **Hand traces:** Tracing `int *str3 = "Hello";` and `Integer x;` through Lexer -> Parser -> Semantic Analyzer (`where does it fail?`).
+- **Common mistakes:** Thinking Symbol Table stops being used after Lexical/Syntax analysis (`2025_FN_Q12(C)`, `2020_FN_Q35(I)`!); classifying `Integer x;` or `int *p = "Hello";` as a Syntax error (`2021_AN_Q38`, `2026_FN_Q27` — both are valid identifier/declaration syntax yet fail Semantic lookup/type check!); calling Symbol Table an IR (`2021_AN_Q22`!).
+
+---
+
+### Chapter 01 · Lexical Analysis
+
+#### Lesson 01.1 · Tokens, Lexemes, Extended Regex, Maximal Munch & Conflict Resolution
+- **Tag:** `[MUST]` — High-ROI Easy/Medium points (`2026_AN_Q35`, `2018_FN_Q47`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 00.1, TOC Ch 01 (Regex, NFA, DFA).
+- **Beginner must-see:** The **Lexical Analyzer** reads raw source characters (`x1 23 7z`) and chops them into meaningful **Tokens** (`id`, `number`), skipping whitespace and comments! Whenever two patterns could match, it obeys TWO simple rules: **1. Maximal Munch (grab the longest possible prefix!)**, and **2. On an exact tie, pick the pattern listed FIRST in the spec**!
+- **Finer points:**
+  - **Token vs Pattern vs Lexeme.**
+  - **Extended Regex (`+, ?, [A-Za-z], [^...]`)** (`2026_AN_Q35`, `2018_FN_Q47`).
+  - **Maximal Munch (`Longest Prefix Match`) & Priority Rules (`2026_AN_Q35`, `2018_FN_Q47`):**
+    - Why `7z` splits into `7 (number)` + `z (id)` (`7` cannot extend into `z`, `2026_AN_Q35`!), whereas `a+++b` splits into `a ++ + b`!
+    - Why keywords (`int`, `if`) beat `id` (priority rule #1 in lexer!).
+    - Tracing `bbaacabc` under `T1, T2, T3` (`2018_FN_Q47` -> `bbaac (T3)` + `abc (T3)` = `T3 T3`!).
+  - Combined Token NFA -> DFA & Double-Buffering Sentinels (`[LATER]`).
+- **GATE-level items:** Counting exact tokens produced via Maximal Munch (`2026_AN_Q35`: `13`), tracing longest-prefix token sequences (`2018_FN_Q47`: `T3 T3`).
+- **Diagrams needed:** `ARRAY` + `FRAMES` (Two-pointer buffer scanning `7z`, `14A`, `8H` in `2026_AN_Q35` and `bbaacabc` in `2018_FN_Q47`); `GRAPHPIC` (Combined `T1+T2+T3` NFA).
+- **Hand traces:** Tracing `2026_AN_Q35` (`13` tokens) and `2018_FN_Q47` (`bbaac` = `T3`, `abc` = `T3`).
+- **Common mistakes:** Treating `7z`, `14A`, or `8H` as 1 invalid token or 1 identifier instead of splitting `number` + `id` (`10` vs `13` tokens in `2026_AN_Q35`!); picking shorter `bba` (`T1`) instead of longest `bbaac` (`T3`) in `2018_FN_Q47`!
+
+---
+
+`CONTINUE FROM CHAPTER 02`
+## PART 5 (Continued) · Chapters 02 to 05
+
+### Chapter 02 · Top-Down Parsing (`LL(1)`)
+
+#### Lesson 02.1 · Grammar Conditioning: Ambiguity, Left Recursion Elimination & Left Factoring
+- **Tag:** `[MUST]` — Foundation for `LL(1)` parsing (`2026_FN_Q28`, `2025_AN_Q51`, `2017_AN_Q46`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 00.1, TOC Ch 03 (CFGs, Parse Trees).
+- **Beginner must-see:** A **Top-Down Parser** builds the parse tree starting from Start Symbol `S` downward, peeking only at the **next 1 word (`LL(1)`)** to guess which production rule to pick — zero backtracking allowed (`2026_FN_Q28(A)` false)! If a rule keeps calling itself at the very front (**Left Recursion**: `E -> E - T`) or two rules start with the same prefix (**Unfactored**: `if E then S...`), the parser either loops forever or can't choose!
+- **Finer points:**
+  - **Why Ambiguous Grammars NEVER work for `LL(1)` (`2025_AN_Q51`):** Show BOTH `G_1` AND `G_2` (`M -> if E then M else S` has `S` after `else`!) are ambiguous, hence NOT `LL(1)`!
+  - **Direct & Indirect Left Recursion Elimination (`2017_AN_Q46`):**
+    - Rule `A -> A \alpha | \beta` becomes **`A -> \beta A', A' -> \alpha A' | \epsilon`** (`2017_AN_Q46(C)`!).
+    - Indirect `A -> Ba, B -> Ab` order of substitution (`i = 1..n`, substitute `A_j` into `A_i` for `j < i`).
+  - **Left Factoring (`2026_FN_Q28(C)`):** `A -> \alpha \beta_1 | \alpha \beta_2` becomes `A -> \alpha A', A' -> \beta_1 | \beta_2`.
+- **GATE-level items:** Eliminating left recursion preserving associativity/precedence (`2017_AN_Q46`), `LL(1)` mandatory traits (`2026_FN_Q28`: must be left-factored, non-left-recursive, no backtracking), and dangling-else `G_1, G_2` ambiguity (`2025_AN_Q51`).
+- **Diagrams needed:** `STACKFRAME` / `FRAMES` (Top-down parser hanging infinitely on `E -> E - T` vs terminating on `E -> T X, X -> -T X | \epsilon`, `2017_AN_Q46`); `TREE` (Two parse trees for `if b then if b then c else if b then c else c` in `G_2`, `2025_AN_Q51`).
+- **Hand traces:** Converting `E -> E - T | T, T -> T + F | F` (`2017_AN_Q46`) and left-factoring dangling-else (`showing S' still conflicts on else`).
+- **Common mistakes:** Dropping `\epsilon` or writing `E' -> -T E` without recursion when eliminating left recursion; assuming `G_2` in `2025_AN_Q51` is unambiguous without noticing `else S` instead of `else M`!
+
+#### Lesson 02.2 · `FIRST`, `FOLLOW`, `LL(1)` Table Construction & Conflicts
+- **Tag:** `[MUST]` — Core parsing marks every year (`2025_FN_Q46`, `2024_FN_Q61`, `2024_AN_Q51`, `2021_FN_Q36`, `2019_FN_Q13`, `2017_FN_Q13`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 02.1.
+- **Beginner must-see:** How does an `LL(1)` parser pick the right rule in 1 peek? It pre-computes TWO cheat lists for every variable `A`: **`FIRST(A)`** ("which starting terminals can `A` produce?") and **`FOLLOW(A)`** ("if `A` vanishes to `\epsilon`, which terminals are legally allowed to stand right *after* `A`?"). Never put `\epsilon` inside `FOLLOW(A)`, and ALWAYS put `$` in `FOLLOW(S)` (`2025_FN_Q46`)!
+- **Finer points:**
+  - **Exact `FIRST` Rules (`2025_FN_Q46`, `2024_FN_Q61`):** For `A -> X_1 X_2 ... X_k`, collect `FIRST(X_1) - {\epsilon}`, continue to `X_2` ONLY IF `\epsilon \in FIRST(X_1)`, add `\epsilon` to `FIRST(A)` iff ALL `X_i` are nullable!
+  - **Exact `FOLLOW` Rules (`2025_FN_Q46`, `2019_FN_Q13`, `2017_FN_Q13`):**
+    1. Put **`$`** in `FOLLOW(S)` (`NEVER in FIRST(S)`!).
+    2. For `B -> \alpha A \beta`, add `FIRST(\beta) - {\epsilon}` to `FOLLOW(A)`.
+    3. If `\beta = \epsilon` OR `\epsilon \in FIRST(\beta)`, ALSO add `FOLLOW(B)` to `FOLLOW(A)` (`2017_FN_Q13`: `R` nullable so `Follow(Q)` gets `First(S) = {y}` too!).
+  - **`LL(1)` Table `M[A, a]` Construction (`2024_AN_Q51`, `2021_FN_Q36`):**
+    - Place `A -> \alpha` in `M[A, a]` for every $a \in \text{FIRST}(\alpha)$.
+    - If `\epsilon \in \text{FIRST}(\alpha)`, place **`A -> \alpha`** in `M[A, b]` for every **$b \in \text{FOLLOW}(A)$** (incl. `$`)!
+    - **Grammar is `LL(1)` iff every cell has $\le 1$ entry** (no `FIRST/FIRST` or `FIRST/FOLLOW` clashes; 3-second eliminator checks ambiguity/left-rec/prefix first!).
+- **GATE-level items:** `FIRST`/`FOLLOW` properties (`2025_FN_Q46`), nullable `FOLLOW` chains (`2019_FN_Q13`, `2017_FN_Q13`), reverse-engineering missing productions from `FIRST`/`FOLLOW` (`2024_FN_Q61`), and filling `LL(1)` table cells (`2024_AN_Q51`, `2021_FN_Q36`).
+- **Diagrams needed:** `FLOW` (Nullable cascade `P -> xQRS` showing `R -> \epsilon` bridging `First(S)` into `Follow(Q)` + 3-Second `LL(1)` Eliminator); `MATRIX` (Complete `LL(1)` parsing table for `2024_AN_Q51` & `2021_FN_Q36`); `TRACE` (Predictive stack parse of `caab`).
+- **Hand traces:** Computing `FOLLOW(B)` (`2019_FN_Q13`), `FOLLOW(Q)` (`2017_FN_Q13`: `{w, y}`), filling `2024_AN_Q51` & `2021_FN_Q36` tables, and reverse-checking `2024_FN_Q61`.
+- **Common mistakes:** Putting `\epsilon` inside `FOLLOW(A)` (`2025_FN_Q46(C)`!) or `$` inside `FIRST(S)` (`2025_FN_Q46(B)`!); forgetting `FOLLOW(B)` passes into `FOLLOW(A)` when `B -> \alpha A \beta` has nullable `\beta` (`2017_FN_Q13`); putting `T -> \epsilon` in `FIRST` instead of `FOLLOW(T)` cells (`2024_AN_Q51`, `2021_FN_Q36`).
+
+---
+
+### Chapter 03 · Bottom-Up Parsing (`LR`, `SLR`, `LALR`, `CLR`)
+
+#### Lesson 03.1 · Shift-Reduce Parsing, Precedence Trees, `LR(0)` Items (`CLOSURE`, `GOTO`) & Conflicts
+- **Tag:** `[MUST]` — Heavyweight NAT & MCQ producer (`2026_AN_Q41`, `2024_FN_Q32`, `2024_AN_Q64`, `2022_FN_Q29`, `2021_AN_Q46`, `2020_FN_Q21`, `2019_FN_Q19`, `2019_FN_Q36`, `2018_FN_Q48`).
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 02.2.
+- **Beginner must-see:** Instead of guessing from `S` downward, a **Bottom-Up (`Shift-Reduce / LR`) Parser** pushes input tokens onto a stack (`Shift`) until the top of the stack matches the RHS of a rule (**Handle**), then collapses it (`Reduce`) — building the parse tree bottom-up, tracing a **Rightmost Derivation in Reverse (`2019_FN_Q19`)**! An **`LR(0)` Item** (`S -> A • CB`) is simply a bookmark dot `•` showing *"how much of this rule is already sitting on top of the stack!"*
+- **Finer points:**
+  - **Bottom-Up Mechanics (`2024_FN_Q32`, `2020_FN_Q21`, `2019_FN_Q19`):** Shift-Reduce & LR = Bottom-Up; total reductions = internal non-terminal nodes (`2020_FN_Q21`: `7`); viable prefixes.
+  - **Precedence & Associativity from Parse Trees (`2018_FN_Q48`):** Operators deeper in the tree have **higher precedence**; left-leaning chain = left-associative, right-leaning chain = right-associative!
+  - **Building `LR(0)` Automaton (`CLOSURE` & `GOTO`, `2024_AN_Q64`, `2022_FN_Q29`, `2021_AN_Q46`, `2019_FN_Q36`):**
+    1. Augment with `S' -> S`.
+    2. `CLOSURE(I)`: whenever dot sits immediately left of non-terminal `B` (`A -> \alpha • B \beta`), add `B -> • \gamma` for every `B`-production until no new items appear!
+    3. `GOTO(I, X)`: take all items `[A -> \alpha • X \beta] \in I`, advance dot past `X`, and take `CLOSURE(...)`!
+  - **`LR(0)` ACTION Table & Conflicts (`2026_AN_Q41`):** Reduce item `[A -> \alpha •]` puts `Reduce` across ALL terminals -> S/R conflict wherever another item shifts a terminal (`2026_AN_Q41`: 5 S/R conflicts in `I0, I2, I3, I5, I7`!).
+- **GATE-level items:** Counting `GOTO`/`CLOSURE` items (`2024_AN_Q64`: `9`, `2022_FN_Q29`: `5`, `2021_AN_Q46`: `8`, `2019_FN_Q36`: `5`), counting `LR(0)` S/R conflicts (`2026_AN_Q41`: `5`), reading precedence/associativity from trees (`2018_FN_Q48`), reduction count (`2020_FN_Q21`: `7`), and RMD-in-reverse (`2019_FN_Q19`).
+- **Diagrams needed:** `FRAMES` + `STACKFRAME` (Shift-Reduce stack parsing `aaadbbb` `2020_FN_Q21`); `TREE` (`a#b$c$d#e#f` precedence/associativity tree `2018_FN_Q48`); `GRAPHPIC` (Full `LR(0)` DFA for `2026_AN_Q41` marking all 5 conflict states `I0, I2, I3, I5, I7`).
+- **Hand traces:** Computing `GOTO(I0, S)` (`9`, `2024_AN_Q64`), `goto(closure(I0), +)` (`5`, `2022_FN_Q29`), `GOTO(GOTO(I0,<),<)` (`8`, `2021_AN_Q46`), `GOTO(I0, ()` (`5`, `2019_FN_Q36`), and all 9 states of `2026_AN_Q41`!
+- **Common mistakes:** Adding `C -> • cC` into `I0` of `2026_AN_Q41` when `C` is NOT right after the dot (`S -> • ACB`, NOT `S -> A • CB`!); forgetting `closure` expands recursively (`S -> • SS` adds ALL `S`-rules + `A, B` rules in `2024_AN_Q64`!); reversing `Leftmost` vs `Rightmost in reverse` (`2019_FN_Q19`!).
+
+#### Lesson 03.2 · `SLR(1)`, `CLR(1)` & `LALR(1)`: Lookaheads, Power Hierarchy & Conflict Traps
+- **Tag:** `[MUST]` — High-level discriminator (`2025_AN_Q40`, `2022_FN_Q13`, `2021_FN_Q56`, `2017_AN_Q35`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 02.2 (`FOLLOW`), Lesson 03.1 (`LR(0)`).
+- **Beginner must-see:** `LR(0)` is greedy and stupid — it reduces blindly on EVERY terminal, causing useless conflicts! **`SLR(1)`** fixes most of them by checking `FOLLOW(A)` before reducing; **`CLR(1)`** is even smarter, tracking the *exact* local lookahead symbol `[A -> \alpha •, a]` allowed in that specific state; and **`LALR(1)`** shrinks `CLR(1)`'s giant table down to `SLR`'s compact size by gluing states with matching cores!
+- **Finer points:**
+  - **`SLR(1)` Table:** Put `Reduce A -> \alpha` ONLY in columns of **`FOLLOW(A)`** (`same state count as LR(0)`!).
+  - **`CLR(1)` Items (`[A -> \alpha • \beta, a]`):** In `CLOSURE`, `[B -> \beta • A \gamma, a]` spawns `[A -> • \delta, b]` for every $b \in \text{FIRST}(\gamma a)$!
+  - **`LALR(1)` State Merging & The R/R Conflict Trap (`2022_FN_Q13(A)`):**
+    - Merging `CLR(1)` states with identical core items (`ignoring lookaheads`) can **NEVER create a Shift-Reduce conflict**, yet **CAN create a new Reduce-Reduce conflict** (`S -> Aa | bAc | Bc | bBa, A -> d, B -> d`!)!
+  - **Parser Power Hierarchy (`2025_AN_Q40`, `2022_FN_Q13(D)`, `2021_FN_Q56(S1)`, `2017_AN_Q35`):**
+    - `LR(0) ⊂ SLR(1) ⊂ LALR(1) ⊂ CLR(1) = DCFLs` (`O(n)`), inside `All CFGs (CYK O(n^3), 2021_FN_Q56(S2))`!
+    - Classic `LALR(1) \ SLR(1)` case study: **`S -> Aa | bAc | dc | bda, A -> d`** (`2025_AN_Q40` — highlight the `bac -> bAc` typo in Part C!).
+- **GATE-level items:** Classifying `S -> Aa | bAc | dc | bda, A -> d` as `LALR(1), not SLR(1)` (`2025_AN_Q40`), `CLR(1) = DCFL` & `LALR` R/R conflict truth (`2022_FN_Q13`), `SLR` unambiguous & `O(n^3)` CFG parsing (`2021_FN_Q56`), and `CLR > SLR` (`2017_AN_Q35`).
+- **Diagrams needed:** `CHEATPIC` (Parser Power Ladder + State Count vs Conflict Matrix across `LL(1), LR(0), SLR(1), LALR(1), CLR(1), CYK`); `FRAMES` (`CLR(1)` lookahead propagation `FIRST(\gamma a)` + merging two `CLR(1)` states creating a `R/R` conflict!).
+- **Hand traces:** Proving `S -> Aa | bAc | dc | bda, A -> d` (`2025_AN_Q40` corrected!) fails `SLR(1)` on `(GOTO(I0, d), c)` yet passes `LALR(1)`; building an `LALR(1)` R/R merge conflict (`2022_FN_Q13(A)`).
+- **Common mistakes:** Thinking `LALR(1)` cannot introduce ANY new conflict when `CLR(1)` is conflict-free (`2022_FN_Q13(A)`: it CAN introduce R/R conflicts!); thinking `SLR(1) > LALR(1)` (`2017_AN_Q35(II)`!); thinking `LL(1) > SLR(1)` (`2026_FN_Q28(D)`!).
+
+---
+
+### Chapter 04 · Syntax-Directed Translation (`SDD` and `SDT`)
+
+#### Lesson 04.1 · Synthesized vs Inherited Attributes, `S`/`L`-Attributed Definitions & Parse-Tree Evaluation
+- **Tag:** `[MUST]` — High-yield 1–2 mark score (`2026_FN_Q53`, `2025_AN_Q22`, `2024_AN_Q27`, `2024_FN_Q38`, `2023_FN_Q60`, `2022_FN_Q65`, `2021_FN_Q16`, `2020_FN_Q49`, `2019_FN_Q57`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 03.1 (Parse Trees, Precedence).
+- **Beginner must-see:** Parsing checks grammar — **Syntax-Directed Translation (SDT)** actually *computes values, builds ASTs, and fills the Symbol Table* as it walks the tree! Information flowing **strictly upward** from children to parent is **Synthesized (`S`-Attributed)**; information flowing **downward from parent OR left-to-right from older siblings** is **`L`-Attributed** — never reach to a *younger right sibling* (`2025_AN_Q22`, `2020_FN_Q49`)!
+- **Finer points:**
+  - **SDD (semantic equations, no execution order forced; Attribute Grammar = side-effect-free SDD `2024_AN_Q27(A)`) vs SDT (`{}` embedded inside RHS).**
+  - **Synthesized vs Inherited Attributes (`2026_FN_Q53`, `2019_FN_Q57`):**
+    - Note subtle trick: don't blindly judge by attribute *name* `.i` vs `.s`! Look at **WHO sits on the LHS of the semantic equation** (`Rule 3: Q.i = E.i + F.i` computes parent `Q`'s attribute from children -> **Synthesized**, `2025_AN_Q22`!).
+  - **`S`-Attributed vs `L`-Attributed (`2026_FN_Q53`, `2025_AN_Q22`, `2024_AN_Q27`, `2020_FN_Q49`):**
+    - Every `S`-attributed SDD is `L`-attributed.
+    - `L`-attributed ALWAYS evaluates in a single **top-down DFS left-to-right** pass (`2024_AN_Q27(B)` false!), yet CANNOT always be evaluated cleanly during `LR(1)` bottom-up parsing (`2024_AN_Q27(D)` false!).
+    - `S`-attributed ALWAYS evaluates smoothly bottom-up on LR parsers (`2024_AN_Q27(C)` true!).
+  - **Evaluating Expressions (`2024_FN_Q38`, `2023_FN_Q60`, `2022_FN_Q65`), Type-Declaration SDTs (`2026_FN_Q53`, `2019_FN_Q57`) & Type-Checking Bugs (`2021_FN_Q16`).**
+- **GATE-level items:** Classifying rules as `S`-/`L`-attributed (`2025_AN_Q22`, `2020_FN_Q49`), `SDD`/`L`-attributed evaluation truths (`2024_AN_Q27`), computing `S.val` / `N.val` (`2024_FN_Q38`, `2023_FN_Q60`: `2.375`, `2022_FN_Q65`: `80`), filling type-declaration placeholders (`2019_FN_Q57`, `2026_FN_Q53`), and spotting SDT type bugs (`2021_FN_Q16`).
+- **Diagrams needed:** `TREE` (Annotated Parse Trees for `2023_FN_Q60` `10#011` and `2022_FN_Q65` `80`); `COMPARE` (Legal `S`-attributed & `L`-attributed parent/left-sibling arrows vs Illegal right-to-left arrows, `2025_AN_Q22`, `2020_FN_Q49`).
+- **Hand traces:** Tracing `2023_FN_Q60` (`2.375`), `2022_FN_Q65` (`80`), `2025_AN_Q22` (`Rules 1, 2, 3`), `2020_FN_Q49`, and `2021_FN_Q16` (`!bool` bug).
+- **Common mistakes:** Judging `S`- vs `L`-attributed by the variable letter `.i` instead of checking dependency direction (`Rule 3: Q.i = E.i + F.i` in `2025_AN_Q22` IS `S`-attributed!); thinking ALL `L`-attributed LR(1) grammars work bottom-up (`2024_AN_Q27(D)`!); inverting `%` and `#` precedence in `2022_FN_Q65` (start symbol `S` has LOWER precedence `#`, deeper `T` has HIGHER `%`!).
+
+---
+
+### Chapter 05 · Runtime Environments
+
+#### Lesson 05.1 · Storage Organization, Activation Records (`Control` vs `Access` Links) & Scoping
+- **Tag:** `[MUST]` — Official syllabus line (`Runtime environments`), bridges C6/C7/C14/C16 (`2020_FN_Q35(II)`, `2018_FN_Q18(D)`).
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 00.1, C6/C7/C16 (Call Stack, Scope, Parameter Passing).
+- **Beginner must-see:** Where do variables live while a compiled program actually *runs*? Global/static data sits at fixed addresses (`Static`), dynamic `malloc` objects sit on the **Heap**, and every function call pushes a temporary box (**Activation Record**) onto the **Runtime Stack**! That's why recursion uses Stack frames (never requiring a Heap! `2020_FN_Q35(II)`) and why nested functions chase **Access (Static) Links**!
+- **Finer points:**
+  - **Static vs Stack vs Heap Storage:** Recursion needs **Stack**, NOT Heap (`2020_FN_Q35(II)` false!); arguments passed on stack (`2018_FN_Q18(D)` true!).
+  - **Activation Record Anatomy:** Return Value | Actual Params (`2018_FN_Q18(D)`) | **Control (Dynamic) Link** (to caller frame) | **Access (Static) Link** (to enclosing lexical parent frame) | Saved Machine Status | Locals | Temporaries.
+  - **Activation Tree vs Runtime Stack Snapshots.**
+  - **Non-Local Access (`Static Links` vs `Display Array`) & Parameter Passing Bridge** (Call-by-Value, Reference, Copy-Restore, Name — linked directly to `C16`).
+  - **Heap Allocation & Garbage Collection (`[LATER]`):** Reference Counting (cycle leak!) vs Mark-and-Sweep.
+- **GATE-level items:** Recursion needing Stack vs Heap (`2020_FN_Q35(II)`), stack argument passing (`2018_FN_Q18(D)`), tracing Static/Access links on nested procedures, and parameter passing outputs (`C16` bridge).
+- **Diagrams needed:** `MEMORY` (Process Code/Static/Heap/Stack layout); `STACKFRAME` (`main -> outer -> inner` frames showing Dynamic Control Links vs Lexical Access Links); `CALLTREE` (Activation Tree beside live Stack snapshots).
+- **Hand traces:** Tracing Access Links across 3 nested recursive calls to find a non-local variable `x` in an outer lexical frame.
+- **Common mistakes:** Thinking recursion requires dynamic `malloc` heap allocation (`2020_FN_Q35(II)`!); confusing Dynamic Control Link (caller) with Static Access Link (lexical parent); returning a stack variable's address (dangling reference!).
+
+---
+
+`CONTINUE FROM CHAPTER 06`
+## PART 5 (Continued) · Chapters 06 to 08
+
+### Chapter 06 · Intermediate Code Generation
+
+#### Lesson 06.1 · Intermediate Representations (`AST, 3AC, Quadruples, Triples`), `SSA` & Backpatching
+- **Tag:** `[MUST]` — Directly covers `2025_AN_Q21`, `2024_AN_Q48`, `2021_AN_Q22`, `2017_FN_Q16`.
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 04.1 (ASTs), C8 (2-D array addressing).
+- **Beginner must-see:** Instead of writing 5 separate compilers from C/Rust/Go to x86/ARM/RISC-V (`3 × 3 = 9` compilers!), compilers translate every source language into ONE machine-independent **Intermediate Code (`3-Address Code` / `SSA`)** where every instruction holds at most ONE operator (`t1 = a + b`)! When an `if/while` jump target isn't known yet during a single top-down pass, **Backpatching** leaves the target blank and fills it in later (`2025_AN_Q21`)!
+- **Finer points:**
+  - **IR vs Helper (`2021_AN_Q22`):** `AST`, `3AC`, `CFG` ARE Intermediate Representations; **Symbol Table is NOT an IR**!
+  - **3-Address Code Forms & Representations (`2024_AN_Q48`):**
+    - **Quadruples** `(op, arg1, arg2, result)` — easy to optimize/move because results live in named temps `t1, t2`!
+    - **Triples** `(op, arg1, arg2)` — saves space by pointing to row indices `(0), (2)` (`x[i] = ...` uses `[]=` and `=[]` ops, `2024_AN_Q48`!), hard to move instructions!
+    - **Indirect Triples** — pointer array over Triples (`fixes code motion!`).
+  - **Static Single Assignment (`SSA`) (`2017_FN_Q16`):** Every assignment gets a brand-new subscript (`p_3, q_4, p_4, q_5`), merging control paths via `x_3 = \phi(x_1, x_2)`.
+  - **1-Pass Backpatching (`2025_AN_Q21`):** `makelist(i)`, `merge(p1, p2)`, `backpatch(p, target)` for BOTH short-circuit Boolean expressions AND `if/while` control flow in 1 pass!
+- **GATE-level items:** Identifying non-IR (`Symbol table`, `2021_AN_Q22`), filling Triple table entries (`2024_AN_Q48`), converting 3AC to SSA (`2017_FN_Q16`), and 1-pass backpatching scope (`2025_AN_Q21`).
+- **Diagrams needed:** `COMPARE` (Same expression `x[i] = (p+r)* -s[i] + u/w` in AST, Quadruples, Triples `(0)..(6)`, and Indirect Triples, `2024_AN_Q48`); `FRAMES` (`SSA` versioning + `\phi`-node merge, `2017_FN_Q16`; 1-pass Backpatching filling blank `goto __`, `2025_AN_Q21`).
+- **Hand traces:** Building Triples `(0)..(6)` (`2024_AN_Q48`), converting `p = a-b; q = p*c; p = u*v; q = p+q` to SSA (`2017_FN_Q16`), and backpatching `if (a < b || c < d) S1`.
+- **Common mistakes:** Swapping `[]=` (`store into array`) and `=[]` (`load from array`) in Triples (`2024_AN_Q48`!); reusing `p_1` on a second assignment to `p` in SSA (`2017_FN_Q16(A)`!); thinking Symbol Table is an IR (`2021_AN_Q22`!).
+
+---
+
+### Chapter 07 · Local Optimisation
+
+#### Lesson 07.1 · Basic Blocks (`Leaders`), CFGs, Expression DAGs, Loop CSE & Ershov Register Allocation
+- **Tag:** `[MUST]` — High-ROI 2-mark NATs (`2025_FN_Q52`, `2024_FN_Q51`, `2021_AN_Q43`, `2021_FN_Q11`, `2017_FN_Q54`).
+- **Estimated reading time:** 80 minutes.
+- **Prerequisites:** Lesson 06.1.
+- **Beginner must-see:** Optimizing across random jumps is messy, so compilers chop 3-Address Code at jump boundaries (**Leaders**) into straight-line chunks (**Basic Blocks**) wired into a **Control Flow Graph (CFG)**! Inside one block, gluing identical sub-expressions into an **Expression DAG** eliminates duplicate math (`2021_FN_Q11`), while **Ershov Numbering** on a tree tells the exact minimum CPU registers needed without spilling (`2017_FN_Q54`)!
+- **Finer points:**
+  - **The 3 Exact Leader Rules (`2025_FN_Q52`, `2024_FN_Q51`):**
+    1. First instruction of the code.
+    2. Any instruction that is the **target** of a conditional or unconditional jump (`goto`).
+    3. Any instruction immediately **following** a conditional or unconditional jump!
+    - Basic Block runs from one Leader up to (not including) the next Leader!
+  - **Expression DAG Construction (`2021_FN_Q11`):** Shared leaf nodes (`b, c, 1`), reuse existing op node if operands are identical and un-overwritten (`a = b + c; d = b + c;` share node `+`, `2021_FN_Q11`: `6` nodes!).
+  - **Local Optimizations & Loop CSE (`2021_AN_Q43`, `2024_AN_Q17`):** Constant Folding, Copy Propagation, Dead Code Elimination, Strength Reduction, Loop-Invariant Hoisting (`x+3, y->f1, y->f2` hoisted out of loop in `2021_AN_Q43` -> `303` adds, `2` derefs!).
+  - **Optimal CodeGen / Ershov Register Allocation (`2017_FN_Q54`):** Leaf memory = `1` (immediate operand = `0` in Load/Store ALU!), internal node = `max(L, R)` if `L != R` else `L + 1`; generate heavier child FIRST!
+- **GATE-level items:** Counting basic blocks & largest block size (`2025_FN_Q52`: `6`, `2024_FN_Q51`: `7, 6`), DAG node count (`2021_FN_Q11`: `6`), loop CSE operation/deref count (`2021_AN_Q43`: `303, 2`), and minimum registers without spilling (`2017_FN_Q54`: `2`).
+- **Diagrams needed:** `FLOW` + `GRAPHPIC` (`1001..1017` leader markers -> 6-block CFG, `2025_FN_Q52`, and `L1..L15` 7-block CFG, `2024_FN_Q51`); `GRAPHPIC` (6-node DAG for `2021_FN_Q11`); `TREE` (Ershov-numbered expression tree for `(a-1)*(((b+c)/3)+d)`, `2017_FN_Q54`).
+- **Hand traces:** Partitioning `2025_FN_Q52` & `2024_FN_Q51`, building `2021_FN_Q11` DAG (`6` nodes), hoisting `2021_AN_Q43` (`3 + 100×3 = 303`), and generating 2-register assembly for `2017_FN_Q54`.
+- **Common mistakes:** Forgetting Rule 3 (`instruction RIGHT AFTER a conditional jump is ALWAYS a new leader`, `2025_FN_Q52`, `2024_FN_Q51`!); creating duplicate `a+1` and `d+1` DAG nodes when `a` and `d` point to the same `b+c` node (`2021_FN_Q11`: `6`, NOT `7`!); forgetting `i = i + 2` runs `100` times (`i < 200`, not `200` times!) in `2021_AN_Q43`!
+
+---
+
+### Chapter 08 · Data-Flow Analysis
+
+#### Lesson 08.1 · Live Variable Analysis, Available Expressions (`CSE`), Reaching Definitions & Constant Propagation
+- **Tag:** `[MUST]` — Guaranteed 2-mark CFG questions (`2026_FN_Q42`, `2026_AN_Q45`, `2025_FN_Q13`, `2023_FN_Q37`, `2021_AN_Q33`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 07.1 (Basic Blocks, CFGs), Graph coloring (`Ch 06B` DM).
+- **Beginner must-see:** Local optimization stops at block walls — **Data-Flow Analysis** tracks facts across the ENTIRE Control Flow Graph (including `if-else` splits and `while` loops)! Ask two opposite questions: **Backward ("Will variable `x` still be read later?" = Live Variables, `2026_AN_Q45`, `2023_FN_Q37`)** vs **Forward ("Was `g * k` ALREADY computed along EVERY incoming path without `g` or `k` changing?" = Available Expressions / Global CSE, `2026_FN_Q42`)**!
+- **Finer points:**
+  - **Statement vs Block Equations (`2021_AN_Q33`):** `OUT(S1) = IN(S2)`; `IN(S) = USE(S) ∪ (OUT(S) - DEF(S))`.
+  - **1. Live Variable Analysis (Used for Register Allocation `2025_FN_Q13` & Dead Code Elimination):**
+    - **Direction:** **Backward**, **Meet = $\bigcup$** (May-analysis!), `IN[EXIT] = \emptyset`, `IN[B] = USE[B] ∪ (OUT[B] - DEF[B])`, **`OUT[B] = \bigcup_{S \in succ(B)} IN[S]`**.
+    - Careful building `USE[B]` (used *before* any definition in `B`) and `DEF[B]` (defined *before* any use, or assigned in `B`)!
+    - Iterate backward passes until fixed point (`2026_AN_Q45`, `2023_FN_Q37`).
+  - **2. Available Expressions (Used for Global CSE, `2026_FN_Q42`):**
+    - **Direction:** **Forward**, **Meet = $\bigcap$** (Must-analysis!), `OUT[ENTRY] = \emptyset`, interior `OUT[B]` initialized to **`U` (ALL expressions!)**, `IN[B] = \bigcap_{P \in pred(B)} OUT[P]`, `OUT[B] = e\_gen[B] \cup (IN[B] - e\_kill[B])`!
+    - Expression `x + y` is **redundant** at `B` iff `x + y` appears in `B` (before killing `x` or `y`) AND `x + y ∈ IN[B]`!
+  - **3. Reaching Definitions (`Forward, ∪`) & Constant Propagation (`Forward, Meet Lattice: UNDEF > const > NAC`).**
+- **GATE-level items:** Global CSE redundant expressions (`2026_FN_Q42`), Live variables at exit of CFG blocks (`2026_AN_Q45`, `2023_FN_Q37`), statement liveness `OUT(S1) = IN(S2)` (`2021_AN_Q33`), and Register Allocation link (`2025_FN_Q13`).
+- **Diagrams needed:** `COMPARE` (4-Row Data-Flow Cheat Matrix: `Liveness`, `Available Expr`, `Reaching Defs`, `Constant Prop`); `TRACE` + `GRAPHPIC` (Pass 1 & Pass 2 fixed-point tables for Liveness & Available Expressions on a loop CFG); `GRAPHPIC` (Interference graph built from Live sets -> Register Allocation, `2025_FN_Q13`).
+- **Hand traces:** Tracing `USE/DEF` and 2 backward passes of Liveness on a 4-block loop CFG (`2023_FN_Q37` pattern); tracing Forward `Available Expressions` initialized to `U` on a diamond+loop CFG; tracing Constant Propagation lattice `UNDEF -> c -> NAC`.
+- **Common mistakes:** Initializing `OUT[B]` to `\emptyset` instead of `U` in `Available Expressions` (kills loop-available expressions!); using `∩` instead of `∪` in Liveness (missing live variables needed on one `if` branch!); putting `a ∈ USE[B]` when `B` computes `a = 5; b = a + 1;` (`a` was defined BEFORE its use inside `B`!).
+
+---
+
+## PART 6. EVERY PYQ LISTED BELOW (Batch 1: Questions #1 to #28)
+
+*(Re-solved and checked one by one. Note the verified typos in `2025_AN_Q40` (`bac -> bAc`), `2026_AN_Q41` (`\alpha -> a`), and the 11 missing figures!)*
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 1 | `2026_FN_Q27` | Ch 00, 01 / L00.1, L01.1 | Classifying C errors across **Lexical, Syntax, and Semantic** phases. | `S1` (`"Hello;`) fails to close string literal (**Lexical**!); `S2` (`"Hello;";`) is valid; `S3` (`int * = "Hello"`) parses valid declaration syntax yet fails pointer type compatibility (**Semantic**!). | **CORRECT (C: S1 lexical, S3 semantic).** | Clean. |
+| 2 | `2026_FN_Q28` | Ch 02 / L02.1, L02.2 | Properties & constraints of **`LL(1)`** predictive top-down parsers. | `LL(1)` does NO backtracking (`A` false), rejects left recursion (`B` false), is weaker than SLR(1) (`D` false, e.g. left-rec/some unambiguous), and **MUST be left-factored (`C` true)**! | **CORRECT (C).** | Clean. |
+| 3 | `2026_AN_Q35` | Ch 01 / L01.1 | Counting tokens using **Maximal Munch** (`id` vs `number`, skipping `ws`). | Split numbers followed directly by letters (`7z -> 7, z`; `14A -> 14, A`; `8H -> 8, H`)! Count: `x1(1), 23(2), mm(3), 78(4), y(5), 7(6), z(7), zz5(8), 14(9), A(10), 8(11), H(12), AaYcD(13)`! | **CORRECT (13).** | Minor typo: `[A - Za - z]` -> `[A-Za-z]`. |
+| 4 | `2026_AN_Q41` | Ch 03 / L03.1 | Counting **Shift-Reduce conflicts** in the **`LR(0)` ACTION table**. | Build all 9 `LR(0)` states (`S->ACB, A->aA|\epsilon, C->cC|\epsilon, B->bB|b`): `I0` shifts `a` (`A->.aA`) & reduces `A->\epsilon` (**#1**); `I2 (GOTO(I0,a))` shifts `a` & reduces `A->\epsilon` (**#2**); `I3 (GOTO(I0,A))` shifts `c` & reduces `C->\epsilon` (**#3**); `I5 (GOTO(I3,c))` shifts `c` & reduces `C->\epsilon` (**#4**); `I7 (GOTO(I3,B))`? Wait: `GOTO(I3,C)` goes to `B->.bB|.b`, no conflict; `GOTO(I3, B)?` Wait: `I4 = GOTO(I3, C)` shifts `b`; `I6 = GOTO(I4, b)` has `B->b.B | B->b.` (**#5**: shifts `b` & reduces `B->b`!)! Total = **5** S/R conflicts! | **CORRECT (D: 5)** once `\alpha` is read as `a`. | **MIS-TRANSCRIPTION:** `A -> \alpha A | \epsilon` printed Greek `\alpha` instead of terminal **`a`**! |
+| 5 | `2026_FN_Q42` | Ch 08 / L08.1 | Available Expressions / Global Common Subexpression Elimination in CFG blocks `B4, B5`. | Need CFG `[IMAGE_Q_42_1]` to trace `e_gen, e_kill` and `IN = ∩ OUT[pred]`. | **CANNOT VERIFY** (Key: D: `B4:{g*k}, B5:{}`). CFG `[IMAGE_Q_42_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_42_1]`). |
+| 6 | `2026_AN_Q45` | Ch 08 / L08.1 | Computing **Live Variables** at the exit (`OUT[B]`) of blocks `B1..B4`. | Need CFG `[IMAGE_Q_45_1]` to trace backward `USE, DEF, IN, OUT`. | **CANNOT VERIFY** (Key: A). CFG `[IMAGE_Q_45_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_45_1]`). |
+| 7 | `2026_FN_Q53` | Ch 04 / L04.1 | Comparing two SDDs (`SDD1` vs `SDD2`) for language equivalence, `S`/`L`-attributedness & symbol table entries. | Need SDD definitions `[IMAGE_Q_53_1]` to verify attribute types and `put()` calls. | **CANNOT VERIFY** (Key: A, B, D). Table `[IMAGE_Q_53_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_53_1]`). |
+| 8 | `2025_FN_Q12` | Ch 00 / L00.1 | Symbol Table lifecycle and implementation (asking **FALSE**!). | Watch `"FALSE"`! Symbol Table IS accessed by Semantic, ICG, and Optimization (`C` is FALSE!). | **CORRECT (C).** | Clean. |
+| 9 | `2025_FN_Q13` | Ch 08 / L08.1 | Compiler optimization directly powered by **Live Variable Analysis**. | Register assignment (`B`) builds interference graph from simultaneously live variables (`Constant folding` & `Strength reduction` don't need liveness). | **CORRECT (B: Register assignment).** | Clean. |
+| 10 | `2025_AN_Q21` | Ch 06 / L06.1 | Scope of **Backpatching** in 1-pass Intermediate Code Generation. | Backpatching (`makelist, merge, backpatch`) handles BOTH short-circuit Boolean expressions (`I`) AND flow-of-control `if/while` (`II`) in 1 pass! | **CORRECT (C: Both I and II).** | Clean. |
+| 11 | `2025_AN_Q22` | Ch 04 / L04.1 | Classifying `SDT` rules as `S`-attributed and/or `L`-attributed. | `Rule 1`: `A.i = B.i` reads RIGHT sibling -> **neither S nor L**! `Rule 2`: `D.i = C.i+2` (left sibling -> L, not S!). `Rule 3`: `Q.i = E.i+F.i` computes parent from children despite `.i` name -> **both S and L**! | **CORRECT (C).** | Clean. |
+| 12 | `2025_AN_Q40` | Ch 03 / L03.2 | Separating **`LALR(1)`** from **`SLR(1)`** on a classic conflict grammar. | With printed `S -> Aa | bac | dc | bda`, `Follow(A) = {a}` ONLY -> NO SLR conflict (`D` would hold!). With real GATE 2025 **`bAc`**, `Follow(A) = {a, c}`, causing an SLR S/R conflict in `GOTO(I0, d)` on `c` (`A->d.` vs `S->d.c`) that `LALR(1)` resolves (`[A->d., a]`)! | **FACT-DOUBT (CRITICAL TYPO)!** Printed `bac` makes `G` BOTH `LALR(1)` and `SLR(1)` (`D`), contradicting official **C**! Real GATE 2025 grammar had **`bAc`** (capital `A`)! | **MIS-TRANSCRIPTION:** Change `bac` to **`bAc`**! |
+| 13 | `2025_FN_Q46` | Ch 02 / L02.2 | `FIRST` and `FOLLOW` placement of `\epsilon` and right end-marker `$`. | `\epsilon` enters `FIRST(A)` (`A` true) yet NEVER `FOLLOW(A)` (`C` false); `$` enters `FOLLOW(S)` (`D` true) yet NEVER `FIRST(S)` (`B` false)! | **CORRECT (A, D).** | Clean. |
+| 14 | `2025_AN_Q51` | Ch 02 / L02.1, L02.2 | Ambiguity & `LL(1)` check of dangling-else variants `G1` and `G2`. | `G1` has left-prefix + dangling-else ambiguity; in `G2`, `M -> if E then M else S` has **`S`** (not `M`!) after `else`, allowing 2 parse trees for `if b then if b then c else if b then c else c` -> BOTH `G1, G2` are ambiguous (`D`) and NOT `LL(1)` (`C`)! | **CORRECT (C, D).** | Clean (super subtle `else S` vs `else M` trap!). |
+| 15 | `2025_FN_Q52` | Ch 07 / L07.1 | Counting **Basic Blocks** via Leader identification in `1001..1017`. | Leaders: `1001` (first), `1003` (target of `1009`), `1010` (after `1009`), `1002` (target of `1011`), `1012` (after `1011`), `1013` (target of `1017`) = `6` Leaders -> `6` blocks! | **CORRECT (6).** | Clean. |
+| 16 | `2024_AN_Q17` | Ch 00 / L00.1 | Matching Compiler Phases (`Lex, Syntax, ICG, Opt`) to Artifacts (`Token, Parse Tree, AST, Constant Folding`). | `P=Token (2)`, `Q=Parse Tree (3)`, `R=AST (1)`, `S=Constant Folding (4)`. | **CORRECT (B).** | Clean. |
+| 17 | `2024_FN_Q32` | Ch 03 / L03.1 | Identifying **Bottom-Up Parsers** (`Shift-reduce`, `LR`) vs Top-Down (`Predictive`, `LL(1)`). | Shift-reduce and LR parse bottom-up (`A, D`); Predictive & LL(1) are top-down. | **CORRECT (A, D).** | Clean. |
+| 18 | `2024_AN_Q27` | Ch 04 / L04.1 | `SDD` & `L`-attributed evaluation properties (asking **FALSE**!). | Watch `"FALSE"`! L-attributed ALWAYS evaluates in 1 DFS order (`B` false!); NOT all L-attributed LR(1) definitions can evaluate directly bottom-up (`D` false!). `A, C` are true. | **CORRECT (B, D).** | Clean. |
+| 19 | `2024_FN_Q38` | Ch 04 / L04.1 | Evaluating `S.val` for input `"MMLK"` using an SDD table. | Need SDD rules `[IMAGE_Q_38_1]`. | **CANNOT VERIFY** (Key: A: 45). Table `[IMAGE_Q_38_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_38_1]`). |
+| 20 | `2024_FN_Q61` | Ch 02 / L02.2 | Reconstructing missing CFG productions from given `FIRST` and `FOLLOW` sets. | Plug `A`: `S -> Rf`, `T -> \epsilon`, `R -> cTR` -> matches `FIRST(S)={c,d,f}`, `FIRST(T)={a,b,\epsilon}`, `FIRST(R)={c,\epsilon}`, `FOLLOW(R)={f}`, `FOLLOW(S)=FOLLOW(T)={c,f,$}`! (`B, C` put `f` in `FIRST(R)` or `c` in `T` wrongly). | **CORRECT (A).** | Clean. |
+| 21 | `2024_FN_Q51` | Ch 07 / L07.1 | Counting Basic Blocks (`7`) & size of largest block (`6`) in `L1..L15`. | Leaders: `L1`, `L3` (target `L14`), `L4` (target `L12`), `L10` (after `L9`), `L11` (target `L9`), `L13` (after `L12`), `L15` (after `L14`) -> 7 blocks; largest is `[L4..L9]` (`6` lines)! | **CORRECT (D: 7 and 6).** | Clean. |
+| 22 | `2024_AN_Q51` | Ch 02 / L02.2 | Filling empty/numbered cells of an `LL(1)` parsing table. | `A -> cS | \epsilon`, `B -> dS | \epsilon`; `FOLLOW(A) = {a, b}`, `FOLLOW(B) = {a, b}`; `FIRST(AaAb) = {c, a}`, `FIRST(BbBa) = {d, b}`. Wait: need cell row/col positions `[IMAGE_Q_51_1]` to confirm `(1),(2),(3),(4)` mapping, though Option `A` matches standard `S/A/B` entries! | **CANNOT VERIFY** (Key: A). Partial table `[IMAGE_Q_51_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_51_1]`). |
+| 23 | `2024_AN_Q48` | Ch 06 / L06.1 | Filling **Triple** representation entries for `x[i] = (p+r)* -s[i] + u/w`. | Need rows `(0), (2), (4), (5)` `[IMAGE_Q_48_1]` to confirm exact row indices. (Notice Option `A`: `(1) =[ ] s i`, `(3) *(0) (2)`, `(6) [ ]= x i`? Wait: `(6)` would store `(5)` in `x[i]` -> `([ ]=, x[i], (5))` or 2 triples; need table!). | **CANNOT VERIFY** (Key: A). Table `[IMAGE_Q_48_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_48_1]`). |
+| 24 | `2024_AN_Q64` | Ch 03 / L03.1 | Counting items in `GOTO(I_0, S)` for `S' -> S, S -> SS|Aa|bac|Bc|bBa, A -> d#, B -> @`. | Kernel of `GOTO(I_0, S)`: `{S'->S., S->S.S}` (`2` items); closure on `.S` adds `5` `S->. ...` + `A->.d#` + `B->.@` (`7` items) = **`9` items**! | **CORRECT (9).** | Clean. |
+| 25 | `2023_FN_Q11` | Ch 00 / L00.1 | Properties of Compiler Front-End vs Back-End. | Front-End is target-hardware independent (`S1` true); Back-End is target-hardware dependent (`S2` true) & source-language independent (`S3` false!). | **CORRECT (B: Only S1 and S2).** | Clean. |
+| 26 | `2023_FN_Q37` | Ch 08 / L08.1 | Computing Live Variables at exit (`OUT`) of blocks `B1..B4` in a CFG. | Need CFG `[IMAGE_Q_37_1]`. | **CANNOT VERIFY** (Key: D). CFG `[IMAGE_Q_37_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_37_1]`). |
+| 27 | `2023_FN_Q60` | Ch 04 / L04.1 | Evaluating mixed left/right-recursive binary fixed-point SDT on `10#011`. | `I(10) = 2(1) + 0 = 2`. `F(1) = 0.5`; `F(11) = 0.5(1 + 0.5) = 0.75`; `F(011) = 0.5(0 + 0.75) = 0.375` -> `N = 2 + 0.375 = 2.375`! | **CORRECT (2.375, inside `2.374–2.376`).** | Clean. |
+| 28 | `2022_FN_Q13` | Ch 03 / L03.2 | `LALR(1)` R/R conflict trap, Symbol Table, Data-Flow vs Runtime, and `LR(1)` power. | Merging `CLR(1)` states into `LALR(1)` CAN create new R/R conflicts (`A` false!); `LR(1)` parses ALL DCFLs (`D` true!). | **CORRECT (D).** | Clean. |
+
+---
+
+`CONTINUE FROM PART 6 (PYQ #29)`
+## PART 6 (Continued) · Batch 2: Questions #29 to #55
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 29 | `2022_FN_Q29` | Ch 03 / L03.1 | Counting items in `goto(closure(I_0), +)` from `[S'->S., S->S.+R]`. | `closure(I_0)` adds nothing (`.+` is terminal). Advancing dot past `+` yields `S->S+.R`, and closing `.R` adds `R->.R*P, R->.P, P->.(S), P->.id` = **`5` items**! | **CORRECT (5).** | Clean. |
+| 30 | `2022_FN_Q65` | Ch 03, 04 / L03.1, L04.1 | Inferring operator precedence & associativity from CFG (`#` vs `%`) and evaluating `S.val`. | `S` (outer, `*` on `#`) has LOWER precedence than `T` (inner, `÷` on `%`); both left-recursive = left-assoc: `(20 * (10 / 5)) * ((8 / 2) / 2) = 40 * 2 = 80`! | **CORRECT (80).** | Clean. |
+| 31 | `2021_AN_Q38` | Ch 00 / L00.1 | Phase catching undeclared type `Integer x;` in ANSI C. | `Integer x;` matches `<identifier> <identifier> ;` lexically & syntactically if treated as type/error? Wait: in C grammar `Integer` is lexed as `id`, failed in **Semantic** / symbol lookup (or note C parser sees unknown typedef name via symbol table lookup in Semantic analyzer!). | **CORRECT (C: Semantic analyzer).** | Clean. |
+| 32 | `2021_FN_Q56` | Ch 03 / L03.2 | SLR unambiguous subset (`S1`) & general $O(n^3)$ CFG parsing (`S2`). | Every `SLR(1)` grammar is unambiguous, and some unambiguous grammars aren't `SLR(1)` (`S1` true); CYK/Earley parses ANY CFG in $O(n^3)$ (`S2` true). | **CORRECT (C: Both true).** | Clean. |
+| 33 | `2021_AN_Q22` | Ch 00, 06 / L00.1, L06.1 | Identifying which structure is **NOT** an Intermediate Representation (`IR`). | `3AC, AST, CFG` are all IRs; **Symbol Table (`D`)** is a metadata table shared across phases, NOT an IR! | **CORRECT (D: Symbol table).** | Clean. |
+| 34 | `2021_FN_Q16` | Ch 04 / L04.1 | Spotting type-checking bug in an SDT (`E -> ID { set E.type := int }`). | `E -> ID` blindly hardcodes `int` instead of reading `ID`'s declared type from the Symbol Table -> boolean variables fail type-checking (`B` works only for `int` vars & expressions)! | **CORRECT (B).** | Clean. |
+| 35 | `2021_AN_Q43` | Ch 07 / L07.1 | Counting `+` and `y->f` dereferences after **CSE** & **Loop-Invariant Hoisting**. | `x, y` never change in loop, and `p, q` are registers (no aliasing!). Pre-loop: `t1=x+3` (`+1`), `t2=y->f1` (`d1`), `t3=y->f2` (`d2`), `z=t1+t2+t3` (`+2,+3`). Loop (`i=0,2..198` = `100` runs): `2` adds in `if/else` + `i=i+2` (`1` add) = `300` adds, `0` derefs -> **`303` adds, `2` derefs**! | **CORRECT (D: 303 and 2).** | Clean. |
+| 36 | `2021_FN_Q36` | Ch 02 / L02.2 | Filling `LL(1)` parsing table cells `(1, 2, 3, 4)` for `S->daT|Rf, T->aS|baT|\epsilon, R->caTR|\epsilon`. | `FIRST(Rf) = {c, f}`, `FOLLOW(T) = {c, f, $}` -> `S -> Rf` goes in `c, f`, and `T -> \epsilon` goes in `FOLLOW(T)`! Need `[IMAGE_Q_36_1]` to confirm column labels of cells 1..4. | **CANNOT VERIFY** (Key: A). Partial table `[IMAGE_Q_36_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_36_1]`). |
+| 37 | `2021_AN_Q33` | Ch 08 / L08.1 | Statement-level Live Variable equation inside a basic block (`S1` followed by `S2`). | Variables live right after `S1` (`OUT(S1)`) are EXACTLY the variables live right before `S2` (`IN(S2)`)! | **CORRECT (A: `OUT(S1) = IN(S2)`).** | Clean. |
+| 38 | `2021_FN_Q11` | Ch 07 / L07.1 | Counting nodes in Expression DAG (`a=b+c; e=a+1; d=b+c; f=d+1; g=e+f;`). | Leaves: `b, c, 1` (`3`); Internal ops: `+(b,c)` shared by `{a, d}` (`1`), `+(a/d, 1)` shared by `{e, f}` (`1`), `+(e/f, e/f)` for `g` (`1`) = **`6` nodes**! | **CORRECT (6).** | Clean. |
+| 39 | `2021_AN_Q46` | Ch 03 / L03.1 | Counting items in `GOTO(GOTO(I_0, <), <)` for `S -> S#cS | SS | S@ | <S> | a | b | c`. | `GOTO(I_0, <)` contains `[S -> <.S>]` plus all 7 `S -> . ...` productions (`8` items). Shifting `<` again lands in the exact SAME 8-item state! | **CORRECT (8).** | Clean. |
+| 40 | `2020_FN_Q35` | Ch 00, 05 / L00.1, L05.1 | Symbol table phases (`I`), Recursion needing Heap (`II`), Undeclared var in Syntax (`III`). | Symbol table used past parsing (`I` false); Recursion needs Stack, NOT Heap (`II` false); Undeclared variable is Semantic (`III` false)! | **CORRECT (D: None of I, II, III).** | Clean (minor note: Option C repeats Option A `"I only"`!). |
+| 41 | `2020_FN_Q21` | Ch 03 / L03.1 | Counting bottom-up reduction steps for `aaadbbb` (`S -> aSB | d, B -> b`). | `3` reductions of `b -> B`, `1` of `d -> S`, and `3` of `aSB -> S` = **`7` reductions** (= internal nodes in parse tree!). | **CORRECT (7).** | Clean. |
+| 42 | `2020_FN_Q49` | Ch 04 / L04.1 | Testing `L`-attributed SDD rules (`Rule 1` vs `Rule 2`). | `Rule 1`: `P.i` from `A.i`, `Q.i` from `P.i, A.i` (left sibling + parent!), `A.s` from children -> **L-attributed**! `Rule 2`: `X.i` reads RIGHT sibling `Y.s` -> **NOT L-attributed**! | **CORRECT (B: Only Rule 1).** | Clean. |
+| 43 | `2019_FN_Q19` | Ch 03 / L03.1 | Derivation traced by an `LR` bottom-up parser. | LR parsers trace a **Rightmost derivation in reverse** (`D`). | **CORRECT (D).** | Clean. |
+| 44 | `2019_FN_Q13` | Ch 02 / L02.2 | Computing `FOLLOW(B)` (`S -> Aa, A -> BD, B -> b|\epsilon, D -> d|\epsilon`) and encoding index. | `FOLLOW(B) = (FIRST(D) - {\epsilon}) \cup FOLLOW(A) = {d, a}`! Index table `[IMAGE_Q_13]` is missing (`31` implies `d=3, a=1`). | **SET VERIFIED `{d, a}`; KEY CANNOT VERIFY** (Key: 31). Index table `[IMAGE_Q_13]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_13]`). |
+| 45 | `2019_FN_Q57` | Ch 04 / L04.1 | Completing inherited-type SDT placeholders `X_1..X_4` (`D, T, L, L_1`). | Need SDT table `[IMAGE_Q_57]` (`D -> T L {L.in = T.type}`, `L -> L_1, id {L_1.in = L.in}` matches standard A). | **CANNOT VERIFY** (Key: A). Table `[IMAGE_Q_57]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_57]`). |
+| 46 | `2019_FN_Q36` | Ch 03 / L03.1 | Counting items in `GOTO(I_0, ()` (`S'->S, S->(L)|id, L->L,S|S`). | Kernel: `S -> (.L)` (`1`); Closure adds `L -> .L,S`, `L -> .S`, `S -> .(L)`, `S -> .id` (`4`) -> **`5` items**! | **CORRECT (5).** | Clean. |
+| 47 | `2018_FN_Q18` | Ch 00, 05 / L00.1, L05.1 | Compiler architecture truths (asking **FALSE**!). | Watch `"FALSE"`! Type checking happens in Semantic Analysis *after* parsing, NOT before (`B` is false!). | **CORRECT (B).** | Clean. |
+| 48 | `2018_FN_Q47` | Ch 01 / L01.1 | Longest-prefix matching (`T1, T2, T3`) on `bbaacabc`. | From start, `T1` matches `bba` (3), `T2` matches `bb` (2), **`T3` (`c?(b|a)*c`) matches `bbaac` (5)** -> remaining `abc` matches **`T3`** (`3`) -> `T3 T3` (`D`)! | **CORRECT (D: `T3 T3`).** | Clean. |
+| 49 | `2018_FN_Q48` | Ch 03 / L03.1 | Reading precedence & associativity of `#` and `$` from a parse tree. | Need parse tree `[IMAGE_Q_48]` (Answer `A`: `$` deeper = higher precedence & left-leaning; `#` higher up & right-leaning = right-assoc). | **CANNOT VERIFY** (Key: A). Tree `[IMAGE_Q_48]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_48]`). |
+| 50 | `2017_AN_Q30` | Ch 00 / L00.1 | Matching input (`Syntax tree, Char stream, IR, Token stream`) to compiler phase. | Syntax tree -> Semantic (`iii`), Char stream -> Lexer (`iv`), IR -> CodeGen (`i`), Token stream -> Syntax (`ii`). | **CORRECT (C).** | Clean. |
+| 51 | `2017_AN_Q35` | Ch 03 / L03.2 | Parser power hierarchy (`CLR > LALR >= SLR`). | `I` (`Canonical LR > SLR`) is TRUE; `II, III` are FALSE! | **CORRECT (A: I only).** | Clean. |
+| 52 | `2017_FN_Q16` | Ch 06 / L06.1 | Identifying valid **Static Single Assignment (`SSA`)** form. | Every assignment MUST create a brand-new version of LHS (`p_3, q_4, p_4, q_5`, `B`)! `A` reuses `p_1, q_1`; `C` uses undefined `p_2, q_3`; `D` uses unversioned `p, q`. | **CORRECT (B).** | Clean. |
+| 53 | `2017_FN_Q13` | Ch 02 / L02.2 | Computing `FOLLOW(Q)` when `P -> xQRS` and `R -> w | \epsilon` (`R` nullable!). | Because `R` can derive `\epsilon`, `FOLLOW(Q)` includes BOTH `FIRST(R) - {\epsilon} = {w}` AND `FIRST(S) = {y}` -> `{w, y}` (`C`)! | **CORRECT (C: `{w, y}`).** | Clean. |
+| 54 | `2017_AN_Q46` | Ch 02 / L02.1 | Removing left recursion from `E -> E - T | T, T -> T + F | F`. | Apply `A -> \beta A', A' -> \alpha A' | \epsilon` to BOTH `E` and `T`: `E -> TX, X -> -TX|\epsilon, T -> FY, Y -> +FY|\epsilon, F -> (E)|id` (`C`)! | **CORRECT (C).** | Clean. |
+| 55 | `2017_FN_Q54` | Ch 07 / L07.1 | Minimum registers (`Ershov`) for `(a-1)*(((b+c)/3)+d)` with Load/Store + immediate arithmetic. | Arithmetic allows immediates (`1, 3` cost `0` regs): load `b` into `R1`, `c` into `R2`, `R1 = R1+R2`, `R1 = R1/3`, load `d` into `R2`, `R1 = R1+R2` (frees `R2`!), load `a` into `R2`, `R2 = R2-1`, `R1 = R2*R1` = **`2` registers**! | **CORRECT (2.0).** | Clean. |
+
+---
+
+## PART 7. MORE QUESTIONS NEEDED (3 New Ideas Per Lesson)
+
+### Chapter 00 · Compiler Architecture, Phases & Symbol Table
+- **Lesson 00.1 (`Compiler Phases, Front/Back-End, Symbol Table & Errors`):**
+  1. Given 4 C code snippets (`unclosed comment /* abc`, `int a = ;`, `break; outside loop`, `double *p = &x` where `x` is `int`), classify each into Lexical, Syntax, or Semantic error (`MCQ`).
+  2. Why does retargeting a C compiler from x86 to ARM require rewriting ONLY the Back-End while keeping Lexer, Parser, and Type Checker intact? (`MCQ`).
+  3. Identify which compiler phases read from OR write to the Symbol Table (`MSQ`).
+
+### Chapter 01 · Lexical Analysis
+- **Lesson 01.1 (`Tokens, Lexemes, Extended Regex & Maximal Munch`):**
+  1. Given Lexer rules `if -> IF`, `[a-z][a-z0-9]* -> ID`, `[0-9]+ -> NUM`, `= -> ASSIGN`, `== -> EQ`, count tokens produced for `ifx==10if=20` (`NAT`).
+  2. Using priority-ordered patterns `T1: a*b`, `T2: (a|b)c`, `T3: a+`, trace output token sequence on `aaabacaaa` under Maximal Munch (`MCQ`).
+  3. Contrast Lexeme, Pattern, and Token on the C statement `float rate = 3.14;` (`MSQ`).
+
+### Chapter 02 · Top-Down Parsing (`LL(1)`)
+- **Lesson 02.1 (`Ambiguity, Left Recursion & Left Factoring`):**
+  1. Eliminate **indirect** left recursion from `S -> Aa | b`, `A -> Ac | Sd | \epsilon` (`MCQ`).
+  2. Apply Left Factoring to `S -> aSSb | aSb | a | c` until no common prefix remains (`MCQ`).
+  3. Which transformations preserve the language $L(G)$ while keeping a grammar unambiguous: direct left recursion removal, left factoring, adding `\epsilon`-rules? (`MSQ`).
+- **Lesson 02.2 (`FIRST, FOLLOW & LL(1) Tables`):**
+  1. Given `S -> ABC`, `A -> a | \epsilon`, `B -> b | \epsilon`, `C -> c | \epsilon`, compute `FIRST(S)`, `FOLLOW(A)`, `FOLLOW(B)`, and `FOLLOW(C)` (`MSQ`).
+  2. Given an `LL(1)` grammar and partial parsing table, identify which `(Non-Terminal, Terminal)` cells cause a `FIRST/FOLLOW` conflict when `A -> a | \epsilon` is changed (`MSQ`).
+  3. Trace the predictive `LL(1)` stack parsing `a + a * a $` step by step and count total `pop` + `expand` operations (`NAT`).
+
+### Chapter 03 · Bottom-Up Parsing (`LR, SLR, LALR, CLR`)
+- **Lesson 03.1 (`Shift-Reduce, Precedence Trees, LR(0) Items & Conflicts`):**
+  1. For `S' -> S, S -> L = R | R, L -> *R | id, R -> L`, construct `I_0` and count total `LR(0)` items in `GOTO(I_0, *)` (`NAT`).
+  2. For `S -> (S)S | \epsilon`, count total Shift-Reduce and Reduce-Reduce conflicts in its `LR(0)` ACTION table (`NAT`).
+  3. Given a parse tree with 3 binary operators `@, #, $`, deduce exact precedence order and associativity of each operator (`MSQ`).
+- **Lesson 03.2 (`SLR(1), CLR(1), LALR(1) Hierarchy & Conflicts`):**
+  1. Given `S' -> S, S -> CC, C -> cC | d`, compute the exact number of states in `SLR(1)`, `LALR(1)`, and `CLR(1)` parsing tables (`NAT`).
+  2. Construct/identify a grammar that is `CLR(1)` yet fails `LALR(1)` specifically due to a **Reduce-Reduce** conflict upon merging two states (`MCQ`).
+  3. Determine which parsers among `{LL(1), LR(0), SLR(1), LALR(1), CLR(1)}` can parse `S -> L = R | R, L -> *R | id, R -> L` (`MSQ`).
+
+### Chapter 04 · Syntax-Directed Translation (`SDD` & `SDT`)
+- **Lesson 04.1 (`Synthesized/Inherited, S/L-Attributed & Evaluation`):**
+  1. Given `S -> A B { A.in = S.in; B.in = A.val + S.in; S.val = B.val }`, classify as `S`-attributed, `L`-attributed, or circular (`MCQ`).
+  2. Draw the dependency graph and compute `S.val` for `(2 + 3) * (4 + 1)` using a custom postfix-generating SDT (`NAT`).
+  3. Identify which SDDs among 4 given rule sets contain a circular attribute dependency (`MSQ`).
+
+### Chapter 05 · Runtime Environments
+- **Lesson 05.1 (`Storage, Activation Records, Access vs Control Links`):**
+  1. Procedure `Main` defines `x = 10` and nested `P`, which defines `x = 20` and nested `Q` (reading `x`). If `Main` calls `P`, `P` calls `P` recursively, and `P` calls `Q`, trace how many Access Links vs Control Links `Q` jumps to read `x` (`NAT`).
+  2. Match storage needs (fixed globals, recursive locals, dynamic `malloc` objects, non-local nested frames) to Static, Stack, Heap, and Static Links (`MCQ`).
+  3. Why does Reference Counting fail to reclaim a 2-node circular linked list after external pointers drop, whereas Mark-and-Sweep reclaims it? (`MCQ`).
+
+### Chapter 06 · Intermediate Code Generation
+- **Lesson 06.1 (`AST, Quadruples, Triples, SSA & Backpatching`):**
+  1. Convert `-(a + b) * (c + d) - (a + b + c)` into **Triples** and count total Triple entries (`NAT`).
+  2. Convert `if (a < b) x = y + 1; else x = z * 2; p = x + 3;` into **SSA** form showing the exact `\phi`-function (`MCQ`).
+  3. Trace 1-pass Backpatching on `while (a < b && c > d) a = a + 1;` and identify which instruction list gets backpatched to loop start (`MCQ`).
+
+### Chapter 07 · Local Optimisation
+- **Lesson 07.1 (`Basic Blocks, CFGs, DAGs, Loop CSE & Ershov Registers`):**
+  1. Given a 12-line 3AC snippet with 1 `for` loop and 1 `if-else`, count total Basic Blocks and total directed CFG edges (`NAT`).
+  2. Build the Expression DAG for `x = a + b; a = c + d; y = a + b; z = c + d;` (noting `a` is overwritten!) and count nodes (`NAT`).
+  3. Compute the minimum registers (Ershov number) for `((a + b) * (c - d)) + ((e + f) * (g - h))` (`NAT`).
+
+### Chapter 08 · Data-Flow Analysis
+- **Lesson 08.1 (`Liveness, Available Expressions, Reaching Defs & Constant Prop`):**
+  1. Given a 3-block loop CFG with definitions `d1: x=1, d2: y=2` in `B1`, `d3: x=x+y` in `B2`, and `d4: z=x` in `B3`, compute **Reaching Definitions `IN[B2], OUT[B2]`** (`MCQ`).
+  2. Build the **Register Interference Graph** from live sets `{a, b}, {b, c}, {c, d}, {a, d}` and find minimum registers needed (`NAT`).
+  3. Trace **Constant Propagation** (`UNDEF < const < NAC`) across an `if-else` diamond where `B2` sets `x = 5` and `B3` sets `x = 5` vs `x = 7` (`MSQ`).
+
+---
+
+## PART 8. WHAT IS MISSING FROM THE SUBJECT
+
+Because `Part B.2` lists **"none | not written"** for ALL 8 chapters, the entire content must be written cleanly from zero against the GATE CS syllabus (`Part B.1`), `Part C` (55 PYQs), Dragon Book, Made Easy, and GateWallah:
+
+1. **Chapter 00: Compiler Pipeline (`6/7` Phases), Front-End vs Back-End (`2023_FN_Q11`), Phase Artifacts (`2024_AN_Q17`, `2017_AN_Q30`), Symbol Table Across All Phases (`2025_FN_Q12`, `2021_AN_Q22`, `2020_FN_Q35`) & Error Classification (`2026_FN_Q27`, `2021_AN_Q38`, `2018_FN_Q18`).**
+2. **Lexical Analysis (`Ch 01`):** Lexeme/Pattern/Token, Extended Regex (`+, ?, [a-z]`), **Maximal Munch (`Longest Match`) & Tie-Breaking Priority (`2026_AN_Q35`, `2018_FN_Q47`)**.
+3. **Top-Down Parsing (`Ch 02`):** Ambiguity & Dangling-Else (`2025_AN_Q51` subtle `else S` trap!), Direct & Indirect Left Recursion Removal (`2017_AN_Q46`), Left Factoring (`2026_FN_Q28`), **`FIRST`/`FOLLOW` Nullable Cascades (`2025_FN_Q46`, `2024_FN_Q61`, `2019_FN_Q13`, `2017_FN_Q13`)**, **`LL(1)` Tables & 3-Second Eliminator (`2024_AN_Q51`, `2021_FN_Q36`)**.
+4. **Bottom-Up Parsing (`Ch 03`):** Shift-Reduce & Rightmost Derivation in Reverse (`2024_FN_Q32`, `2020_FN_Q21`, `2019_FN_Q19`), Parse-Tree Precedence/Associativity (`2018_FN_Q48`), **`LR(0)` `CLOSURE` / `GOTO` & S/R Conflict Counting (`2026_AN_Q41`, `2024_AN_Q64`, `2022_FN_Q29`, `2021_AN_Q46`, `2019_FN_Q36`)**, **`SLR(1)` vs `LALR(1)` vs `CLR(1)` Lookaheads, State Counts, R/R Merge Trap & `O(n^3)` CYK (`2025_AN_Q40` — fix `bac -> bAc`!, `2022_FN_Q13`, `2021_FN_Q56`, `2017_AN_Q35`)**.
+5. **Syntax-Directed Translation (`Ch 04`):** SDD vs SDT, Synthesized vs Inherited (`2026_FN_Q53`, `2019_FN_Q57`), **`S`-Attributed vs `L`-Attributed Exact Rules & Bottom-Up Limits (`2025_AN_Q22`, `2024_AN_Q27`, `2020_FN_Q49`)**, Parse-Tree Evaluation (`2024_FN_Q38`, `2023_FN_Q60`, `2022_FN_Q65`), and Type-Checking SDT Bugs (`2021_FN_Q16`).
+6. **Runtime Environments (`Ch 05`):** Static vs Stack vs Heap (`2020_FN_Q35(II)`, `2018_FN_Q18(D)`), **Activation Records (`Control/Dynamic Link` vs `Access/Static Link`)**, Activation Trees, Display Arrays, Parameter Passing (`C16` bridge), and GC (`[LATER]`).
+7. **ICG & Local Optimization (`Ch 06` & `Ch 07`):** AST vs Parse Tree, 3AC, **Quadruples vs Triples (`2024_AN_Q48`) vs Indirect Triples**, **`SSA` & `\phi`-functions (`2017_FN_Q16`)**, **1-Pass Backpatching (`2025_AN_Q21`)**, **3 Leader Rules & Basic Blocks (`2025_FN_Q52`, `2024_FN_Q51`)**, **Expression DAGs (`2021_FN_Q11`)**, Peephole/Loop CSE (`2021_AN_Q43`), and **Ershov Optimal Registers (`2017_FN_Q54`)**.
+8. **Data-Flow Analysis (`Ch 08`):** `USE/DEF`, `IN/OUT` Statement (`2021_AN_Q33`) & Block Equations, **Live Variable Analysis + Register Assignment (`2026_AN_Q45`, `2025_FN_Q13`, `2023_FN_Q37`)**, **Available Expressions / Global CSE (`2026_FN_Q42`, `U` init trap!)**, Reaching Definitions, and Constant Propagation.
+9. **Fixing Broken PYQs & Missing Figures:** Fix **`2025_AN_Q40` (`bac -> bAc`)**, **`2026_AN_Q41` (`\alpha -> a`)**, **`2020_FN_Q35` duplicate Option C**, and restore the **11 missing `[IMAGE_...]` figures**!
+
+---
+
+## PART 9. WEIGHTS
+
+### Chapter Weight Tags & Comparison with the Bank (`Part B.3`)
+
+| Chapter | Proposed Weight Tag | Bank Stats (2017–2026, 15 CS Papers) | Does the Bank Weight Look Fair? |
+|---|---|---|---|
+| **Ch 00 · Compiler Phases, Symbol Table & Errors** *(New)* | **Foundation** (Quick 50-min intro, super high Easy ROI!) | Spread across Lex/Parse & SDT/Runtime (`7` direct Qs in `Part C`!) | **Under-isolated in bank.** Adding Ch 00 secures easy 1-mark wins (`2026_FN_Q27`, `2025_FN_Q12`, `2024_AN_Q17`, `2023_FN_Q11`, `2021_AN_Q38`, `2021_AN_Q22`, `2017_AN_Q30`). |
+| **Ch 01 · Lexical Analysis** | **Low-Medium** (Fast Easy/Med points!) | Merged with Parsing (`30` Qs / `43` marks total; only `~2–3` pure Lex Qs in `Part C`) | **Bank hides how light Lexical is vs Parsing.** Takes just 1 hour to master Maximal Munch (`2026_AN_Q35`, `2018_FN_Q47`)! |
+| **Ch 02 · Top-Down Parsing (`LL(1)`)** | **Very High** | Shared in `Lex & Parsing` (`30` Qs / `43` marks across **10/10 yrs** = `51%` of CD!) | **Fair — core pillar alongside Ch 03!** `FIRST`, `FOLLOW`, Left Recursion, and `LL(1)` tables appear constantly (`9/15` Easy Qs in this bucket!). |
+| **Ch 03 · Bottom-Up Parsing (`LR, SLR, LALR, CLR`)** | **Very High** (#1 Discriminator in CD!) | Shared in `Lex & Parsing` (`43` marks total; carries most of the `6` Hard & `8` MCQ2 / `3` NAT2 Qs!) | **Fair — highest 2-mark value in CD!** `CLOSURE/GOTO` item counting & `LR(0)/SLR/LALR/CLR` distinctions repeat almost every year! |
+| **Ch 04 · Syntax-Directed Translation (`SDD/SDT`)** | **High** | Merged with Runtime (`11` Qs / `18` marks across 8/10 yrs) | **Fair (and notice SDT takes ~9/11 Qs of that bucket while Runtime takes ~2 Qs!).** `S/L`-attributed checks & parse-tree evaluation give steady 2-mark returns. |
+| **Ch 05 · Runtime Environments** | **Low** (Overlaps C6/C7/C16!) | Shared inside `11` Qs / `18` marks (`~1–2` standalone Qs in `Part C`) | **Bank exaggerates Runtime by pairing it with SDT.** Keep Ch 05 crisp (`Activation Records, Static vs Dynamic Links`), linking Parameter Passing to C16! |
+| **Ch 06 · Intermediate Code Generation** | **Medium** | Merged with Local Opt (`9` Qs / `15` marks across 4/10 yrs) | **Fair.** `Triples`, `SSA`, and `Backpatching` are short, clean concepts (`1`–`2` hours total). |
+| **Ch 07 · Local Optimisation (`Basic Blocks, DAG, Ershov`)** | **Medium-High** | Shared inside `9` Qs / `15` marks (`NAT2×3`!) | **Fair — clean NAT ROI!** `Leader` counting (`2025_FN_Q52`, `2024_FN_Q51`), `DAG` nodes (`2021_FN_Q11`), and `Ershov` (`2017_FN_Q54`) are super learnable. |
+| **Ch 08 · Data-Flow Analysis (`Liveness, Available, Const Prop`)** | **Medium** (Recent upward trend!) | 5 Qs / 9 marks (`0.60%`; asked 4/10 yrs — note **`2` Qs in 2026 alone!**) | **Fair (watch recent 2021–2026 rise!).** Only `5` Qs across 15 papers, yet `2026_FN_Q42`, `2026_AN_Q45`, `2025_FN_Q13`, `2023_FN_Q37` show steady modern interest (exact future rate: **not sure**). |
+
+### Overall Assessment of Bank Distribution (`5.7%` = ~5.7 marks/paper)
+- Compiler Design is the lightest core CS subject (`85` marks across 15 papers), yet has **huge focus concentration**: **Top-Down + Bottom-Up Parsing (`Ch 02 + Ch 03`) + SDT (`Ch 04`) deliver roughly `65–70%` of ALL Compiler Design marks!**
+- For a 100-day dropper: spend Day 1 locking **Ch 00 (`Phases/Errors`) + Ch 01 (`Maximal Munch`)**, Days 2–4 mastering **Ch 02 (`FIRST/FOLLOW/LL(1)`) + Ch 03 (`GOTO/SLR/LALR`)**, Day 5 on **Ch 04 (`S/L-Attributed & Parse Trees`)**, and Days 6–7 on **Ch 06–08 (`Basic Blocks, DAG, SSA, Liveness, Available Expr`)** — and fix **`2025_AN_Q40` (`bac -> bAc`)** & **`2026_AN_Q41` (`\alpha -> a`)** right away! (Beyond the 2017–2026 bank provided, exact future paper weights: **not sure**.)

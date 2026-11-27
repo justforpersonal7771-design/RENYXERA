@@ -11,7 +11,7 @@ Good, and its statistics are correct: 30 questions, 45 marks (3.0% of 1500), **7
 | 2022_FN_Q45 | The stem asks for "L32, U32, x1" and option B prints U32. U is upper triangular so U32 = 0; it must be **U33**. Doolittle LU gives L32 = −1/2, U33 = −1/2 and the solution (x1, x2, x3) = (0, 2, −1): option D | **Confirmed typo**: print U33 |
 | 2025_AN_Q44 | Q is printed as 3 × 3; the equations LY = Q, UX = Y hold either way | Fix to a vector if that was the original |
 | 2023_FN_Q18 | "Let and A = …" | Fix the sentence |
-| 2023_FN_Q30 | The graph is missing. The sum of eigenvalues is the trace of A, which equals the number of self-loops; the key accepts 2 or 4 | **Open**: restore the figure; keep both accepted keys |
+| 2023_FN_Q30 | The picture exists in the app: a 4-cycle 2-3-5-4 with a pendant vertex 1 and a self-loop at 3 and at 4. The trace is 2 (a loop counted once) or 4 (a loop counted twice): both keys accepted | **Verified**; keep both keys |
 | Numbers re-solved | 2026_AN_Q31 = 24 (a = ±4, b = ±6), 2026_AN_Q62 = 48, 2021_AN_Q61 = 4, 2021_FN_Q15 = 3, 2019_FN_Q45 = 12 (Vandermonde), 2018_FN_Q27 = 3, 2017_AN_Q29 = 2 (numpy), 2017_AN_Q51 = 5 (a = −11, roots 2, 5, −3) | All keys correct |
 | Other MCQ and MSQ keys | Gemini says CORRECT for all; not re-solved | Keep |
 

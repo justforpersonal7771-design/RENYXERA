@@ -823,7 +823,7 @@
         "subject": "Digital Logic",
         "topic": "Boolean Algebra, Minimization, K-Maps",
         "difficulty": "Medium",
-        "question_text": "Consider the following Boolean expression of a function \\( F \\):\n$$ F(P, Q) = (P + Q) \\oplus (\\overline{P}Q) $$\nWhich of the following expressions is/are equivalent to \\( F \\)?",
+        "question_text": "Consider the following Boolean expression of a function \\( F \\):\n$$ F(P, Q) = (\\overline{P} + Q) \\oplus (\\overline{P}Q) $$\nWhich of the following expressions is/are equivalent to \\( F \\)?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -1405,7 +1405,7 @@
         "subject": "Computer Organization and Architecture (COA)",
         "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
         "difficulty": "Medium",
-        "question_text": "The size of the physical address space of a processor is \\( 2^{32} \\) bytes. The capacity of a cache memory unit is \\( 2^{23} \\) bytes. The cache block size is 128 bytes. The cache memory unit can be built as a direct mapped cache or as a \\( K \\)-way set-associative cache, where \\( K = 2^k \\) and \\( L \\in \\{1, 2, 3\\} \\). Let the length of the TAG field be \\( M \\) bits for the direct mapped cache, and \\( N \\) bits for the set-associative cache.\nWhich one of the following options is true?",
+        "question_text": "The size of the physical address space of a processor is \\( 2^{32} \\) bytes. The capacity of a cache memory unit is \\( 2^{23} \\) bytes. The cache block size is 128 bytes. The cache memory unit can be built as a direct mapped cache or as a \\( K \\)-way set-associative cache, where \\( K = 2^L \\) and \\( L \\in \\{1, 2, 3\\} \\). Let the length of the TAG field be \\( M \\) bits for the direct mapped cache, and \\( N \\) bits for the set-associative cache.\nWhich one of the following options is true?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -3773,7 +3773,7 @@
         "subject": "Compiler Design",
         "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
         "difficulty": "Hard",
-        "question_text": "Consider the canonical \\( LR(0) \\) parsing of the grammar below using terminals \\( \\{a, b, c\\} \\) and non-terminals \\( \\{A, B, C, S\\} \\) with \\( S \\) as the start symbol.\n\\( S \\rightarrow ACB \\)\n\\( A \\rightarrow \\alpha A \\mid \\epsilon \\)\n\\( C \\rightarrow cC \\mid \\epsilon \\)\n\\( B \\rightarrow bB \\mid b \\)\nWhich one of the following options gives the number of shift-reduce conflicts that will occur in the \\( LR(0) \\) ACTION table?",
+        "question_text": "Consider the canonical \\( LR(0) \\) parsing of the grammar below using terminals \\( \\{a, b, c\\} \\) and non-terminals \\( \\{A, B, C, S\\} \\) with \\( S \\) as the start symbol.\n\\( S \\rightarrow ACB \\)\n\\( A \\rightarrow a A \\mid \\epsilon \\)\n\\( C \\rightarrow cC \\mid \\epsilon \\)\n\\( B \\rightarrow bB \\mid b \\)\nWhich one of the following options gives the number of shift-reduce conflicts that will occur in the \\( LR(0) \\) ACTION table?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -8022,7 +8022,7 @@
         "subject": "Compiler Design",
         "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
         "difficulty": "Hard",
-        "question_text": "Given a Context-Free Grammar G as follows:\n\\( S \\rightarrow Aa \\mid bac \\mid dc \\mid bda \\)\n\\( A \\rightarrow d \\)\nWhich ONE of the following statements is TRUE?",
+        "question_text": "Given a Context-Free Grammar G as follows:\n\\( S \\rightarrow Aa \\mid bAc \\mid dc \\mid bda \\)\n\\( A \\rightarrow d \\)\nWhich ONE of the following statements is TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -8150,7 +8150,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "\\( \\overline{w}\\overline{x}y\\overline{z} + w\\overline{x}\\overline{y}\\overline{z} + w\\overline{x}y\\overline{z} + xz \\)",
+            "text": "\\( \\overline{w}\\overline{x}y\\overline{z} + w\\overline{x}\\overline{y}\\overline{z} + w\\overline{x}y\\overline{z} + \\overline{w}\\overline{x}\\overline{y}\\overline{z} + xz \\)",
             "is_correct": true,
             "has_image": false
           },
@@ -13980,7 +13980,7 @@
         "subject": "Linear Algebra",
         "topic": "Matrices, Determinants, & Linear Equation Systems",
         "difficulty": "Easy",
-        "question_text": "Let and \\( A = \\begin{bmatrix} 1 & 2 & 3 & 4 \\\\ 4 & 1 & 2 & 3 \\\\ 3 & 4 & 1 & 2 \\\\ 2 & 3 & 4 & 1 \\end{bmatrix} \\) and \\( B = \\begin{bmatrix} 3 & 4 & 1 & 2 \\\\ 4 & 1 & 2 & 3 \\\\ 1 & 2 & 3 & 4 \\\\ 2 & 3 & 4 & 1 \\end{bmatrix} \\)\nLet \\( \\det(A) \\) and \\( \\det(B) \\) denote the determinants of the matrices \\( A \\) and \\( B \\), respectively. Which one of the options given below is TRUE?",
+        "question_text": "Let \\( A = \\begin{bmatrix} 1 & 2 & 3 & 4 \\\\ 4 & 1 & 2 & 3 \\\\ 3 & 4 & 1 & 2 \\\\ 2 & 3 & 4 & 1 \\end{bmatrix} \\) and \\( B = \\begin{bmatrix} 3 & 4 & 1 & 2 \\\\ 4 & 1 & 2 & 3 \\\\ 1 & 2 & 3 & 4 \\\\ 2 & 3 & 4 & 1 \\end{bmatrix} \\)\nLet \\( \\det(A) \\) and \\( \\det(B) \\) denote the determinants of the matrices \\( A \\) and \\( B \\), respectively. Which one of the options given below is TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -17116,7 +17116,7 @@
         "subject": "Linear Algebra",
         "topic": "Matrix Factorization & LU Decomposition",
         "difficulty": "Medium",
-        "question_text": "Consider solving the following system of simultaneous equations using \\(LU\\) decomposition.\n$$ x_1 + x_2 - 2x_3 = 4 $$\n$$ x_1 + 3x_2 - x_3 = 7 $$\n$$ 2x_1 + x_2 - 5x_3 = 7 $$\nwhere \\(L\\) and \\(U\\) are denoted as\n$$ L = \\begin{pmatrix} L_{11} & 0 & 0 \\\\ L_{21} & L_{22} & 0 \\\\ L_{31} & L_{32} & L_{33} \\end{pmatrix}, U = \\begin{pmatrix} U_{11} & U_{12} & U_{13} \\\\ 0 & U_{22} & U_{23} \\\\ 0 & 0 & U_{33} \\end{pmatrix} $$\nWhich one of the following is the correct combination of values for \\(L_{32}\\), \\(U_{32}\\), and \\(x_1\\)?",
+        "question_text": "Consider solving the following system of simultaneous equations using \\(LU\\) decomposition.\n$$ x_1 + x_2 - 2x_3 = 4 $$\n$$ x_1 + 3x_2 - x_3 = 7 $$\n$$ 2x_1 + x_2 - 5x_3 = 7 $$\nwhere \\(L\\) and \\(U\\) are denoted as\n$$ L = \\begin{pmatrix} L_{11} & 0 & 0 \\\\ L_{21} & L_{22} & 0 \\\\ L_{31} & L_{32} & L_{33} \\end{pmatrix}, U = \\begin{pmatrix} U_{11} & U_{12} & U_{13} \\\\ 0 & U_{22} & U_{23} \\\\ 0 & 0 & U_{33} \\end{pmatrix} $$\nWhich one of the following is the correct combination of values for \\(L_{32}\\), \\(U_{33}\\), and \\(x_1\\)?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -17128,7 +17128,7 @@
           },
           {
             "option_id": "B",
-            "text": "\\(L_{32} = 2, U_{32} = 2, x_1 = -1\\)",
+            "text": "\\(L_{32} = 2, U_{33} = 2, x_1 = -1\\)",
             "is_correct": false,
             "has_image": false
           },
@@ -17376,7 +17376,7 @@
           },
           {
             "option_id": "C",
-            "text": "\\(f(5.2^n) = 2^{n+1} + 1\\)",
+            "text": "\\(f(5 \\cdot 2^n) = 2^{n+1} + 1\\)",
             "is_correct": true,
             "has_image": false
           },
@@ -17560,7 +17560,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
         "difficulty": "Medium",
-        "question_text": "Consider the relational database with the following four schemas and their respective instances.\nStudent(sNo, sName, dNo)\nDept(dNo, dName)\nCourse(cNo, cName, dNo)\nRegister(sNo, cNo)\n\n[IMAGE_Q_56]\n\nSQL Query:\n```sql\nSELECT * FROM Student AS S WHERE NOT EXIST\n    (SELECT cNo FROM Course WHERE dNo = \"D01\"\n     EXCEPT\n     SELECT cNo FROM Register WHERE sNo = S.sNo)\n```\nThe number of rows returned by the above SQL query is ___________.",
+        "question_text": "Consider the relational database with the following four schemas and their respective instances.\nStudent(sNo, sName, dNo)\nDept(dNo, dName)\nCourse(cNo, cName, dNo)\nRegister(sNo, cNo)\n\n[IMAGE_Q_56]\n\nSQL Query:\n```sql\nSELECT * FROM Student AS S WHERE NOT EXISTS\n    (SELECT cNo FROM Course WHERE dNo = \"D01\"\n     EXCEPT\n     SELECT cNo FROM Register WHERE sNo = S.sNo)\n```\nThe number of rows returned by the above SQL query is ___________.",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_56"
@@ -18367,7 +18367,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Propositional and First-Order Quantifier Logic",
         "difficulty": "Medium",
-        "question_text": "Let \\(p\\) and \\(q\\) be two propositions. Consider the following two formulae in propositional logic.\n\\(S_1 : (\\neg p \\land (p \\lor q)) \\rightarrow p\\)\n\\(S_2 : q \\rightarrow (\\neg p \\land (p \\lor q))\\)\nWhich one of the following choices is correct?",
+        "question_text": "Let \\(p\\) and \\(q\\) be two propositions. Consider the following two formulae in propositional logic.\n\\(S_1 : (\\neg p \\land (p \\lor q)) \\rightarrow q\\)\n\\(S_2 : q \\rightarrow (\\neg p \\land (p \\lor q))\\)\nWhich one of the following choices is correct?",
         "has_image": false,
         "images_required": [],
         "options": [
