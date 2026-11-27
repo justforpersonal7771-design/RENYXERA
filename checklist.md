@@ -18,7 +18,7 @@ Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, w
 - [x] **(me)** C2 Variables and data types, C3 Operators and expressions written and tested (28 Nov); every trap now has a worked example; tips are inline, not a separate section
 - [ ] **(you)** Check the Unlock banner is gone on /study and the plans screen with a student who owns every pack
 - [x] **(me)** Programming in C chapters C0 to C21 written; chapter-check, tsc, PYQ coverage and browser sweep passed (27 Nov). Open gates: mobile dark text read, contrast audit, live check
-- [~] **(me)** Data Structures chapters D0 to D16: D0, D1, D2 written (28 Nov). Central tracker for every subject: [docs/study-materials/TRACK.md](docs/study-materials/TRACK.md)
+- [~] **(me)** Data Structures chapters D0 to D16: D0 to D5 written and verified (28 Nov); next D6 to D10, D13, D15, D16. Central tracker for every subject: [docs/study-materials/TRACK.md](docs/study-materials/TRACK.md)
 - [x] **(me)** Programming in C split into 4 parts (Section 1 of P&DS), Data Structures is Section 2; rail number badges fixed for D-chapters; far rail jumps no longer smooth-scroll
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
 

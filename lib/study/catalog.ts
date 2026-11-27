@@ -31,7 +31,7 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "c2", title: "2. Functions, recursion, arrays", href: "/study/c-functions", ready: "5 chapters ready", match: "Functions|Parameter Passing|Recursion|Arrays" },
     { id: "c3", title: "3. Pointers, strings, memory", href: "/study/c-pointers", ready: "6 chapters ready", match: "Pointers|Dynamic Memory|Strings|Structures" },
     { id: "c4", title: "4. Reading code and practice", href: "/study/c-reading", ready: "5 chapters ready", match: "Preprocessor|Files|programming in c" },
-    { id: "ds-book", part: "Section 2 · Data Structures", title: "Data Structures: from arrays to graphs", href: "/study/data-structures", ready: "3 chapters ready", match: "Linked Lists|Stacks|Queues|Binary Search Trees|Binary Heaps|Abstract Data Types|data structures" },
+    { id: "ds-book", part: "Section 2 · Data Structures", title: "Data Structures: from arrays to graphs", href: "/study/data-structures", ready: "6 chapters ready", match: "Linked Lists|Stacks|Queues|Binary Search Trees|Binary Heaps|Abstract Data Types|data structures" },
     { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "3 topics ready" }, { id: "lists", title: "Arrays", href: "/study/arrays", ready: "3 topics ready" },
     { id: "stackq", title: "Stacks and queues", href: "/study/stacks-queues", ready: "4 topics ready" }, { id: "linked", title: "Linked lists", href: "/study/linked-lists", ready: "3 topics ready" }, { id: "trees", title: "Trees and binary search trees", href: "/study/trees", ready: "4 topics ready" },
     { id: "heaps", title: "Binary heaps", href: "/study/heaps", ready: "3 topics ready" }, { id: "graph-ds", title: "Graphs: representation", href: "/study/graph-representation", ready: "3 topics ready" },

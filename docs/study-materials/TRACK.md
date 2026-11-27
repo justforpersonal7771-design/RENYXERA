@@ -2,7 +2,7 @@
 
 The one page that shows every subject's progress. Updated at the end of every study turn. Detail per book lives in its own file (P&DS: [v2/programming-and-data-structures/BOOK-PROGRESS.md](v2/programming-and-data-structures/BOOK-PROGRESS.md)).
 
-**Last updated:** 27 Nov 2026
+**Last updated:** 28 Nov 2026
 
 **Stages:** 1 Review input written · 2 Reviews merged · 3 Book v2 (textbook quality: numbered headings, figures, PYQs, traps with worked examples) · 4 Verified (compile, tsc, browser, contrast) · 5 Live
 
@@ -11,7 +11,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Subject | Pack | 1 | 2 | 3 Book v2 | 4 Verified | 5 Live | Notes |
 |---|---|---|---|---|---|---|---|
 | Programming in C (Section 1 of P&DS, in 4 parts: foundations C0–C5, functions/recursion/arrays C6–C9+C17, pointers/strings/memory C10–C15, reading code and practice C16, C18–C21) | pds | [x] | [x] | [x] C0–C21 | [x] chapter-check 22/22, sweep, contrast | [~] pushed, live check pending | C1, C4, C16, C17, C18, C20 have no tagged PYQ |
-| **Data Structures** | pds | [x] | [x] | [~] D0–D2 written; D3–D16 in progress | [~] D0–D2 chapter-check; D2 browser pending | [~] D0, D1 pushed | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
+| **Data Structures** | pds | [x] | [x] | [~] D0–D5 written; D6–D16 in progress | [~] D0–D5: chapter-check, tsc, browser sweep and contrast clean | [~] D0, D1 pushed | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
 | Databases | dbms | [x] | [~] | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
@@ -35,10 +35,10 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 |---|---|---|
 | D0 | What a data structure is | [x] verified |
 | D1 | Counting and growth | [x] verified |
-| D2 | Arrays: the block of boxes | [x] chapter-check + tsc; browser sweep pending |
-| D3 | Linked lists | [ ] |
-| D4 | Stacks | [ ] |
-| D5 | Queues | [ ] |
+| D2 | Arrays: the block of boxes | [x] verified |
+| D3 | Linked lists: nodes and pointers | [x] verified (GATE 2026 Q39, 2023 Q13, 2022 Q15, 2025 Q62 variant) |
+| D4 | Stacks: last in, first out | [x] verified (2026 AN Q50, 2025 AN Q45) |
+| D5 | Queues: first in, first out | [x] verified (2023 FN Q59, 2018 FN Q13) |
 | D6 | Recursion on data structures | [ ] |
 | D7 | Trees | [ ] |
 | D8 | Binary search trees | [ ] |
