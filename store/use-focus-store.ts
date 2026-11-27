@@ -7,6 +7,9 @@ interface FocusState {
   label: string | null;
   /** seconds in this focus session, counted by FocusSession and shown on the Focus button */
   secs: number;
+  /** paused: the clock stops and nothing is counted until the reader resumes */
+  paused: boolean;
+  togglePause: () => void;
   setSecs: (n: number) => void;
   enter: (label: string | null) => void;
   exit: () => void;
@@ -15,7 +18,9 @@ export const useFocusStore = create<FocusState>((set) => ({
   on: false,
   label: null,
   secs: 0,
+  paused: false,
+  togglePause: () => set((s) => ({ paused: !s.paused })),
   setSecs: (n) => set({ secs: n }),
-  enter: (label) => set({ on: true, label, secs: 0 }),
-  exit: () => set({ on: false }),
+  enter: (label) => set({ on: true, label, secs: 0, paused: false }),
+  exit: () => set({ on: false, paused: false }),
 }));

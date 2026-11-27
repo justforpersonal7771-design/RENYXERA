@@ -1,7 +1,7 @@
 // Checks a textbook chapter end to end: schema rules, every figure (links, ranges, constant frame size), every place a book node refers to,
 // the code-styling helpers, and that every complete C program in the chapter compiles and prints what the book says.
 // Run: npx tsx scripts/chapter-check.ts   (gcc must be on PATH; on this machine add C:\msys64\ucrt64\bin)
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -88,13 +88,14 @@ const run = (label: string, src: string, expect?: string) => {
   const file = join(dir, `p${n++}.c`), exe = join(dir, `p${n}.exe`);
   writeFileSync(file, src);
   try { execFileSync("gcc", ["-w", "-o", exe, file], { stdio: "pipe" }); } catch (e) { ok(`${label} compiles`, false, String((e as { stderr?: Buffer }).stderr ?? e).slice(0, 160)); return; }
-  const out = execFileSync(exe, { encoding: "utf8" }).replace(/\r\n/g, "\n").trim();
+  // the exit status is ignored: the book shows void main on purpose in one GATE question, and its status is meaningless
+  const out = (spawnSync(exe, { encoding: "utf8" }).stdout ?? "").replace(/\r\n/g, "\n").trim();
   if (expect === undefined) ok(`${label} compiles and runs`, true, out.replace(/\n/g, " | "));
   else ok(`${label} prints the book's output`, out === expect.trim(), out === expect.trim() ? "" : `got "${out}" want "${expect}"`);
 };
-for (const x of book) if (x.t === "code" && /int main/.test(x.text) && !x.file?.endsWith("_input.c")) run(`code ${x.file ?? ""}`, x.text, x.file === "address_demo.c" ? undefined : x.out);
-const wantEx: Record<string, string> = { "p-e2": "3 7 7 3", "p-e3": "9", "p-e4": "25", "p-e6": "10, 10, 14" };
-for (const e of exs) if (/int main/.test(e.given)) run(`example ${e.id}`, e.given.includes("#include") ? e.given : "#include <stdio.h>\n" + e.given, wantEx[e.id]);
+for (const x of book) if (x.t === "code" && /\bmain\s*\(/.test(x.text) && !x.file?.endsWith("_input.c")) run(`code ${x.file ?? ""}`, x.text, x.file === "address_demo.c" ? undefined : x.out);
+const wantEx: Record<string, string> = { "p-e2": "3 7 7 3", "p-e3": "9", "p-e4": "25", "p-e6": "10, 10, 14", "c1-e1": "102", "c1-e2": "6 7", "c2-e2": "0", "c2-e3": "3", "c3-e1": "0", "c3-e2": "10", "c3-e3": "z K S" };
+for (const e of exs) if (/\bmain\s*\(/.test(e.given)) run(`example ${e.id}`, e.given.includes("#include") ? e.given : "#include <stdio.h>\n" + e.given, wantEx[e.id]);
 const e5 = exs.find((e) => e.id === "p-e5"); if (e5) run("example p-e5", "#include <stdio.h>\n" + e5.given.replace("/* the call: printxy(1, 1) */", "") + "\nint main(void){ printxy(1, 1); return 0; }", "1, 0");
 const e1 = exs.find((e) => e.id === "p-e1"); if (e1) run("example p-e1", `#include <stdio.h>\nint main(void){\n${e1.given}\nprintf("%d %d", a, b); return 0; }`, "8 1");
 

@@ -6,7 +6,7 @@ for (const theme of ["light", "dark"]) for (const [vw, vh, tag] of [[1440, 900, 
   await ctx.addInitScript((t) => { try { localStorage.setItem("theme", t); sessionStorage.setItem("renyxera_intro_seen", "1"); } catch {} }, theme);
   const p = await ctx.newPage(); const errs = []; p.on("pageerror", (e) => errs.push(String(e).slice(0, 120)));
   await p.goto("http://localhost:3111/study/c-programming", { waitUntil: "networkidle", timeout: 300000 }); await p.waitForTimeout(4500);
-  if (process.env.TOPIC) { await p.getByRole("button", { name: new RegExp(process.env.TOPIC) }).first().click(); await p.waitForTimeout(2500); }
+  if (process.env.TOPIC) { await p.locator("ol.no-scrollbar span.block", { hasText: process.env.TOPIC }).first().evaluate((e) => e.closest("button").click()); await p.waitForTimeout(2500); }
   const figs = p.locator("[data-book] figure"); const n = await figs.count(); const rows = [];
   for (let i = 0; i < n; i++) {
     const f = figs.nth(i); if (!(await f.isVisible())) { rows.push({ i: i + 1, hidden: true }); continue; } await f.scrollIntoViewIfNeeded(); await p.waitForTimeout(150);

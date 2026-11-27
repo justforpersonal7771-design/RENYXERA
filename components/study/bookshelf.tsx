@@ -8,7 +8,7 @@
  * chapter status; phones open an inline drawer under the shelf row. A reading desk on top: continue or start here,
  * search across subjects and chapters, and an availability filter.
  */
-import { BANK_SUBJECTS, BUNDLES, packOfBook, rupees } from "@/lib/study/packs";
+import { BANK_SUBJECTS, BUNDLES, PACKS, packOfBook, rupees } from "@/lib/study/packs";
 import { PremiumCard } from "@/components/ui/premium-card";
 import { openStudyShop } from "@/store/use-study-shop-store";
 import { useStudyAccess } from "@/lib/study/use-study-access";
@@ -173,6 +173,7 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
 }
 
 export function Bookshelf() {
+  const access = useStudyAccess();
   const [open, setOpen] = useState<ShelfBook | null>(null);
   const [drawer, setDrawer] = useState<string | null>(null);
   const [q, setQ] = useState("");
@@ -235,8 +236,12 @@ export function Bookshelf() {
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
         </div>
-        <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
-          body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
+        {access.loading ? <div aria-hidden className="min-w-0 lg:h-72" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
+          <section aria-label="Study access" className="card-pastel flex min-w-0 flex-col justify-between p-5 lg:h-72" data-tint="mint"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><div><p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Every book is unlocked</p><p className="mt-1 text-sm text-[var(--text-secondary)]">All chapters are open to you. Pick a book and carry on reading.</p></div></section>
+        ) : (
+          <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
+            body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
+        )}
       </div>
 
       {focus.active && (

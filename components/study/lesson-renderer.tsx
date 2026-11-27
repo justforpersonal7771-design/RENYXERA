@@ -249,7 +249,6 @@ import { saveNote, useNotes } from "@/lib/desk/stores";
 import { NoteEditor } from "@/components/desk/note-editor";
 import { NotebookPen } from "lucide-react";
 import { Inline, Rich, splitCodeQ } from "./rich-text";
-import { FocusButton } from "./focus-mode";
 import { useFocusStore } from "@/store/use-focus-store";
 import { addToRevision } from "@/lib/desk/revision";
 import { useToastStore } from "@/store/use-toast-store";
@@ -360,7 +359,7 @@ const Example = ({ b, code }: { b: B<"example">; code?: boolean }) => (
     <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 font-bold text-[var(--text-primary)]">Answer: <Rich s={b.answer} /></p>{b.check && <p className="mt-2 text-sm text-[var(--text-primary)]"><b>Check it another way: </b><Rich s={b.check} /></p>}</section>
 );
 const Faded = ({ b }: { b: B<"faded"> }) => <section {...card("peach")}><p className="text-xs font-bold text-[var(--tint-ink)]">Try it yourself</p><h3 className="lesson-h !mt-1">{b.title}</h3><div className="mt-2"><CodeEditor text={b.given.replace(/; /g, ";\n")} name="your_turn.c" /></div><ol className="mt-2 list-decimal space-y-2 pl-5">{b.steps.map((s, i) => <FadedStep key={i} s={s} />)}</ol></section>;
-const Trap = ({ b }: { b: B<"trap"> }) => <section {...card("rose", "h-full")}><Label icon={<TriangleAlert className="h-4 w-4" aria-hidden />}>Trap</Label><p className="mt-1 font-bold text-[var(--text-primary)]"><Rich s={b.wrong} /></p><p className="mt-2 text-sm leading-6 text-[var(--text-primary)]"><b>Why it feels right: </b><Rich s={b.tempting} /></p><p className="mt-1 text-sm leading-6 text-[var(--text-primary)]"><b>Why it is wrong: </b><Rich s={b.whyWrong} /></p><p className="mt-3 rounded-xl bg-[var(--surface)] p-2.5 text-sm font-bold leading-6 text-[var(--text-primary)]">Rule: <Rich s={b.rule} /></p></section>;
+const Trap = ({ b }: { b: B<"trap"> }) => <section {...card("rose", "h-full")}><Label icon={<TriangleAlert className="h-4 w-4" aria-hidden />}>Trap</Label><p className="mt-1 font-bold text-[var(--text-primary)]"><Rich s={b.wrong} /></p><p className="mt-2 text-sm leading-6 text-[var(--text-primary)]"><b>Why it feels right: </b><Rich s={b.tempting} /></p><p className="mt-1 text-sm leading-6 text-[var(--text-primary)]"><b>Why it is wrong: </b><Rich s={b.whyWrong} /></p>{b.ex && <div className="mt-3 rounded-xl border border-dashed border-[var(--tint-ink,var(--border))] bg-[var(--surface)]/70 p-3"><p className="text-xs font-extrabold uppercase tracking-wide text-[var(--tint-ink)]">See it happen</p>{b.ex.code && <div className="mt-2"><CodeEditor text={b.ex.code} out={b.ex.out} name="trap_example.c" /></div>}{b.ex.text && <p className="mt-2 text-sm leading-6 text-[var(--text-primary)]"><Rich s={b.ex.text} /></p>}</div>}<p className="mt-3 rounded-xl bg-[var(--surface)] p-2.5 text-sm font-bold leading-6 text-[var(--text-primary)]">Rule: <Rich s={b.rule} /></p></section>;
 const Shortcut = ({ b }: { b: B<"shortcut"> }) => <section {...card("mint")}><Label icon={<Zap className="h-4 w-4" aria-hidden />}>Shortcut</Label><p className="lesson-p mt-1"><Rich s={b.text} /></p><p className="mt-1 text-sm">Valid when: <Rich s={b.validWhen} /></p></section>;
 const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}><Label icon={<Lightbulb className="h-4 w-4" aria-hidden />}>How GATE asks it</Label><p className="lesson-p mt-1"><Rich s={b.text} /></p></section>;
 /** One personal note on this topic, kept in the Notes tab with everything else; the button shows when there is already one. */
@@ -412,7 +411,7 @@ type Sec = { key: string; label: string; lvl?: 1 | 2 };
 function SecLabel({ sec }: { sec: Sec }) {
   const sp = sec.label.indexOf(" "); const num = sp > 0 && /^\d/.test(sec.label) ? sec.label.slice(0, sp) : ""; const rest = num ? sec.label.slice(sp + 1) : sec.label;
   if (sec.lvl === 1) return <><b className="mr-1.5 rounded-md px-1.5 py-px text-[11px] font-extrabold tabular-nums text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>{num}</b>{rest}</>;
-  if (sec.lvl === 2) return <><span className="mr-1.5 text-[11px] tabular-nums text-[var(--text-muted,var(--text-secondary))]">{num}</span>{rest}</>;
+  if (sec.lvl === 2) return <><span className="mr-1.5 inline-block rounded-md border border-[color-mix(in_srgb,var(--st-accent)_40%,transparent)] px-1 py-px text-[10.5px] font-bold tabular-nums leading-none text-[var(--st-accent)]">{num}</span>{rest}</>;
   return <>{sec.label}</>;
 }
 const secRow = (sec: Sec) => (sec.lvl === 1 ? "mt-1.5 font-extrabold text-[var(--text-primary)]" : sec.lvl === 2 ? "pl-4 text-[11.5px]" : "");
@@ -688,7 +687,7 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Chapter {no}</p>
           <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
-        <div className="flex flex-wrap items-center gap-2"><FocusButton label={recallMeta.subject} /><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
+        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
       <div className="mt-2 px-1 sm:px-3">
         {nodes.map(render)}
@@ -723,7 +722,7 @@ function TopicView({ t, index, topics, href }: { t: Topic; index: number; topics
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
-        <div className="flex flex-wrap items-center gap-2"><FocusButton label={recallMeta.subject} /><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
+        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
@@ -953,7 +952,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
                     return (
                       <li key={x.key} className={toggle ? "flex items-center" : undefined}>
                         <button type="button" onClick={() => go(id)} aria-current={on ? "location" : undefined}
-                          className={`relative -ml-[2px] block w-full border-l-2 ${x.lvl === 2 ? "py-1 pl-7 pr-2 text-[12px]" : x.lvl === 1 ? "mt-1.5 py-1.5 pl-3 pr-2 text-[13.5px] font-extrabold" : "py-1.5 pl-3 pr-2 text-[13px]"} text-left leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                          className={`relative -ml-[2px] block w-full border-l-2 ${x.lvl === 2 ? "py-1 pl-8 pr-2 text-[12px] before:absolute before:left-[1.05rem] before:top-0 before:h-1/2 before:w-3 before:rounded-bl-md before:border-b before:border-l before:border-[var(--border)]" : x.lvl === 1 ? "mt-1.5 py-1.5 pl-3 pr-2 text-[13.5px] font-extrabold" : "py-1.5 pl-3 pr-2 text-[13px]"} text-left leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                           {on && <span aria-hidden className="absolute inset-0 rounded-r-lg" style={{ background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }} />}
                           <span className="relative"><SecLabel sec={x} /></span>
                         </button>
@@ -970,7 +969,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     </>
   );
   return (
-    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c", ...(focus ? { ["--lesson-chrome" as string]: "4rem" } : {}) }}>
+    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c", ...(focus ? { ["--lesson-chrome" as string]: "1.5rem" } : {}) }}>
       {!focus && <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>}
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">

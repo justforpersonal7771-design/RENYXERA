@@ -84,7 +84,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
   );
   return (
     <div className="relative">
-      <div ref={strip} className="no-scrollbar flex snap-x items-center gap-1 overflow-x-auto overscroll-x-contain rounded-2xl bg-[var(--surface-secondary)]/70 p-1 [mask-image:linear-gradient(to_right,#000_calc(100%-3.5rem),transparent)] sm:[mask-image:none]" role="tablist" aria-label="Open chapters">
+      <div ref={strip} className="no-scrollbar flex snap-x items-center gap-1 overflow-x-auto overscroll-x-contain w-fit max-w-full rounded-2xl p-0.5 [mask-image:linear-gradient(to_right,#000_calc(100%-3.5rem),transparent)] sm:[mask-image:none]" role="tablist" aria-label="Open chapters">
         <Reorder.Group axis="x" values={list} onReorder={(v) => reorder(pair ? v.flatMap((t) => (t.href === pair[0] ? [t, byHref(pair[1])] : [t])) : v)} className="flex items-center gap-1">
           {list.map((t, idx) => {
             const isPair = pair && t.href === pair[0];

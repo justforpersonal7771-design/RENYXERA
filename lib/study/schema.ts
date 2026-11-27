@@ -16,6 +16,8 @@ export type Fig =
   | { kind: "strip"; items: { label: string; sub?: string; state: "done" | "now" | "todo" | "bad" }[] }
   | FigX; // master figure kinds: memory, array, linked, tree, calltree, heap, stackframe, trace, bits, ring, hashtable, frames
 
+/** A worked example inside a trap: small code (with what it prints) and/or a sentence of numbers, so the mistake is seen, not just described. */
+export type TrapEx = { code?: string; out?: string; text?: string };
 export type Block =
   | { type: "hook"; text: string }
   | { type: "objectives"; items: string[] }
@@ -26,7 +28,7 @@ export type Block =
   | { type: "figure"; id: string; fig: Fig; caption: string; alt: string; for?: string }
   | { type: "example"; id: string; level: "gate" | "edge" | "easy"; title: string; given: string; file?: string; find: string; steps: { say: string; result?: string }[]; answer: string; check?: string }
   | { type: "faded"; title: string; given: string; steps: { say: string; blank?: boolean; answer?: string }[] }
-  | { type: "trap"; wrong: string; tempting: string; whyWrong: string; rule: string }
+  | { type: "trap"; wrong: string; tempting: string; whyWrong: string; rule: string; ex?: TrapEx }
   | { type: "shortcut"; text: string; validWhen: string }
   | { type: "gate"; text: string }
   | { type: "recall"; cards: { q: string; a: string }[] }

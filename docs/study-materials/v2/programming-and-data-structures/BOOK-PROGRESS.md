@@ -26,8 +26,8 @@ Legend: `[x]` done and proved · `[~]` partly, the note says what is missing · 
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 01 Basics | **C0** | **How a computer runs a program** | [x] | [x] | [x] | [x] | n/a | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push pending** |
 | 01 Basics | **C1** | **Your first program** | [x] | [x] | [x] | [x] | n/a | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push in this batch** |
-| 01 Basics | C2 | Variables and data types | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
-| 02 Operators, decisions, loops | C3 | Operators | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
+| 01 Basics | **C2** | **Variables and data types** | [x] | [x] | [x] | [x] | [x] | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push in this batch** |
+| 02 Operators, decisions, loops | **C3** | **Operators** | [x] | [x] | [x] | [x] | [~] | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; 2024 FN Q30 is a table given as a picture, method only** |
 | 02 Operators, decisions, loops | C4 | Decisions | [x] | [ ] | [ ] | [ ] | n/a | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 02 Operators, decisions, loops | C5 | Loops | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 03 Functions, scope, storage | C6 | Functions and the call stack | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
@@ -107,3 +107,11 @@ Not started. Order of work after Programming in C: D0, D1, D2, D3, D4, D5, D6, D
 - Chapter header is sticky on desktop; on phones it is not (the location bar is sticky there, checked: no overlap).
 - Intro: calmer lead paragraph; "What you will be able to do" as its own card; heading numbers stay on the first line of a wrapped title.
 - Not done yet: the study tabs strip redesign (needs the research pass); the numbering for deeper levels (0.1.1.1) in the rail; rail focus test for sub-sub topics; mobile text pages in dark mode.
+
+### Status on 28 Nov 2026
+
+- Done and tested: C0, C1, C2, C3, C10 (5 of 21 Programming in C chapters). Not started: C4 to C9, C11 to C21.
+- Every trap in these five chapters now has a "See it happen" example (code with its output, or numbers). Every new chapter must do the same.
+- The separate "Tips, shortcuts and tricks" section is gone: tips and shortcuts sit inline, in the section they belong to.
+- Focus: the control is in the lesson dock before Notes (round button; on, a capsule with the time, pause/resume and stop; no text); no outer scrollbar in focus on desktop; the chapter header is not sticky; the tab strip has no background.
+- Study packs: the "Unlock every chapter" card on the library, and the Study materials row on the plans screen, are hidden for students who own every pack; the library shows "Every book is unlocked" in that place. Verified by typecheck only; I could not sign in as a student who owns every pack.

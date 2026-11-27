@@ -15,7 +15,9 @@ Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, w
 - [x] **(me)** Chapters C0, C1, C10 done (tracker). Focus mode with study time in Analytics and the dashboard timer; smoother scrolling; sticky chapter header; rail with differentiated sections
 - [x] **(me)** Study tabs strip redesigned (27 Nov): soft pills in a quiet track, active tab takes its book's colour (tint wash, thin edge, left bar, haloed dot), subject shown on the active tab only, fade where it scrolls on phones, close/more reveal on hover, press scale. Research: Safari 26 compact Liquid Glass bar, Chrome scrollable and vertical tabs, Vivaldi 8 unified surface, Apple/Fluent/NN-g tab and segmented-control guidance; skills: ui-ux-pro-max, emil design engineering, interaction design, with design-critique, interface-design, frontend-design and design-elevation already applied this session
 - [ ] **(me)** Rail focus test for sub-sub topics; check the new tabs with 4+ open tabs, split view, groups and pinned tabs
-- [ ] **(me)** Programming in C chapters C2 to C9, C11 to C21 (one at a time, each through gates G1 to G11)
+- [x] **(me)** C2 Variables and data types, C3 Operators and expressions written and tested (28 Nov); every trap now has a worked example; tips are inline, not a separate section
+- [ ] **(you)** Check the Unlock banner is gone on /study and the plans screen with a student who owns every pack
+- [ ] **(me)** Programming in C chapters C4 to C9, C11 to C21 (C4 to C9 and C11 to C21 not started) (one at a time, each through gates G1 to G11)
 - [ ] **(me)** Data Structures chapters D0 to D16
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
 

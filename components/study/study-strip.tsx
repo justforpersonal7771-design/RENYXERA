@@ -4,8 +4,12 @@
 import { PremiumCard } from "@/components/ui/premium-card";
 import { BUNDLES, FREE_TOPICS, PACKS, bundleSum, rupees } from "@/lib/study/packs";
 import { openStudyShop } from "@/store/use-study-shop-store";
+import { useStudyAccess } from "@/lib/study/use-study-access";
 
 export function StudyStrip() {
+  const access = useStudyAccess();
+  // students who own every pack have nothing to buy here
+  if (access.loading || PACKS.every((p) => access.packs.includes(p.id))) return null;
   const core = BUNDLES.find((b) => b.id === "core")!, maths = BUNDLES.find((b) => b.id === "maths")!, all = BUNDLES.find((b) => b.id === "everything")!;
   const apt = PACKS.find((p) => p.id === "apt")!;
   return (

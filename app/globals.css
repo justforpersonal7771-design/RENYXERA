@@ -2633,14 +2633,18 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 .study-lesson [data-book] figure { box-shadow: none; }
 .study-lesson .code-ed { box-shadow: none; }
 
-/* The chapter header (title, Focus, notes, previous/next) stays in view while the chapter scrolls beneath it (desktop; on phones the sticky location bar does this job). */
-@media (min-width: 1024px) {
-  .study-lesson .lesson-topic-head { position: sticky; top: 0; z-index: 6; box-shadow: 0 6px 14px -10px rgb(15 23 42 / .35); }
-}
-
 /* Focus button (27 Nov): the button is the switch and the timer. On: accent gradient, a slow breathing glow and a ping on the icon. */
 .focus-btn-on { background: linear-gradient(135deg, var(--st-accent, #c2410c), color-mix(in srgb, var(--st-accent, #c2410c) 60%, #7c3aed)); animation: focus-glow 2.6s ease-in-out infinite; }
 .focus-ping { border: 1.5px solid currentColor; opacity: .6; animation: focus-ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
 @keyframes focus-glow { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-accent, #c2410c) 40%, transparent); } 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--st-accent, #c2410c) 0%, transparent); } }
 @keyframes focus-ping { 0% { transform: scale(.7); opacity: .7; } 80%, 100% { transform: scale(1.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .focus-btn-on, .focus-ping { animation: none; } }
+
+/* Focus control in the lesson dock (28 Nov): a round button; on, a capsule that breathes while counting and rests when paused. */
+.focus-dock-off:hover { box-shadow: 0 0 0 4px color-mix(in srgb, var(--st-accent, #c2410c) 22%, transparent), 0 10px 30px -12px rgba(0,0,0,.35); }
+.focus-dock-on { background: linear-gradient(135deg, var(--st-accent, #c2410c), color-mix(in srgb, var(--st-accent, #c2410c) 55%, #7c3aed)); animation: focus-glow 2.6s ease-in-out infinite; transition: filter .3s; }
+.focus-dock-on.is-paused { animation: none; filter: saturate(.55) brightness(.95); }
+.focus-live { animation: focus-live 1.6s ease-in-out infinite; }
+.is-paused .focus-live { animation: none; }
+@keyframes focus-live { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+@media (prefers-reduced-motion: reduce) { .focus-dock-on, .focus-live { animation: none; } }
