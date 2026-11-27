@@ -15,7 +15,7 @@ const mmss = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${St
 export function FocusDock({ label }: { label: string }) {
   const on = useFocusStore((s) => s.on), secs = useFocusStore((s) => s.secs), paused = useFocusStore((s) => s.paused);
   const enter = useFocusStore((s) => s.enter), exit = useFocusStore((s) => s.exit), togglePause = useFocusStore((s) => s.togglePause);
-  const round = "grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-full transition-[transform,background-color] duration-150 active:scale-90";
+  const round = "focus-round grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-full transition-[transform,background-color] duration-150 active:scale-90";
   if (!on) {
     return (
       <button type="button" onClick={() => enter(label)} aria-label="Start focus mode" title="Focus mode: hide the menus and count your study time"
@@ -26,13 +26,13 @@ export function FocusDock({ label }: { label: string }) {
   }
   return (
     <>
-    <div role="group" aria-label={"Focus mode, " + mmss(secs) + (paused ? ", paused" : "")} className={"focus-dock-on flex h-[2.6rem] shrink-0 items-center gap-0.5 rounded-full py-1 pl-3 pr-1 text-[var(--surface)] " + (paused ? "is-paused" : "")}>
-      <span aria-hidden className={"focus-live mr-1.5 h-2 w-2 shrink-0 rounded-full " + (paused ? "bg-amber-300" : "bg-current")} />
+    <div role="group" aria-label={"Focus mode, " + mmss(secs) + (paused ? ", paused" : "")} className={"focus-dock-on flex h-[2.6rem] shrink-0 items-center gap-0.5 rounded-full py-1 pl-3 pr-1 " + (paused ? "is-paused" : "")}>
+      <span aria-hidden className={"focus-live mr-1.5 h-2 w-2 shrink-0 rounded-full " + (paused ? "!bg-amber-500" : "")} />
       <span className="font-num min-w-[2.9rem] text-sm font-extrabold tabular-nums" aria-live="off">{mmss(secs)}</span>
-      <button type="button" onClick={togglePause} aria-label={paused ? "Resume focus" : "Pause focus"} title={paused ? "Resume" : "Pause"} className={round + " hover:bg-white/20"}>
+      <button type="button" onClick={togglePause} aria-label={paused ? "Resume focus" : "Pause focus"} title={paused ? "Resume" : "Pause"} className={round}>
         {paused ? <Play className="h-4 w-4 fill-current" aria-hidden /> : <Pause className="h-4 w-4 fill-current" aria-hidden />}
       </button>
-      <button type="button" onClick={exit} aria-label="Stop focus mode" title="Stop" className={round + " hover:bg-white/20"}><Square className="h-3.5 w-3.5 fill-current" aria-hidden /></button>
+      <button type="button" onClick={exit} aria-label="Stop focus mode" title="Stop" className={round}><Square className="h-3.5 w-3.5 fill-current" aria-hidden /></button>
     </div>
     <span aria-hidden className="hidden h-0 basis-full max-sm:block" />
     </>

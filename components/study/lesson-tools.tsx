@@ -15,6 +15,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
 import { FocusDock } from "./focus-mode";
+import { useFocusStore } from "@/store/use-focus-store";
 import { Calculator, Check, ScrollText, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
 import { LESSON_SELECTION_EVENT } from "@/components/study/lesson-highlights";
 import { normalizeQuestion } from "@/lib/repository/transformers/question-normalizer";
@@ -293,6 +294,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, notesBar, noteCo
     return () => window.removeEventListener("keydown", k);
   }, [stack, open]);
   const twoMark = pyqs?.filter((x) => x.marks === 2).length ?? 0;
+  const focusOn = useFocusStore((s) => s.on);
   const btn = "flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-bold text-[var(--text-primary)] shadow-[0_10px_30px_-12px_rgba(0,0,0,.35)] transition-transform hover:-translate-y-0.5 active:translate-y-0";
   return (
     <Portal>
@@ -316,7 +318,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, notesBar, noteCo
           </FloatPanel>
         )}
       </AnimatePresence>
-      <div className="lesson-dock fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-end gap-2 sm:right-6 lg:bottom-6">
+      <div className={"lesson-dock fixed " + (focusOn ? "bottom-[calc(1rem+env(safe-area-inset-bottom))]" : "bottom-[calc(5.5rem+env(safe-area-inset-bottom))]") + " right-3 z-[280] flex max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-end gap-2 sm:right-6 lg:bottom-6"}>
         <FocusDock label={lesson.split(":")[0]} />
         <button type="button" onClick={(e) => toggle("notes", e.currentTarget)} aria-pressed={open.notes} aria-label="Notes" className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink hidden sm:inline">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
         <button type="button" onClick={() => setCalc((c) => !c)} aria-pressed={calc} aria-label="Calculator" title="Calculator" className={btn}><Calculator className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Calc</span></button>

@@ -2642,7 +2642,10 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 
 /* Focus control in the lesson dock (28 Nov): a round button; on, a capsule that breathes while counting and rests when paused. */
 .focus-dock-off:hover { box-shadow: 0 0 0 4px color-mix(in srgb, var(--st-accent, #c2410c) 22%, transparent), 0 10px 30px -12px rgba(0,0,0,.35); }
-.focus-dock-on { background: linear-gradient(135deg, var(--st-accent, #c2410c), color-mix(in srgb, var(--st-accent, #c2410c) 55%, #7c3aed)); animation: focus-glow 2.6s ease-in-out infinite; transition: filter .3s; }
+.focus-dock-on { background: var(--surface); color: var(--text-primary); border: 1.5px solid var(--st-accent, #c2410c); box-shadow: 0 10px 28px -14px color-mix(in srgb, var(--st-accent, #c2410c) 70%, transparent), 0 0 0 4px color-mix(in srgb, var(--st-accent, #c2410c) 12%, transparent); animation: focus-glow 2.6s ease-in-out infinite; }
+.focus-dock-on .focus-live { background: var(--st-accent, #c2410c); }
+.focus-dock-on .focus-round { background: color-mix(in srgb, var(--st-accent, #c2410c) 14%, transparent); color: var(--st-accent, #c2410c); }
+.focus-dock-on .focus-round:hover { background: color-mix(in srgb, var(--st-accent, #c2410c) 26%, transparent); }
 .focus-dock-on.is-paused { animation: none; filter: saturate(.55) brightness(.95); }
 .focus-live { animation: focus-live 1.6s ease-in-out infinite; }
 .is-paused .focus-live { animation: none; }
