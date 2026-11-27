@@ -55,7 +55,7 @@ function useTopicPyqs(topic: RegExp) {
   const [list, setList] = useState<RenderableQuestion[] | null>(null);
   useEffect(() => {
     let live = true;
-    if (getCurrentBranch() !== "CSE") { setList([]); return () => { live = false; }; } // study books are Computer Science: only that branch's own PYQs belong here
+    if (getCurrentBranch() !== "CSE") { Promise.resolve().then(() => { if (live) setList([]); }); return () => { live = false; }; } // study books are Computer Science: only that branch's own PYQs belong here
     loadBank().then((bank) => { const papers = bank as unknown as { exam_metadata: { "year-shift": string }; questions: Question[] }[];
       if (!live) return;
       const out: RenderableQuestion[] = [];

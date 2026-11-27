@@ -112,7 +112,7 @@ export function Topbar() {
   }, []);
   // "Review" reopens the tab used last; read after mount so SSR and hydration agree.
   const [reviewHref, setReviewHref] = useState("/mistakes");
-  useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
+  useEffect(() => { const id = requestAnimationFrame(() => setReviewHref(lastReviewHref())); return () => cancelAnimationFrame(id); }, [pathname]);
   const [scrolled, setScrolled] = useState(false);
   // Scroll progress of the page's own scroller (<main>'s inner div — html/body never
   // scroll in this app), shown as a thin brand-gradient line under the bar.
@@ -142,8 +142,9 @@ export function Topbar() {
 
   // New page → starts at the top.
   useEffect(() => {
-    setScrolled(false);
+    const id = requestAnimationFrame(() => setScrolled(false));
     progressRaw.set(0);
+    return () => cancelAnimationFrame(id);
   }, [pathname, progressRaw]);
 
   // Gliding hover highlight inside the action cluster.
@@ -175,9 +176,9 @@ export function Topbar() {
     loadGoalSlider();
   }, [loadGoalSlider]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   useEffect(() => {
