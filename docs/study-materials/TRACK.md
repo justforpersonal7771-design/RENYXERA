@@ -42,13 +42,13 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | D6 | Recursion on data structures | [ ] (covered by C8 and the recursive functions in D3, D7, D8; a short bridge chapter may follow) |
 | D7 | Trees and binary trees | [x] verified (2026 FN Q33, 2026 AN Q12, 2025 AN Q13, 2018 FN Q30) |
 | D8 | Binary search trees | [x] verified (2025 AN Q35, 2026 FN Q62, 2020 FN Q15, 2025 FN Q26, 2026 FN Q40, 2022 FN Q28, 2026 AN Q49) |
-| D9 | AVL trees | [ ] |
+| D9 | AVL trees: staying balanced | [x] verified (2020 FN Q16) |
 | D10 | Binary heaps and priority queues | [x] verified (2023 FN Q12, 2026 FN Q23, 2025 FN Q35, 2023 FN Q46, 2018 FN Q56) |
 | D11–D12 | Hashing, sorting hooks | [ ] (see spec) |
-| D13 | Graphs | [ ] |
+| D13 | Graphs: representation and traversal | [x] verified (no tagged PYQ) |
 | D14 | (spec) | [ ] |
-| D15 | Choosing a structure | [ ] |
-| D16 | Previous-year patterns | [ ] |
+| D15 | Choosing the right structure | [x] verified (2025 AN Q38) |
+| D16 | Previous-year patterns and mixed practice | [x] verified (26 real questions grouped) |
 
 ## Cross-cutting open items
 - [ ] Tag TOC / OS / CN / Algorithms PYQs to chapters
