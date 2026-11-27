@@ -17,6 +17,7 @@ import { chapterC14 } from "./pds-c14";
 import { chapterC15 } from "./pds-c15";
 import { chapterC16 } from "./pds-c16";
 import { chapterC17 } from "./pds-c17";
+import { chapterC18 } from "./pds-c18";
 import { chapterC19 } from "./pds-c19";
 
 /**
@@ -264,4 +265,4 @@ const memory: Topic = {
   ],
 };
 
-export const PDS_C: Chapter = { id: "cs.pds.c", subject: "Programming and Data Structures", title: "Programming in C", syllabus: ["CS · Programming and Data Structures: programming in C"], pyqTopic: /Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing|programming in c/i, map: { kind: "strip", items: [{ label: "1. Types", sub: "wrap, promotion", state: "done" }, { label: "2. Control flow", sub: "loop counts", state: "done" }, { label: "3. Pointers", sub: "arrays, strings", state: "done" }, { label: "4. Functions", sub: "scope, passing", state: "done" }, { label: "5. Memory", sub: "structs, malloc", state: "done" }] }, topics: [chapterC0, chapterC1, chapterC2, chapterC3, chapterC4, chapterC5, chapterC6, chapterC7, chapterC8, chapterC9, pilotPointers, chapterC11, chapterC12, chapterC13, chapterC14, chapterC15, chapterC16, chapterC17, chapterC19, types, control, pointers, functions, memory] };
+export const PDS_C: Chapter = { id: "cs.pds.c", subject: "Programming and Data Structures", title: "Programming in C", syllabus: ["CS · Programming and Data Structures: programming in C"], pyqTopic: /Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing|programming in c/i, map: { kind: "strip", items: [{ label: "1. Types", sub: "wrap, promotion", state: "done" }, { label: "2. Control flow", sub: "loop counts", state: "done" }, { label: "3. Pointers", sub: "arrays, strings", state: "done" }, { label: "4. Functions", sub: "scope, passing", state: "done" }, { label: "5. Memory", sub: "structs, malloc", state: "done" }] }, topics: [chapterC0, chapterC1, chapterC2, chapterC3, chapterC4, chapterC5, chapterC6, chapterC7, chapterC8, chapterC9, pilotPointers, chapterC11, chapterC12, chapterC13, chapterC14, chapterC15, chapterC16, chapterC17, chapterC18, chapterC19, types, control, pointers, functions, memory] };
