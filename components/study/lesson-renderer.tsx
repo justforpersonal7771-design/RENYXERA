@@ -410,8 +410,8 @@ type Sec = { key: string; label: string; lvl?: 1 | 2 };
 /** Outline rows: a section is bold with a filled number chip; a sub-section is smaller, indented, with a muted number. */
 function SecLabel({ sec }: { sec: Sec }) {
   const sp = sec.label.indexOf(" "); const num = sp > 0 && /^[A-Za-z]{0,2}\d/.test(sec.label) ? sec.label.slice(0, sp) : ""; const rest = num ? sec.label.slice(sp + 1) : sec.label;
-  if (sec.lvl === 1) return <><b className="mr-1.5 rounded-md px-1.5 py-px text-[11px] font-extrabold tabular-nums text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>{num}</b>{rest}</>;
-  if (sec.lvl === 2) return <><span className="mr-1.5 inline-block rounded-md border border-[color-mix(in_srgb,var(--st-accent)_40%,transparent)] px-1 py-px text-[10.5px] font-bold tabular-nums leading-none text-[var(--st-accent)]">{num}</span>{rest}</>;
+  if (sec.lvl === 1) return <span className="flex items-start gap-1.5"><b className="mt-px shrink-0 rounded-md px-1.5 py-px text-[11px] font-extrabold tabular-nums text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>{num}</b><span className="min-w-0 flex-1">{rest}</span></span>;
+  if (sec.lvl === 2) return <span className="flex items-start gap-1.5"><span className="mt-px shrink-0 rounded-md border border-[color-mix(in_srgb,var(--st-accent)_40%,transparent)] px-1 py-0.5 text-[10.5px] font-bold tabular-nums leading-none text-[var(--st-accent)]">{num}</span><span className="min-w-0 flex-1">{rest}</span></span>;
   return <>{sec.label}</>;
 }
 const secRow = (sec: Sec) => (sec.lvl === 1 ? "mt-1.5 font-extrabold text-[var(--text-primary)]" : sec.lvl === 2 ? "pl-4 text-[11.5px]" : "");
@@ -956,7 +956,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
                         <button type="button" onClick={() => go(id)} aria-current={on ? "location" : undefined}
                           className={`relative -ml-[2px] block w-full border-l-2 ${x.lvl === 2 ? "py-1 pl-8 pr-2 text-[12px] before:absolute before:left-[1.05rem] before:top-0 before:h-1/2 before:w-3 before:rounded-bl-md before:border-b before:border-l before:border-[var(--border)]" : x.lvl === 1 ? "mt-1.5 py-1.5 pl-3 pr-2 text-[13.5px] font-extrabold" : "py-1.5 pl-3 pr-2 text-[13px]"} text-left leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                           {on && <span aria-hidden className="absolute inset-0 rounded-r-lg" style={{ background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }} />}
-                          <span className="relative"><SecLabel sec={x} /></span>
+                          <span className="relative block"><SecLabel sec={x} /></span>
                         </button>
                         {toggle && <button type="button" onClick={() => setFold((z) => ({ ...z, [t.id + ":" + x.key]: !folded }))} aria-expanded={!folded} aria-label={(folded ? "Show" : "Hide") + " the sub-sections of " + x.label} className="mt-1.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={"h-3.5 w-3.5 transition-transform " + (folded ? "-rotate-90" : "")} /></button>}
                       </li>
@@ -971,7 +971,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     </>
   );
   return (
-    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,9.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-2 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c", ...(focus ? { ["--lesson-chrome" as string]: "1.5rem" } : {}) }}>
+    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-2 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c", ...(focus ? { ["--lesson-chrome" as string]: "1.5rem" } : {}) }}>
       {!focus && <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>}
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">

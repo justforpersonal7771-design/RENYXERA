@@ -122,7 +122,7 @@ export function Topbar() {
   useEffect(() => {
     // One update per frame, and the scroll height is measured at most every 300 ms: reading it on every scroll event forced a layout of the
     // whole page each time, which made long lessons stutter.
-    let raf = 0, last: HTMLElement | null = null, max = 0, maxAt = 0;
+    let raf = 0, last: HTMLElement | null = null, lastMeasured: HTMLElement | null = null, max = 0, maxAt = 0;
     const onScroll = (e: Event) => {
       const el = e.target as HTMLElement;
       if (!(el instanceof HTMLElement) || !el.closest("main")) return;
@@ -132,7 +132,7 @@ export function Topbar() {
         raf = 0; const t = last; if (!t) return;
         const top = t.scrollTop; setScrolled(top > 8);
         const now = performance.now();
-        if (maxAt === 0 || now - maxAt > 300) { max = t.scrollHeight - t.clientHeight; maxAt = now; }
+        if (maxAt === 0 || t !== lastMeasured || now - maxAt > 2500) { max = t.scrollHeight - t.clientHeight; maxAt = now; lastMeasured = t; }
         progressRaw.set(max > 0 ? top / max : 0);
       });
     };

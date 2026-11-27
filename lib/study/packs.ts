@@ -17,7 +17,7 @@ export const PACKS: Pack[] = [
   { id: "dm", name: "Discrete Mathematics", books: ["dm"], pricePaise: 14900, marks: 7.5 },
   { id: "dbms", name: "Database Management Systems", books: ["dbms"], pricePaise: 14900, marks: 7.4 },
   { id: "dl", name: "Digital Logic", books: ["dl"], pricePaise: 12900, marks: 6.9 },
-  { id: "pds", name: "Programming & Data Structures", books: ["pds"], pricePaise: 12900, marks: 10.1 },
+  { id: "pds", name: "Programming & Data Structures", books: ["pds", "ds"], pricePaise: 12900, marks: 10.1 },
   { id: "cd", name: "Compiler Design", books: ["cd"], pricePaise: 12900, marks: 5.7 },
   { id: "maths", name: "Linear Algebra, Probability & Calculus", books: ["la", "prob", "calc"], pricePaise: 19900, marks: 7.8 },
   { id: "apt", name: "General Aptitude", books: ["verbal", "quant", "analytical", "spatial"], pricePaise: 14900, marks: 15 },
@@ -75,7 +75,7 @@ export const studyPlanId = (product: string) => (product.startsWith("pack:") ? `
 /** Question-bank subject names per book (same names as the PYQ bank), so results and mistakes can point at the right pack. */
 export const BANK_SUBJECTS: Record<string, string[]> = {
   os: ["Operating Systems (OS)"], dbms: ["Database Management Systems (DBMS)"], cn: ["Computer Networks (CN)"], algo: ["Algorithms"],
-  pds: ["Programming in C", "Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
+  pds: ["Programming in C"], ds: ["Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
   dl: ["Digital Logic"], dm: ["Discrete Mathematics"], la: ["Linear Algebra"], prob: ["Probability & Statistics"], calc: ["Calculus"],
   verbal: ["Verbal Aptitude"], quant: ["Quantitative Aptitude"], analytical: ["Analytical Aptitude"], spatial: ["Spatial Aptitude"],
 };

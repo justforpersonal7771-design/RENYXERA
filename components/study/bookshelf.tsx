@@ -24,7 +24,7 @@ import { useLibraryFocus, type Focus } from "@/lib/study/use-focus";
 import { branchByCode } from "@/lib/branches";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
-  { id: "core", title: "Core Computer Science", note: "Nine subjects in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
+  { id: "core", title: "Core Computer Science", note: "Ten books in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "ds"], ["toc", "cd", "coa"], ["dl"]] },
   { id: "maths", title: "Engineering Mathematics", note: "Discrete maths, linear algebra, probability and calculus", tint: "sky", stacks: [["dm", "la"], ["prob", "calc"]] },
   { id: "apt", title: "General Aptitude", note: "15 marks, the same section in every GATE paper", tint: "peri", stacks: [["verbal", "quant"], ["analytical", "spatial"]] },
 ];

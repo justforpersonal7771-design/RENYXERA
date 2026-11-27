@@ -596,13 +596,16 @@
      Applied to the app shell itself (not just <body>) because the shell is
      an opaque, full-viewport div that would otherwise fully occlude a
      body-level background. */
-  .ambient-gradient {
+  /* The wash is drawn once on its own fixed layer (see ::after below) instead of as the shell's own background: a full-screen
+     multi-gradient background was repainted on every scroll frame, which made long chapters crawl (28 Nov 2026). */
+  .ambient-gradient { background-image: none; }
+  .ambient-gradient::after {
+    content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none; will-change: transform; transform: translateZ(0);
     background-image:
       radial-gradient(ellipse 60% 45% at 8% -8%, var(--bg-gradient-accent-1), transparent),
       radial-gradient(ellipse 55% 45% at 48% 12%, var(--bg-gradient-accent-2), transparent),
       radial-gradient(ellipse 60% 50% at 88% 52%, var(--bg-gradient-accent-3), transparent),
       radial-gradient(ellipse 55% 42% at 62% 102%, var(--bg-gradient-accent-4), transparent);
-    background-attachment: fixed;
   }
 
   /* Premium glass card — frosted, semi-transparent surface that lets the
@@ -845,12 +848,6 @@
        instead of a flat background, so the whole shell reads as one product
        with the mark rather than the mark being the only spot of color.
        Individual card surfaces sit on top unaffected. */
-    background-image:
-      radial-gradient(ellipse 60% 45% at 8% -8%, var(--bg-gradient-accent-1), transparent),
-      radial-gradient(ellipse 55% 45% at 48% 12%, var(--bg-gradient-accent-2), transparent),
-      radial-gradient(ellipse 60% 50% at 88% 52%, var(--bg-gradient-accent-3), transparent),
-      radial-gradient(ellipse 55% 42% at 62% 102%, var(--bg-gradient-accent-4), transparent);
-    background-attachment: fixed;
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -1236,7 +1233,7 @@ mjx-container[display="true"] {
 /* App-wide texture: a faint dot grid laid over the shell's gradient, fading towards the bottom. */
 .ambient-gradient::before {
   /* Paper grain (replaces the dot grid): fine, even noise that reads as texture, never as a pattern. */
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: transform; transform: translateZ(0);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.07 0 0 0 0 0.23 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   background-size: 180px 180px; opacity: .22;
 }
@@ -2651,3 +2648,6 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 .is-paused .focus-live { animation: none; }
 @keyframes focus-live { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
 @media (prefers-reduced-motion: reduce) { .focus-dock-on, .focus-live { animation: none; } }
+
+/* Long chapters: topics far from the screen skip style, layout and paint (content-visibility), so scrolling near the end of a book stays smooth. */
+.study-lesson [data-topic] { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
