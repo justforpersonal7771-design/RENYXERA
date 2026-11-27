@@ -8,11 +8,12 @@ import { ArrowDefs, FigFrame, INK, MUTED, SUB, toneStyle } from "./shared";
 /** One drawing for trees and call trees: circles for trees, rounded labels for calls (with the returned value and call number). */
 function TreeSvg({ root, calls, order, label }: { root: TreeNode; calls?: boolean; order?: boolean; label: string }) {
   const id = useId().replace(/:/g, "");
-  const { nodes, w, h } = useMemo(() => layoutTree(root, calls ? 74 : 44, calls ? 70 : 62, calls ? 58 : 26), [root, calls]);
+  const compact = useMemo(() => { const has = (n: TreeNode | null | undefined): boolean => !!n && (n.ret !== undefined || (n.kids ?? []).some(has)); return !!calls && !order && !has(root); }, [root, calls, order]);
+  const { nodes, w, h } = useMemo(() => layoutTree(root, calls ? (compact ? 48 : 74) : 44, calls ? 70 : 62, calls ? (compact ? 22 : 58) : 26), [root, calls, compact]);
   const hw = (n: TreeNode) => (calls ? Math.max(40, String(n.label).length * 7.4 + 16) / 2 : 16);
   return (
     <div className="max-w-full overflow-x-auto">
-      <svg viewBox={`0 0 ${w + (calls ? 24 : 0)} ${h + (calls ? 22 : 18)}`} style={calls ? { width: Math.max(w + 24, 140) } : { width: "100%", maxWidth: Math.round(Math.max(w, 140) * 1.7) }} className={calls ? "mx-auto h-auto max-w-none" : "mx-auto h-auto"} role="img" aria-label={label}>
+      <svg viewBox={`0 0 ${w + (calls ? 24 : 0)} ${h + (calls ? 22 : 18)}`} style={calls ? { width: Math.max(w + 24, 140) } : { width: "100%", maxWidth: Math.round(Math.max(w, 140) * 1.7) }} className={calls && !compact ? "mx-auto h-auto max-w-none" : "mx-auto h-auto"} role="img" aria-label={label}>
         <ArrowDefs id={id} />
         {nodes.map((p, i) => {
           if (p.parent < 0) return null;

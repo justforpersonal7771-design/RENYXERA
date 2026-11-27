@@ -29,7 +29,7 @@ export function ArrowDefs({ id }: { id: string }) {
 /** The figure frame: optional title above, the drawing, then the one-line note that says what to look at. */
 export function FigFrame({ title, note, children, label }: { title?: string; note?: string; children: ReactNode; label: string }) {
   return (
-    <figure className="m-0 max-w-full" aria-label={label}>
+    <figure className="m-0 min-w-0 max-w-full" aria-label={label}>
       {title && <figcaption className="mx-auto mb-3 w-fit max-w-full overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-1.5 font-mono text-[0.95rem] font-semibold text-[var(--text-primary)]">{title}</figcaption>}
       {children}
       {note && <p className="mt-1 text-xs text-[var(--text-secondary)]">{note}</p>}

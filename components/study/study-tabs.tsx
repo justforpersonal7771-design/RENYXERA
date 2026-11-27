@@ -121,9 +121,9 @@ export function StudyTabs({ current }: { current: StudyTab }) {
                           {on && <span aria-hidden className="absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-[var(--tc)]" />}
                           <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full bg-[var(--tc)] transition-all duration-200 ${EASE} ${on ? "ring-4 ring-[color-mix(in_srgb,var(--tc)_20%,transparent)]" : "opacity-70"}`} />
                           <Link draggable={false} href={t.href} role="tab" aria-selected={on} aria-current={on ? "page" : undefined} className="min-w-0" title={t.title.length > 22 || t.subject.length > 24 ? `${t.subject}: ${t.title}` : undefined}>{label(t, on)}</Link>
-                          {t.href !== NEW_TAB && <button type="button" onClick={(e) => showMenu(t.href, e.currentTarget)} aria-label={`More for ${t.title}`} className={`hidden h-6 w-6 shrink-0 place-items-center sm:grid rounded-full text-[var(--text-secondary)] hover:bg-[color-mix(in_srgb,var(--tc)_14%,transparent)] transition-opacity duration-150 ${on ? "" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"}`}><MoreHorizontal className="h-3.5 w-3.5" /></button>}
+                          {t.href !== NEW_TAB && <button type="button" onClick={(e) => showMenu(t.href, e.currentTarget)} aria-label={`More for ${t.title}`} className={`hidden h-6 w-6 shrink-0 place-items-center ${on ? "sm:grid" : "sm:group-hover:grid sm:group-focus-within:grid"} rounded-full text-[var(--text-secondary)] hover:bg-[color-mix(in_srgb,var(--tc)_14%,transparent)] transition-opacity duration-150 `}><MoreHorizontal className="h-3.5 w-3.5" /></button>}
                           {t.pinned ? <button type="button" onClick={() => pin(t.href)} aria-label={`Unpin ${t.title}`} className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[color-mix(in_srgb,var(--tc)_14%,transparent)] transition-opacity duration-150"><Pin className="h-3.5 w-3.5" /></button>
-                            : <button type="button" onClick={() => shut(t.href)} aria-label={`Close ${t.title}`} className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[color-mix(in_srgb,var(--tc)_14%,transparent)] transition-opacity duration-150 ${on ? "" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100"}`}><X className="h-3.5 w-3.5" /></button>}
+                            : <button type="button" onClick={() => shut(t.href)} aria-label={`Close ${t.title}`} className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[color-mix(in_srgb,var(--tc)_14%,transparent)] transition-opacity duration-150 ${on ? "" : "!hidden group-hover:!grid group-focus-within:!grid [@media(hover:none)]:!grid"}`}><X className="h-3.5 w-3.5" /></button>}
                         </div>
                       )}
                       {/* Chrome-style group line under every tab of the group */}
@@ -131,6 +131,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
                     </motion.div>
                   )}
                 </AnimatePresence>
+                {!hidden && idx < list.length - 1 && !on && list[idx + 1].href !== current.href && !(pair && list[idx + 1].href === pair[1]) && <span aria-hidden className="mx-0.5 h-5 w-px shrink-0 rounded-full bg-[var(--border)]" />}
               </Reorder.Item>
             );
           })}
