@@ -409,7 +409,7 @@ const Practice = ({ b }: { b: B<"practice"> }) => (
 type Sec = { key: string; label: string; lvl?: 1 | 2 };
 /** Outline rows: a section is bold with a filled number chip; a sub-section is smaller, indented, with a muted number. */
 function SecLabel({ sec }: { sec: Sec }) {
-  const sp = sec.label.indexOf(" "); const num = sp > 0 && /^\d/.test(sec.label) ? sec.label.slice(0, sp) : ""; const rest = num ? sec.label.slice(sp + 1) : sec.label;
+  const sp = sec.label.indexOf(" "); const num = sp > 0 && /^[A-Za-z]{0,2}\d/.test(sec.label) ? sec.label.slice(0, sp) : ""; const rest = num ? sec.label.slice(sp + 1) : sec.label;
   if (sec.lvl === 1) return <><b className="mr-1.5 rounded-md px-1.5 py-px text-[11px] font-extrabold tabular-nums text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>{num}</b>{rest}</>;
   if (sec.lvl === 2) return <><span className="mr-1.5 inline-block rounded-md border border-[color-mix(in_srgb,var(--st-accent)_40%,transparent)] px-1 py-px text-[10.5px] font-bold tabular-nums leading-none text-[var(--st-accent)]">{num}</span>{rest}</>;
   return <>{sec.label}</>;
@@ -446,7 +446,8 @@ const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; childre
 /** Previous / next topic and a list of every topic with its sections (owner, 19 Nov). Topics share one scroll, so this scrolls. */
 function goTo(id: string, tries = 0) {
   const el = document.getElementById(id);
-  const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  const far = el ? Math.abs(el.getBoundingClientRect().top) > window.innerHeight * 1.2 : false;
+  const behavior = far || window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
   if (el) { el.scrollIntoView({ behavior, block: "start" }); return; }
   // a section of a topic that has not been drawn yet: bring its topic into view, then retry once it renders
   const topic = document.getElementById(id.split("--")[0]);
@@ -831,7 +832,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     const rail = railRef.current; if (!rail || !current) return;
     const el = rail.querySelector<HTMLElement>('[aria-current="location"]'); if (!el) return;
     const r = el.getBoundingClientRect(), b = rail.getBoundingClientRect();
-    if (r.top < b.top + 40 || r.bottom > b.bottom - 40) rail.scrollTo({ top: rail.scrollTop + (r.top - b.top) - b.height / 2 + r.height / 2, behavior: "smooth" });
+    if (r.top < b.top + 40 || r.bottom > b.bottom - 40) rail.scrollTo({ top: rail.scrollTop + (r.top - b.top) - b.height / 2 + r.height / 2, behavior: Math.abs(r.top - b.top - b.height / 2) > b.height ? "auto" : "smooth" });
   }, [current]);
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
   const href = usePathname() ?? "/study";
@@ -889,9 +890,10 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     if (!el) { setSheet(false); setTimeout(() => goTo(id), sheet ? 80 : 0); setCurrent(id); return; } // topic not drawn yet
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wasSheet = sheet;
+    const far = Math.abs(el.getBoundingClientRect().top) > window.innerHeight * 1.2;
     setSheet(false);
     // after the sheet has closed (its re-render would interrupt a smooth scroll)
-    setTimeout(() => el.scrollIntoView({ behavior: reduce || wasSheet ? "auto" : "smooth", block: "start" }), wasSheet ? 80 : 0);
+    setTimeout(() => el.scrollIntoView({ behavior: reduce || wasSheet || far ? "auto" : "smooth", block: "start" }), wasSheet ? 80 : 0);
     setCurrent(id);
   };
 

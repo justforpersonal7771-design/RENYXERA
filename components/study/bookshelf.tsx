@@ -104,7 +104,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
             <span className="min-w-0 flex-1">
               <span className={`block ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
-              {w.qs === 0 && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Foundation: no past-paper question is tagged here</span>}
+              {w.qs === 0 && !c.href && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Foundation: no past-paper question is tagged here</span>}
               {w.qs > 0 && <span className="mt-1 flex flex-wrap items-center gap-2">{mark}<span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
             </span>
             <span className="flex shrink-0 flex-col items-end gap-1">
@@ -116,6 +116,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
         const style = w.tier === "high" ? { borderLeftColor: ink } : undefined;
         return (
           <li key={c.id}>
+            {c.part && <p className="mb-1 mt-3 px-3 text-[11px] font-extrabold uppercase tracking-wide" style={{ color: ink }}>{c.part}</p>}
             {c.href ? <Link href={c.href} className={`${cls} hover:bg-black/5 dark:hover:bg-white/5`} style={style}>{row}</Link>
               : <div tabIndex={0} className={cls} style={style}>{row}</div>}
           </li>
