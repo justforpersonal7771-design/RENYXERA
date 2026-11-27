@@ -115,3 +115,10 @@ Not started. Order of work after Programming in C: D0, D1, D2, D3, D4, D5, D6, D
 - The separate "Tips, shortcuts and tricks" section is gone: tips and shortcuts sit inline, in the section they belong to.
 - Focus: the control is in the lesson dock before Notes (round button; on, a capsule with the time, pause/resume and stop; no text); no outer scrollbar in focus on desktop; the chapter header is not sticky; the tab strip has no background.
 - Study packs: the "Unlock every chapter" card on the library, and the Study materials row on the plans screen, are hidden for students who own every pack; the library shows "Every book is unlocked" in that place. Verified by typecheck only; I could not sign in as a student who owns every pack.
+
+### Status on 27 Nov 2026 (all 22 chapters written)
+
+- Written: C0 to C21 (Programming in C complete). Final order is in content/study/CS/pds-a.ts.
+- Passed: chapter-check (every example compiled with gcc, output matches) for all 22; tsc clean; all 56 tagged C PYQs (88 marks) present in their chapter; browser sweep of all 22 topics at desktop-light and mobile-dark (no page errors, no sideways scroll, no figure wider than the page, step figures keep one size).
+- No tagged PYQ exists for C1, C4, C16, C17, C18, C20 (each says so honestly). PYQs that are only a code fragment were verified in scratch programs, not by chapter-check.
+- Not done yet: reading each chapter's text on a phone in dark mode, contrast audit, live check after deploy, Unlock-banner check with an all-packs account. Next: Data Structures D0 to D16.

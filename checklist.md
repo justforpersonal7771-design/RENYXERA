@@ -17,7 +17,7 @@ Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, w
 - [ ] **(me)** Rail focus test for sub-sub topics; check the new tabs with 4+ open tabs, split view, groups and pinned tabs
 - [x] **(me)** C2 Variables and data types, C3 Operators and expressions written and tested (28 Nov); every trap now has a worked example; tips are inline, not a separate section
 - [ ] **(you)** Check the Unlock banner is gone on /study and the plans screen with a student who owns every pack
-- [ ] **(me)** Programming in C chapters C4 to C9, C11 to C21 (C4 to C9 and C11 to C21 not started) (one at a time, each through gates G1 to G11)
+- [x] **(me)** Programming in C chapters C0 to C21 written; chapter-check, tsc, PYQ coverage and browser sweep passed (27 Nov). Open gates: mobile dark text read, contrast audit, live check
 - [ ] **(me)** Data Structures chapters D0 to D16
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
 
@@ -603,7 +603,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Next: test-taking screen and review screens redesign.
 - [x] 9 Nov (later): no native dropdowns anywhere (all <select> replaced with CustomDropdown; lint rule bans new ones); the app's thin hide-until-active scrollbar now applies to every scroll area; content stops below the navbar with a soft blurred edge (nothing behind the bar); chapter and lab pickers wider lists; phone overflow from the picker fixed.
 
-## 0-newest. 11 Nov 2026: Classic only, Battles lobby, college picker
+## 0-newest. 11 Nov 2026: Classic only, Battles lobby, college picker
 - [x] Dashboard toolkit deck back to the classic pinned stack, now also on phones (tighter pile above the dock)
 - [x] More sheet: floats above the dock, dock stays bright, no empty cell in the grid
 - [x] Review screen no longer shows the Test Centre pills; Interview: removed duplicate Books/Last moments and Mock/Tutor toggles
