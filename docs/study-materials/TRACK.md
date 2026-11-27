@@ -11,7 +11,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Subject | Pack | 1 | 2 | 3 Book v2 | 4 Verified | 5 Live | Notes |
 |---|---|---|---|---|---|---|---|
 | Programming in C (Section 1 of P&DS, in 4 parts: foundations C0–C5, functions/recursion/arrays C6–C9+C17, pointers/strings/memory C10–C15, reading code and practice C16, C18–C21) | pds | [x] | [x] | [x] C0–C21 | [x] chapter-check 22/22, sweep, contrast | [~] pushed, live check pending | C1, C4, C16, C17, C18, C20 have no tagged PYQ |
-| **Data Structures** | pds | [x] | [x] | [~] D0–D5 written; D6–D16 in progress | [~] D0–D5: chapter-check, tsc, browser sweep and contrast clean | [~] D0, D1 pushed | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
+| **Data Structures** | pds | [x] | [x] | [~] D0–D5, D7, D8, D10 written; D6, D9, D11–D16 remaining | [~] D0–D10 written: chapter-check, tsc, browser sweep and contrast clean | [~] D0, D1 pushed | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
 | Databases | dbms | [x] | [~] | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
@@ -39,11 +39,11 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | D3 | Linked lists: nodes and pointers | [x] verified (GATE 2026 Q39, 2023 Q13, 2022 Q15, 2025 Q62 variant) |
 | D4 | Stacks: last in, first out | [x] verified (2026 AN Q50, 2025 AN Q45) |
 | D5 | Queues: first in, first out | [x] verified (2023 FN Q59, 2018 FN Q13) |
-| D6 | Recursion on data structures | [ ] |
-| D7 | Trees | [ ] |
-| D8 | Binary search trees | [ ] |
+| D6 | Recursion on data structures | [ ] (covered by C8 and the recursive functions in D3, D7, D8; a short bridge chapter may follow) |
+| D7 | Trees and binary trees | [x] verified (2026 FN Q33, 2026 AN Q12, 2025 AN Q13, 2018 FN Q30) |
+| D8 | Binary search trees | [x] verified (2025 AN Q35, 2026 FN Q62, 2020 FN Q15, 2025 FN Q26, 2026 FN Q40, 2022 FN Q28, 2026 AN Q49) |
 | D9 | AVL trees | [ ] |
-| D10 | Heaps | [ ] |
+| D10 | Binary heaps and priority queues | [x] verified (2023 FN Q12, 2026 FN Q23, 2025 FN Q35, 2023 FN Q46, 2018 FN Q56) |
 | D11–D12 | Hashing, sorting hooks | [ ] (see spec) |
 | D13 | Graphs | [ ] |
 | D14 | (spec) | [ ] |
