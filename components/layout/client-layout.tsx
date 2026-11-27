@@ -1,4 +1,5 @@
 "use client";
+import { IconWatermarks } from "@/components/layout/icon-watermarks";
 import { bookTintFor } from "@/lib/study/catalog";
 import "@/lib/time/install-ist";
 
@@ -261,6 +262,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           structured. */}
       {!focus && <Topbar />}
       <SmoothScroll />
+      <IconWatermarks />
       <FocusSession />
       {/* <main> itself no longer owns the scroll — it's a full-height,
           non-scrolling passthrough. The actual scrolling element is the inner

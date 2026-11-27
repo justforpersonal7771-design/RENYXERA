@@ -1942,7 +1942,7 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .dark .ai-panel::after { opacity: .16; }
 
 /* New-chat stage in the Mentor: a soft glow behind the centred box (like the big chat apps), nothing geometric. */
-.mentor-stage { position: relative; }
+.mentor-stage { position: relative; overflow: clip; } /* the soft glow reaches past the stage; clip it so the Mentor screen never scrolls the page */
 .mentor-stage::before { content: ""; position: absolute; inset: -20% -10%; z-index: -1; pointer-events: none; background: radial-gradient(60% 50% at 50% 45%, color-mix(in srgb, var(--tint-peri-ink) 14%, transparent), transparent 70%); }
 
 /* Enlarged Mentor chat: a soft fade-in only (opacity), so nothing flashes blank. */
