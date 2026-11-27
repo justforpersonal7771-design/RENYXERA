@@ -758,7 +758,7 @@ function PaneRail({ topics }: { topics: Topic[] }) {
         return (
           <div key={t.id}>
             <button type="button" onClick={() => { setOpenId(on ? null : t.id); goTo(t.id); }} aria-expanded={on} className={`flex w-full items-start gap-2 rounded-xl border-2 px-2 py-2 text-left ${on ? "border-[var(--st-accent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
-              <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${on ? "bg-[var(--st-accent)] text-[var(--surface)]" : "border-2 border-[var(--st-accent)] text-[var(--st-accent)]"}`}>{i + 1}</span>
+              <span className={`grid h-6 min-w-6 shrink-0 px-1 place-items-center rounded-full text-[11px] font-bold ${on ? "bg-[var(--st-accent)] text-[var(--surface)]" : "border-2 border-[var(--st-accent)] text-[var(--st-accent)]"}`}>{t.no ?? i + 1}</span>
               <span className="min-w-0 flex-1 text-sm font-bold leading-snug text-[var(--text-primary)]">{t.title}</span>
               <ChevronDown className={`mt-0.5 h-4 w-4 shrink-0 text-[var(--text-secondary)] transition-transform ${on ? "rotate-180" : ""}`} aria-hidden />
             </button>
@@ -935,7 +935,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
               <li key={i}>
                 <div className={`flex w-full items-start gap-2 rounded-xl border-2 px-2 py-2 transition-colors ${inTopic ? "border-[var(--st-accent)]" : passed ? "border-dashed border-[var(--st-accent)] bg-[color-mix(in_srgb,var(--st-accent)_7%,transparent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
                   <button type="button" onClick={() => { setOpen((x) => ({ ...x, [t.id]: true })); go(t.id); }} className="flex min-w-0 flex-1 items-start gap-3 text-left">
-                    <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${passed ? "border-2 border-[var(--st-accent)] text-[var(--st-accent)]" : "bg-[var(--st-accent)] text-[var(--surface)]"}`}>{passed ? <Check className="h-3.5 w-3.5" aria-label="Read" /> : i + 1}</span>
+                    <span className={`mt-0.5 grid h-6 min-w-6 shrink-0 px-1 place-items-center rounded-full text-[11px] font-bold ${passed ? "border-2 border-[var(--st-accent)] text-[var(--st-accent)]" : "bg-[var(--st-accent)] text-[var(--surface)]"}`}>{passed ? <Check className="h-3.5 w-3.5" aria-label="Read" /> : (t.no ?? i + 1)}</span>
                     <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{passed ? "Read" : s.sub}</span></span>
                   </button>
                   <button type="button" onClick={() => setOpen((x) => ({ ...x, [t.id]: !expanded }))} aria-expanded={expanded} aria-label={`${expanded ? "Hide" : "Show"} sections of ${s.label}`} className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} /></button>
