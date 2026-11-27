@@ -9,6 +9,7 @@ import { chapterC5 } from "./pds-c5";
 import { chapterC6 } from "./pds-c6";
 import { chapterC7 } from "./pds-c7";
 import { chapterC8 } from "./pds-c8";
+import { chapterC9 } from "./pds-c9";
 
 /**
  * Programming and Data Structures → Programming in C (K&R, Kanetkar). Numbers from lib/study/pds.ts, checked by script:
@@ -255,4 +256,4 @@ const memory: Topic = {
   ],
 };
 
-export const PDS_C: Chapter = { id: "cs.pds.c", subject: "Programming and Data Structures", title: "Programming in C", syllabus: ["CS · Programming and Data Structures: programming in C"], pyqTopic: /Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing|programming in c/i, map: { kind: "strip", items: [{ label: "1. Types", sub: "wrap, promotion", state: "done" }, { label: "2. Control flow", sub: "loop counts", state: "done" }, { label: "3. Pointers", sub: "arrays, strings", state: "done" }, { label: "4. Functions", sub: "scope, passing", state: "done" }, { label: "5. Memory", sub: "structs, malloc", state: "done" }] }, topics: [chapterC0, chapterC1, chapterC2, chapterC3, chapterC4, chapterC5, chapterC6, chapterC7, chapterC8, pilotPointers, types, control, pointers, functions, memory] };
+export const PDS_C: Chapter = { id: "cs.pds.c", subject: "Programming and Data Structures", title: "Programming in C", syllabus: ["CS · Programming and Data Structures: programming in C"], pyqTopic: /Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing|programming in c/i, map: { kind: "strip", items: [{ label: "1. Types", sub: "wrap, promotion", state: "done" }, { label: "2. Control flow", sub: "loop counts", state: "done" }, { label: "3. Pointers", sub: "arrays, strings", state: "done" }, { label: "4. Functions", sub: "scope, passing", state: "done" }, { label: "5. Memory", sub: "structs, malloc", state: "done" }] }, topics: [chapterC0, chapterC1, chapterC2, chapterC3, chapterC4, chapterC5, chapterC6, chapterC7, chapterC8, chapterC9, pilotPointers, types, control, pointers, functions, memory] };
