@@ -13,7 +13,8 @@ Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, w
 - [x] **(me)** Chapter 10 Pointers I written as a textbook chapter (10 sections, 4 real GATE questions explained in full with variations, 12 step-by-step and diagram figures, 10 exercises); compiled, figure-validated, browser-tested (47 figures x 4 settings); push pending
 - [x] **(me)** Code styling: statements in text look different from prose; code in the editor, never on one line; figure titles as code lines; one soft card palette; icon watermarks; top bar overlap fixed; sign-in hero full width
 - [x] **(me)** Chapters C0, C1, C10 done (tracker). Focus mode with study time in Analytics and the dashboard timer; smoother scrolling; sticky chapter header; rail with differentiated sections
-- [ ] **(me)** Study tabs strip redesign (research first, 5 to 10 design skills); rail focus test for sub-sub topics
+- [x] **(me)** Study tabs strip redesigned (27 Nov): soft pills in a quiet track, active tab takes its book's colour (tint wash, thin edge, left bar, haloed dot), subject shown on the active tab only, fade where it scrolls on phones, close/more reveal on hover, press scale. Research: Safari 26 compact Liquid Glass bar, Chrome scrollable and vertical tabs, Vivaldi 8 unified surface, Apple/Fluent/NN-g tab and segmented-control guidance; skills: ui-ux-pro-max, emil design engineering, interaction design, with design-critique, interface-design, frontend-design and design-elevation already applied this session
+- [ ] **(me)** Rail focus test for sub-sub topics; check the new tabs with 4+ open tabs, split view, groups and pinned tabs
 - [ ] **(me)** Programming in C chapters C2 to C9, C11 to C21 (one at a time, each through gates G1 to G11)
 - [ ] **(me)** Data Structures chapters D0 to D16
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
