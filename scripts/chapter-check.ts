@@ -96,8 +96,8 @@ const run = (label: string, src: string, expect?: string) => {
   else ok(`${label} prints the book's output`, out === expect.trim(), out === expect.trim() ? "" : `got "${out}" want "${expect}"`);
 };
 for (const x of book) if (x.t === "code" && /\bmain\s*\(/.test(x.text) && !x.file?.endsWith("_input.c")) run(`code ${x.file ?? ""}`, x.text, x.file === "address_demo.c" ? undefined : x.out);
-const wantEx: Record<string, string> = { "p-e2": "3 7 7 3", "p-e3": "9", "p-e4": "25", "p-e6": "10, 10, 14", "c1-e1": "102", "c1-e2": "6 7", "c2-e2": "0", "c2-e3": "3", "c3-e1": "0", "c3-e2": "10", "c3-e3": "z K S", "c4-e1": "5", "c4-e2": "y", "c4-e3": "yes 5", "c5-e1": "[infinite loop]", "c6-e1": "46", "c6-e2": "20101020", "c6-e3": "26", "c7-e1": "9", "c7-e2": "7", "c7-e3": "52", "c7-e4": "23", "c5-e3": ["1.000000", "1.500000", "1.750000", "1.875000", "1.937500"].join("\n") };
-for (const e of exs) if (/\bmain\s*\(/.test(e.given)) run(`example ${e.id}`, e.given.includes("#include") ? e.given : "#include <stdio.h>\n" + e.given, wantEx[e.id]);
+const wantEx: Record<string, string> = { "p-e2": "3 7 7 3", "p-e3": "9", "p-e4": "25", "p-e6": "10, 10, 14", "c1-e1": "102", "c1-e2": "6 7", "c2-e2": "0", "c2-e3": "3", "c3-e1": "0", "c3-e2": "10", "c3-e3": "z K S", "c4-e1": "5", "c4-e2": "y", "c4-e3": "yes 5", "c5-e1": "[infinite loop]", "c6-e1": "46", "c6-e2": "20101020", "c6-e3": "26", "c7-e1": "9", "c7-e2": "7", "c7-e3": "52", "c7-e4": "23", "c8-e4": "60", "c8-e5": "4", "c5-e3": ["1.000000", "1.500000", "1.750000", "1.875000", "1.937500"].join("\n") };
+for (const e of exs) if (/\bmain\s*\(/.test(e.given) && !e.file?.endsWith("_input.c") && !e.file?.endsWith(".txt")) run(`example ${e.id}`, e.given.includes("#include") ? e.given : "#include <stdio.h>\n" + e.given, wantEx[e.id]);
 const e5 = exs.find((e) => e.id === "p-e5"); if (e5) run("example p-e5", "#include <stdio.h>\n" + e5.given.replace("/* the call: printxy(1, 1) */", "") + "\nint main(void){ printxy(1, 1); return 0; }", "1, 0");
 const e1 = exs.find((e) => e.id === "p-e1"); if (e1) run("example p-e1", `#include <stdio.h>\nint main(void){\n${e1.given}\nprintf("%d %d", a, b); return 0; }`, "8 1");
 
