@@ -316,7 +316,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, notesBar, noteCo
           </FloatPanel>
         )}
       </AnimatePresence>
-      <div className="lesson-dock fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex items-center gap-2 sm:right-6 lg:bottom-6">
+      <div className="lesson-dock fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-end gap-2 sm:right-6 lg:bottom-6">
         <FocusDock label={lesson.split(":")[0]} />
         <button type="button" onClick={(e) => toggle("notes", e.currentTarget)} aria-pressed={open.notes} aria-label="Notes" className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink hidden sm:inline">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
         <button type="button" onClick={() => setCalc((c) => !c)} aria-pressed={calc} aria-label="Calculator" title="Calculator" className={btn}><Calculator className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Calc</span></button>

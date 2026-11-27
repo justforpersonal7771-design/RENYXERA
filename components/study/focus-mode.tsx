@@ -25,6 +25,7 @@ export function FocusDock({ label }: { label: string }) {
     );
   }
   return (
+    <>
     <div role="group" aria-label={"Focus mode, " + mmss(secs) + (paused ? ", paused" : "")} className={"focus-dock-on flex h-[2.6rem] shrink-0 items-center gap-0.5 rounded-full py-1 pl-3 pr-1 text-[var(--surface)] " + (paused ? "is-paused" : "")}>
       <span aria-hidden className={"focus-live mr-1.5 h-2 w-2 shrink-0 rounded-full " + (paused ? "bg-amber-300" : "bg-current")} />
       <span className="font-num min-w-[2.9rem] text-sm font-extrabold tabular-nums" aria-live="off">{mmss(secs)}</span>
@@ -33,6 +34,8 @@ export function FocusDock({ label }: { label: string }) {
       </button>
       <button type="button" onClick={exit} aria-label="Stop focus mode" title="Stop" className={round + " hover:bg-white/20"}><Square className="h-3.5 w-3.5 fill-current" aria-hidden /></button>
     </div>
+    <span aria-hidden className="hidden h-0 basis-full max-sm:block" />
+    </>
   );
 }
 
