@@ -19,6 +19,8 @@ Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, w
 - [ ] **(you)** Check the Unlock banner is gone on /study and the plans screen with a student who owns every pack
 - [x] **(me)** Programming in C chapters C0 to C21 written; chapter-check, tsc, PYQ coverage and browser sweep passed (27 Nov). Open gates: mobile dark text read, contrast audit, live check
 - [~] **(me)** Data Structures chapters D0 to D16: D0 to D5, D7, D8 and D10 written and verified (28 Nov); next D9 AVL, D13 graphs, D15, D16, then D6/D11/D12/D14. Central tracker for every subject: [docs/study-materials/TRACK.md](docs/study-materials/TRACK.md)
+- [x] **(me)** Gemini and ChatGPT reviews merged and verified (28 Nov): Databases, COA, Discrete Maths, Compiler Design, Digital Logic, Linear Algebra, Probability. Confirmed bank defects: 2021_FN_Q27 (`-> p` should be `-> q`), 2025_AN_Q40 (`bac` should be `bAc`), 2026_AN_Q41 (α should be a), 2026_FN_Q21, 2025_AN_Q43, 2022_FN_Q45 (U33), 2022_FN_Q51 (5·2^n), 2021_AN_Q17 key letter; reviewer errors found (ChatGPT COA 2023_FN_Q64; Gemini difficulty tallies in COA, Discrete, Probability). Reviews going forward: Gemini only
+- [ ] **(you)** Correct those bank entries and restore the missing figures (list in each `01-REVIEW-MERGE-AND-PLAN.md`)
 - [x] **(me)** Programming in C split into 4 parts (Section 1 of P&DS), Data Structures is Section 2; rail number badges fixed for D-chapters; far rail jumps no longer smooth-scroll
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
 

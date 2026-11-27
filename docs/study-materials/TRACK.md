@@ -13,16 +13,16 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Programming in C (Section 1 of P&DS, in 4 parts: foundations C0–C5, functions/recursion/arrays C6–C9+C17, pointers/strings/memory C10–C15, reading code and practice C16, C18–C21) | pds | [x] | [x] | [x] C0–C21 | [x] chapter-check 22/22, sweep, contrast | [~] pushed, live check pending | C1, C4, C16, C17, C18, C20 have no tagged PYQ |
 | **Data Structures** | pds | [x] | [x] | [~] D0–D5, D7, D8, D10 written; D6, D9, D11–D16 remaining | [~] D0–D10 written: chapter-check, tsc, browser sweep and contrast clean | [~] D0, D1 pushed | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
-| Databases | dbms | [x] | [~] | [ ] | [ ] | old version live | owner review pending |
+| Databases | dbms | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
 | Algorithms | algo | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
 | Theory of Computation | toc | [ ] | [ ] | [ ] | [ ] | old version live | |
-| Compiler Design | cd | [x] | [ ] | [ ] | [ ] | no | |
-| Computer Organisation | coa | [x] | [~] | [ ] | [ ] | old version live | owner review pending |
-| Digital Logic | dl | [x] | [ ] | [ ] | [ ] | no | |
-| Discrete Mathematics | dm | [x] | [~] | [ ] | [ ] | old version live | owner review pending |
-| Linear Algebra | la | [x] | [ ] | [ ] | [ ] | no | |
-| Probability and Statistics | prob | [x] | [ ] | [ ] | [ ] | no | |
+| Compiler Design | cd | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
+| Computer Organisation | coa | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
+| Digital Logic | dl | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
+| Discrete Mathematics | dm | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
+| Linear Algebra | la | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
+| Probability and Statistics | prob | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
 | Calculus | calc | [x] | [ ] | [ ] | [ ] | no | |
 | Quantitative Aptitude | quant | [x] | [ ] | [ ] | [ ] | no | |
 | Analytical Aptitude | analytical | [x] | [ ] | [ ] | [ ] | no | |
@@ -53,6 +53,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 ## Cross-cutting open items
 - [ ] Tag TOC / OS / CN / Algorithms PYQs to chapters
 - [ ] (you) 2020 CS Q22 answer key: "marks to all"
-- [ ] (you) Review Databases, COA, Discrete Maths
+- [x] Reviews merged and checked for DBMS, COA, Discrete Maths (Gemini + ChatGPT) and Compiler Design, Digital Logic, Linear Algebra, Probability (Gemini only): see each subject's `01-REVIEW-MERGE-AND-PLAN.md`
+- [ ] (you) Fix bank defects listed there (2021_FN_Q27, 2022_FN_Q51, 2025_AN_Q40, 2026_AN_Q41, 2026_FN_Q21, 2025_AN_Q43, 2021_AN_Q17 key, 2022_FN_Q45, 2026_FN_Q38) and restore the missing figures
 - [ ] (you) Unlock banner check with an all-packs account
 - [ ] Live deploy check; tab bar in dark mode with several tabs
