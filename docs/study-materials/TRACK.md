@@ -2,7 +2,7 @@
 
 The one page that shows every subject's progress. Updated at the end of every study turn. Detail per book lives in its own file (P&DS: [v2/programming-and-data-structures/BOOK-PROGRESS.md](v2/programming-and-data-structures/BOOK-PROGRESS.md)).
 
-**Last updated:** 28 Nov 2026
+**Last updated:** 28 Nov 2026 (Algorithms book v2 written)
 
 **Stages:** 1 Review input written · 2 Reviews merged · 3 Book v2 (textbook quality: numbered headings, figures, PYQs, traps with worked examples) · 4 Verified (compile, tsc, browser, contrast) · 5 Live
 
@@ -15,7 +15,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
 | Databases | dbms | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
-| Algorithms | algo | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
+| Algorithms | algo | [x] | [x] | [x] all 11 chapters written (A0–A10), 29 Nov | [~] chapter-check 11/11 passed; browser sweep and contrast pending | [ ] committed locally, push pending | routes unchanged (`/study/asymptotics` … `/study/shortest-paths`); code in `content/study/CS/algo-v2*.ts`; PYQ list in A10 |
 | Theory of Computation | toc | [ ] | [ ] | [ ] | [ ] | old version live | |
 | Compiler Design | cd | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
 | Computer Organisation | coa | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
@@ -50,6 +50,22 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | D14 | Extras: tries and disjoint sets | [x] verified (no tagged PYQ) |
 | D15 | Choosing the right structure | [x] verified (2025 AN Q38) |
 | D16 | Previous-year patterns and mixed practice | [x] verified (26 real questions grouped) |
+
+## Algorithms chapters (detail)
+
+| Ch | Title | Status |
+|---|---|---|
+| A0 | Before the algorithms: the toolbox | [x] chapter-check |
+| A1 | Asymptotics and recurrences | [x] 19 PYQs worked |
+| A2 | Searching and sorting | [x] 11 PYQs |
+| A3 | Hashing | [x] 7 PYQs |
+| A4 | Divide and conquer | [x] 1 PYQ + edge cases |
+| A5 | Greedy algorithms | [x] 2 PYQs; 2 with figures covered by method |
+| A6 | Dynamic programming | [x] 4 PYQs |
+| A7 | Graph traversals | [x] 7 PYQs; 4 with figures by method |
+| A8 | Minimum spanning trees | [x] 9 PYQs; 4 with figures by method |
+| A9 | Shortest paths | [x] 3 PYQs |
+| A10 | Previous-year patterns and mixed practice | [x] all 73 PYQs listed by chapter |
 
 ## Cross-cutting open items
 - [ ] Tag TOC / OS / CN / Algorithms PYQs to chapters

@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-044 · 28 Nov · Algorithms book rewritten as a textbook (A0 to A10) · Fixed
+- **Reported:** start and complete the next book.
+- **Fix:** eleven numbered chapters (toolbox, asymptotics, sorting, hashing, divide and conquer, greedy, DP, traversals, MST, shortest paths, practice) with real GATE questions re-solved, programs compiled with gcc, figures, traps and checks. All nine shelf rows wired to them. Browser sweep (desktop and phone) and contrast audit clean on all rows. Graph figure labels shortened to fit their circles.
+- **Files:** `content/study/CS/algo-v2*.ts`, `lib/study/chapters-server.ts`, `lib/study/catalog.ts`
+- **Open:** figure-only questions (2017 AN Q13, 2017 AN Q59, 2018 FN Q57, 2021 AN Q19, Q30, 2021 FN Q25, Q48, Q49, 2024 AN Q53, 2025 AN Q59, 2025 FN Q64) are covered by method, not solved on the picture; old algo-a..d.ts files kept but unused by the shelf; PYQ tags for Algorithms not yet in pyq-chapter-map.json.
+
 ### L-043 · 28 Nov · Study roadmap opens as a modal · Fixed
 - **Reported:** the roadmap should be a modal.
 - **Fix:** a one-line launcher card on the Study page (shows Next up); the full roadmap opens in a portal dialog (bottom sheet on phones), closes on Esc, backdrop or X, and locks page scroll while open. Subject chips folded into a disclosure.

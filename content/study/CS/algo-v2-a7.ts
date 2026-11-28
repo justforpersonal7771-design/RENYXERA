@@ -141,20 +141,20 @@ int main(void) {
   ],
   blocks: [
     { type: "figure", id: "a7-f1", caption: "BFS from vertex 0 on two triangles joined by a bridge. The rings are {0}, {1, 2}, {3}, {4, 5}; the distances are 0, 1, 1, 2, 3, 3. Edges inside a ring join vertices of equal distance.", alt: "Two triangles 0-1-2 and 3-4-5 joined by the edge 1-3, with the vertices labelled by their BFS distance from vertex 0.", fig: { kind: "net", w: 520, h: 220, nodes: [
-      { id: "0", label: "0 (d=0)", x: 50, y: 110, hl: true }, { id: "1", label: "1 (d=1)", x: 150, y: 50 }, { id: "2", label: "2 (d=1)", x: 150, y: 170 },
-      { id: "3", label: "3 (d=2)", x: 290, y: 110 }, { id: "4", label: "4 (d=3)", x: 410, y: 50 }, { id: "5", label: "5 (d=3)", x: 410, y: 170 },
+      { id: "0", label: "0", x: 50, y: 110, hl: true }, { id: "1", label: "1", x: 150, y: 50 }, { id: "2", label: "2", x: 150, y: 170 },
+      { id: "3", label: "3", x: 290, y: 110 }, { id: "4", label: "4", x: 410, y: 50 }, { id: "5", label: "5", x: 410, y: 170 },
     ], edges: [
       { a: "0", b: "1" }, { a: "0", b: "2" }, { a: "1", b: "2" }, { a: "1", b: "3" }, { a: "3", b: "4" }, { a: "3", b: "5" }, { a: "4", b: "5" },
     ] } },
     { type: "figure", id: "a7-f2", caption: "DFS on the directed graph of the program: tree edges 0→1, 1→3, 3→4, 0→2; back edge 4→1; cross edge 2→3; forward edge 0→3. Intervals: vertex 0 [1, 10], 1 [2, 7], 3 [3, 6], 4 [4, 5], 2 [8, 9].", alt: "A directed graph on vertices 0 to 4 with each edge labelled tree, back, cross or forward.", fig: { kind: "net", w: 520, h: 250, nodes: [
-      { id: "0", label: "0 [1,10]", x: 60, y: 60, hl: true }, { id: "1", label: "1 [2,7]", x: 200, y: 40 }, { id: "3", label: "3 [3,6]", x: 330, y: 80 }, { id: "4", label: "4 [4,5]", x: 440, y: 170 }, { id: "2", label: "2 [8,9]", x: 150, y: 190 },
+      { id: "0", label: "0", x: 60, y: 60, hl: true }, { id: "1", label: "1", x: 200, y: 40 }, { id: "3", label: "3", x: 330, y: 80 }, { id: "4", label: "4", x: 440, y: 170 }, { id: "2", label: "2", x: 150, y: 190 },
     ], edges: [
       { a: "0", b: "1", dir: true, label: "tree" }, { a: "1", b: "3", dir: true, label: "tree" }, { a: "3", b: "4", dir: true, label: "tree" }, { a: "0", b: "2", dir: true, label: "tree" },
       { a: "4", b: "1", dir: true, label: "back", hl: true }, { a: "2", b: "3", dir: true, label: "cross" }, { a: "0", b: "3", dir: true, label: "forward" },
     ] } },
     { type: "figure", id: "a7-f3", caption: "Articulation points of the two-triangle graph: removing vertex 1 separates vertex 0 and 2 from the rest, and removing vertex 3 separates 4 and 5. DFS lowlink values: 0, 0, 0, 3, 3, 3.", alt: "Two triangles joined by the edge 1-3, with vertices 1 and 3 highlighted as articulation points.", fig: { kind: "net", w: 520, h: 220, nodes: [
-      { id: "0", label: "0", x: 50, y: 110 }, { id: "1", label: "1 (cut)", x: 150, y: 50, hl: true }, { id: "2", label: "2", x: 150, y: 170 },
-      { id: "3", label: "3 (cut)", x: 290, y: 110, hl: true }, { id: "4", label: "4", x: 410, y: 50 }, { id: "5", label: "5", x: 410, y: 170 },
+      { id: "0", label: "0", x: 50, y: 110 }, { id: "1", label: "1", x: 150, y: 50, hl: true }, { id: "2", label: "2", x: 150, y: 170 },
+      { id: "3", label: "3", x: 290, y: 110, hl: true }, { id: "4", label: "4", x: 410, y: 50 }, { id: "5", label: "5", x: 410, y: 170 },
     ], edges: [
       { a: "0", b: "1" }, { a: "0", b: "2" }, { a: "1", b: "2" }, { a: "1", b: "3", hl: true }, { a: "3", b: "4" }, { a: "3", b: "5" }, { a: "4", b: "5" },
     ] } },
