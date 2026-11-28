@@ -116,10 +116,15 @@ export function StudyRoadmap() {
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-1.5" role="group" aria-label="Subjects to include">
-          <span className="mr-1 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">Include</span>
-          {CS_SHELF.map((b) => { const on = !off.includes(b.id); return <button key={b.id} type="button" aria-pressed={on} onClick={() => toggle(b.id)} className={`inline-flex h-8 cursor-pointer items-center rounded-full px-3 text-xs font-bold transition-colors ${on ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "bg-[var(--surface)] text-[var(--text-secondary)] line-through hover:bg-[var(--surface-secondary)]"}`}>{b.title}</button>; })}
-        </div>
+        <details className="group mt-3">
+          <summary className="inline-flex h-9 cursor-pointer list-none items-center gap-2 rounded-full bg-[var(--surface)] px-3 text-sm font-bold text-[var(--text-primary)] [&::-webkit-details-marker]:hidden">
+            <Layers className="h-4 w-4" aria-hidden /> Subjects included: {CS_SHELF.length - off.filter((id) => CS_SHELF.some((b) => b.id === id)).length} of {CS_SHELF.length}
+            <span className="text-xs font-semibold text-[var(--text-secondary)] group-open:hidden">Change</span><span className="hidden text-xs font-semibold text-[var(--text-secondary)] group-open:inline">Hide</span>
+          </summary>
+          <div className="mt-2 flex flex-wrap items-center gap-1.5" role="group" aria-label="Subjects to include">
+            {CS_SHELF.map((b) => { const on = !off.includes(b.id); return <button key={b.id} type="button" aria-pressed={on} onClick={() => toggle(b.id)} className={`inline-flex h-8 cursor-pointer items-center rounded-full px-3 text-xs font-bold transition-colors ${on ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "bg-[var(--surface)] text-[var(--text-secondary)] line-through hover:bg-[var(--surface-secondary)]"}`}>{b.title}</button>; })}
+          </div>
+        </details>
 
         {next && (
           <div className="mt-4 grid gap-3 rounded-2xl bg-[var(--surface)] p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
