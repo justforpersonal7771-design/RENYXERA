@@ -104,3 +104,54 @@
 
 /* exams stay calm: no lift, no blobs behind a question */
 html[data-in-exam][data-look="clay"] .card-pastel:hover { transform: none; }
+
+/* ---------- controls audit (28 Nov 2026): chips, search field, switches, dropdowns, native inputs ---------- */
+[data-look="clay"] { accent-color: #6a4ce0; }
+
+/* outlined pill buttons (chips, filters, Reset, Subjects) become raised clay; the ones that are switched on sink and turn purple */
+[data-look="clay"][data-look="clay"] button.border:not(.btn-main, .pill-ink, .btn-soft, .pill-soft, [role="switch"], [role="tab"], [aria-haspopup="listbox"], [aria-haspopup="menu"], [class*="bg-gradient"]) {
+  background: var(--surface) !important; color: var(--text-primary) !important; border: 0 !important;
+  box-shadow: 5px 7px 14px -7px rgba(var(--clay-ink), .38), inset 3px 3px 6px var(--clay-hi), inset -3px -4px 7px rgba(var(--clay-ink), .13) !important;
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (hover: hover) { [data-look="clay"][data-look="clay"] button.border:not(.btn-main, .pill-ink, [role="switch"], [aria-pressed="true"], [aria-checked="true"], :disabled):hover { transform: translateY(-2px); } }
+[data-look="clay"][data-look="clay"] button.border:is([aria-pressed="true"], [aria-checked="true"]):not([role="switch"]) {
+  background: linear-gradient(150deg, #8f72f8, #6a4ce0) !important; color: #fff !important;
+  box-shadow: inset 4px 5px 10px rgba(40, 20, 120, .45), inset -2px -3px 7px rgba(255, 255, 255, .25) !important;
+}
+[data-look="clay"][data-look="clay"] button.border:is([aria-pressed="true"], [aria-checked="true"]):not([role="switch"]) :is(svg, span) { color: #fff !important; }
+[data-look="clay"][data-look="clay"] button.border:not(.btn-main, .pill-ink):active { transform: translateY(2px) scale(.98); }
+[data-look="clay"][data-look="clay"] button.border:disabled { opacity: .45; box-shadow: inset 2px 3px 6px rgba(var(--clay-ink), .15) !important; }
+
+/* the search field: the wrapper is the debossed well, the input inside it is bare (no second inset) */
+[data-look="clay"][data-look="clay"] :is(label:has(> input.search-bare), .search-row) {
+  background: var(--surface-secondary) !important; border: 0 !important; border-radius: 24px;
+  box-shadow: inset 4px 5px 10px rgba(var(--clay-ink), .2), inset -3px -4px 8px var(--clay-hi) !important;
+}
+[data-look="clay"][data-look="clay"] :is(label:has(> input.search-bare), .search-row):focus-within { outline: 3px solid rgba(106, 76, 224, .5); outline-offset: 2px; }
+[data-look="clay"][data-look="clay"] input.search-bare { background: transparent !important; box-shadow: none !important; border-radius: 0; outline: none; }
+[data-look="clay"] input::placeholder, [data-look="clay"] textarea::placeholder { color: var(--text-secondary); opacity: .85; }
+
+/* switches: a debossed track and a raised knob; on = purple clay */
+[data-look="clay"][data-look="clay"] button[role="switch"] {
+  border: 0 !important; background: var(--surface-secondary) !important;
+  box-shadow: inset 3px 4px 8px rgba(var(--clay-ink), .28), inset -2px -2px 5px var(--clay-hi) !important;
+}
+[data-look="clay"][data-look="clay"] button[role="switch"][aria-checked="true"] {
+  background: linear-gradient(150deg, #8f72f8, #6a4ce0) !important; box-shadow: inset 3px 4px 8px rgba(40, 20, 120, .5), inset -2px -2px 5px rgba(255, 255, 255, .2) !important;
+}
+[data-look="clay"][data-look="clay"] button[role="switch"] > span { background: #fff !important; box-shadow: 3px 4px 7px rgba(var(--clay-ink), .4), inset -2px -2px 4px rgba(var(--clay-ink), .12), inset 2px 2px 4px #fff !important; }
+
+/* dropdown triggers are debossed wells like inputs; the open list is a raised clay panel with pastel option hovers */
+[data-look="clay"][data-look="clay"] :is([aria-haspopup="listbox"], [aria-haspopup="menu"]):not(.btn-main, .pill-ink) {
+  background: var(--surface-secondary) !important; border: 0 !important; border-radius: 20px;
+  box-shadow: inset 4px 5px 10px rgba(var(--clay-ink), .2), inset -3px -4px 8px var(--clay-hi) !important;
+}
+[data-look="clay"] [role="option"]:hover, [data-look="clay"] [role="menuitem"]:hover { background: rgba(var(--clay-ink), .1) !important; }
+[data-look="clay"] [role="option"][aria-selected="true"] { background: rgba(var(--clay-ink), .16) !important; }
+
+/* tabs: the selected tab is the raised piece */
+[data-look="clay"][data-look="clay"] [role="tab"][aria-selected="true"] { background: var(--surface) !important; box-shadow: 4px 6px 12px -6px rgba(var(--clay-ink), .38), inset 3px 3px 6px var(--clay-hi) !important; }
+
+/* small stat pills and badges inside cards read as little raised clay beads */
+[data-look="clay"][data-look="clay"] :is(.sp3-stamp, [class*="rounded-full"][class*="bg-[var(--surface)]"]):not(button) { box-shadow: 3px 4px 8px -4px rgba(var(--clay-ink), .3), inset 2px 2px 4px var(--clay-hi); }

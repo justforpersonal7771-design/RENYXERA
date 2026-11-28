@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-051 · 28 Nov · Clay controls audit: chips, search, switches, dropdowns · Fixed
+- **Reported:** search bar, buttons, toggles and chips in the Clay Look were not proper.
+- **Cause:** the first Clay pass styled cards, `.btn-*` and inputs only; outlined pill buttons stayed flat, the search input got a second inset inside its own well, and switches and dropdown triggers were untouched.
+- **Fix:** `app/looks-clay.css` controls audit: outlined buttons become raised clay (pressed purple when on), search wrapper is the single debossed well with a bare input, switches have a debossed track and raised knob, dropdown triggers are wells, option hovers, selected tab raised, native controls accent purple.
+- **Checked:** Study planner (order chips, subjects chips, search, Reset, Apply) in light and dark. **Open:** account switches, the dropdown menu list, exam setup and the Studio preview not looked at on screen.
+
 ### L-050 · 28 Nov · Clay (claymorphism) Look added to the Design Studio, Pro tier · Fixed
 - **Reported:** add claymorphism in the Design Studio for Pro; research it and build with the design skills.
 - **Research:** Smashing Magazine, LogRocket and SetProduct (2026): large radius, tinted outer shadow, bright top-left inner rim, darker bottom-right inner shade; inputs debossed; WCAG 1.4.11 means shadow alone cannot carry meaning.
