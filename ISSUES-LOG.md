@@ -8,6 +8,13 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-048 · 28 Nov · Study home redesigned: hero, planner with Apply, ring card · Fixed
+- **Reported:** still not good; add an Apply button for the roadmap filters and search; research the placement; fresh look for the Study homepage.
+- **Research:** NN/g and Baymard say to filter in batch with an Apply button when a change reshapes the page, keep Apply at the end of the options, show the result count, and keep Apply sticky on phones; learning apps (Brilliant, EdApp, Tutor LMS) lead with one resume or next card plus progress and an Up next list.
+- **Fix:** `RoadmapPanel` is now the hero (Resume if a book is open, else the next chapter, with marks and PYQ chips, one big button and four Up-next chapters). New `StudyPlanner` (search, order, ready-only, subjects) stages a draft and applies on Apply or Enter, shows how many changes are pending and how many books will show, Reset restores defaults, sticky on phones. Reading stats became a ring card; packs a slim card.
+- **Files:** `components/study/study-planner.tsx`, `components/study/study-roadmap.tsx`, `components/study/bookshelf.tsx`, `lib/study/roadmap-prefs.ts`, `app/(dashboard)/study/page.tsx`
+- **Watch:** selected chips use the text colour as fill because the tint variable is only set inside tinted cards.
+
 ### L-047 · 28 Nov · Study hub cards reorganised by hierarchy · Fixed
 - **Reported:** rearrange the cards; research, then design skills, then reorganise.
 - **Research:** learning dashboards put the resume/next action first and progress compact (LearnDash student dashboard guide, Domo 2026 dashboard guide); bento guidance says the largest tile carries the most important content and smaller tiles support it (SaaSFrame 2026 bento guide, freeCodeCamp).

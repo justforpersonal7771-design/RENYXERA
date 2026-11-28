@@ -22,6 +22,7 @@ import { getCurrentBranch } from "@/lib/branch/current";
 import { useLibraryFocus, type Focus } from "@/lib/study/use-focus";
 import { branchByCode } from "@/lib/branches";
 import { RoadmapPanel, RoadmapPath, useRoadmap } from "@/components/study/study-roadmap";
+import { StudyPlanner } from "@/components/study/study-planner";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
   { id: "core", title: "Core Computer Science", note: "Ten books in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "ds"], ["toc", "cd", "coa", "dl"]] },
@@ -210,16 +211,9 @@ export function Bookshelf({ aside }: { aside?: React.ReactNode }) {
   return (
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
-      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
-        <RoadmapPanel />
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)]">
+        <RoadmapPanel resume={resume ? { ...resume, started: !!last } : null} />
         <div className="flex min-w-0 flex-col gap-4">
-          {resume && (
-            <div className="card-pastel flex min-w-0 flex-wrap items-center gap-3 p-4" data-tint="butter">
-              <BookOpen className="h-5 w-5 shrink-0 text-[var(--text-primary)]" aria-hidden />
-              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here: free sample topics"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
-              <Link href={resume.href} className="pill-ink">{last ? "Resume" : "Read now"}</Link>
-            </div>
-          )}
           {aside}
           {access.loading ? <div aria-hidden className="min-w-0" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
             <section aria-label="Study access" className="card-pastel flex min-w-0 items-center gap-3 p-4" data-tint="mint"><div className="min-w-0 flex-1"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Every book is unlocked</p></div></section>
@@ -236,28 +230,8 @@ export function Bookshelf({ aside }: { aside?: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 sm:p-3">
-          <div className="flex flex-wrap items-center gap-2"><label className="flex min-w-[14rem] flex-1 items-center gap-2 rounded-xl bg-[var(--surface-secondary)] px-3">
-            <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subjects and chapters" aria-label="Search subjects and chapters" className="search-bare h-11 flex-1 bg-transparent text-[var(--text-primary)]" />
-            {q && <button type="button" onClick={() => setQ("")} aria-label="Clear search" className="grid h-8 w-8 place-items-center"><X className="h-4 w-4" /></button>}
-          </label>
-          <div className={`flex flex-wrap items-center gap-2 ${term ? "hidden" : ""}`}>
-            <button type="button" aria-pressed={!onlyReady} onClick={() => setOnlyReady(false)} className={!onlyReady ? "pill-ink" : "pill-soft"}>All books</button>
-            <button type="button" aria-pressed={onlyReady} onClick={() => setOnlyReady(true)} className={onlyReady ? "pill-ink" : "pill-soft"}>Ready to read</button>
-            <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
-          </div>
-          </div>
-          {term && (
-            <ul aria-label="Matching chapters" className="custom-scrollbar max-h-64 min-h-0 flex-1 space-y-1 overflow-y-auto">
-              {CS_SHELF.flatMap((b) => b.chapters.filter((c) => b.title.toLowerCase().includes(term) || c.title.toLowerCase().includes(term)).map((c) => ({ b, c }))).slice(0, 12).map(({ b, c }) => (
-                <li key={b.id + c.id}>{c.href
-                  ? <Link href={c.href} className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate"><b>{c.title}</b> <span className="text-[var(--text-secondary)]">· {b.title}</span></span><span className="shrink-0 font-bold">Open</span></Link>
-                  : <span className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 truncate"><b className="text-[var(--text-primary)]">{c.title}</b> · {b.title}</span><span className="shrink-0">Being written</span></span>}</li>
-              ))}
-            </ul>
-          )}
-          {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
+      <div id="planner" className="scroll-mt-24">
+        <StudyPlanner key={`${rm.mode}|${rm.off.join(",")}|${q}|${onlyReady}`} q={q} onlyReady={onlyReady} onApply={(nq, nr) => { setQ(nq); setOnlyReady(nr); }} />
       </div>
 
       {focus.active && (

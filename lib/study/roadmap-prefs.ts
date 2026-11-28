@@ -41,6 +41,7 @@ export function useRoadmapPrefs() {
     ...prefs,
     setMode: (mode: RoadmapMode) => save({ ...snapshot(), mode }),
     toggle: (id: string) => { const cur = snapshot(); save({ ...cur, off: cur.off.includes(id) ? cur.off.filter((x) => x !== id) : [...cur.off, id] }); },
+    apply: (mode: RoadmapMode, off: string[]) => save({ mode, off }),
     reset: () => save(DEFAULT),
   };
 }

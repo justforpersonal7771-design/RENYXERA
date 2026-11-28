@@ -17,7 +17,7 @@ import { readSeen } from "@/lib/study/progress";
 import { useRoadmapPrefs, type RoadmapMode } from "@/lib/study/roadmap-prefs";
 
 type Mode = RoadmapMode;
-const MODES: { id: Mode; label: string; icon: typeof Scale; blurb: string }[] = [
+export const MODES: { id: Mode; label: string; icon: typeof Scale; blurb: string }[] = [
   { id: "balanced", label: "Balanced", icon: Scale, blurb: "Heavy subjects first, but never before the subject they rest on. The best default." },
   { id: "marks", label: "Marks first", icon: Target, blurb: "Subjects ordered by the share of the paper they carry; inside a subject, the heaviest chapters first." },
   { id: "logical", label: "Logical order", icon: ListOrdered, blurb: "The order a beginner can follow: each subject builds on the one before it." },
@@ -98,48 +98,64 @@ export function useRoadmap() {
   return { mode, off, ordered, staged, next, rank, total, readTotal, topicTotal, openOf, done, ready: rows.length > 0 };
 }
 
-/** The top of the Study page: title, the book to resume, the next chapter on the roadmap, the order and the subjects to show. */
-export function RoadmapPanel() {
+/** The Study home hero: the one thing to do next, what follows it, and the order in force. Resume wins when the reader has a book open. */
+export function RoadmapPanel({ resume }: { resume?: { href: string; title: string; started: boolean } | null }) {
   const rm = useRoadmap();
-  const { setMode, toggle, reset } = useRoadmapPrefs();
-  const { mode, off, next, ordered, readTotal, topicTotal, total } = rm;
+  const { mode, off, next, ordered, done, readTotal, topicTotal } = rm;
   const m = MODES.find((x) => x.id === mode)!;
   const included = CS_SHELF.length - off.filter((id) => CS_SHELF.some((b) => b.id === id)).length;
+  const started = !!resume?.started;
+  const tint = next?.b.tint ?? "peri";
+  const primary = started && resume
+    ? { kicker: "Continue where you stopped", title: resume.title, href: resume.href, cta: "Resume", row: null as Row | null }
+    : next ? { kicker: "Start here", title: `${next.b.title}: ${next.c.title}`, href: next.href, cta: next.read > 0 ? "Continue" : "Start", row: next } : null;
+  const upcoming = ordered.filter((r) => !done(r) && r.key !== primary?.row?.key).slice(0, started ? 3 : 4);
+  const pct = primary?.row ? Math.round((primary.row.read / Math.max(1, primary.row.topics)) * 100) : 0;
   return (
-    <div className="card-pastel flex min-w-0 flex-col gap-3 p-5 sm:p-6" data-tint="butter" role="region" aria-label="Study roadmap">
-      <div>
-        <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
-        <p className="mt-1 text-sm text-[var(--text-secondary)]"><Compass className="mr-1 inline h-4 w-4 align-[-2px]" aria-hidden />Your roadmap. {m.blurb}</p>
+    <div className="card-pastel flex min-w-0 flex-col gap-5 p-5 sm:p-7" data-tint={tint} role="region" aria-label="Study home">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.16em] text-[var(--tint-ink)]"><Compass className="h-4 w-4" aria-hidden /> The GATE CS library</h1>
+        <a href="#planner" className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 text-xs font-bold text-[var(--text-primary)] transition-transform active:scale-[0.97] hover:bg-[var(--surface-secondary)]"><Layers className="h-3.5 w-3.5" aria-hidden /> {m.label} order · {included} subjects <span className="text-[var(--tint-ink)]">Change</span></a>
       </div>
-      {next && (
-        <div className="grid gap-3 rounded-2xl bg-[var(--surface)] p-4 shadow-[0_0_0_1px_rgba(0,0,0,.05),0_2px_6px_-2px_rgba(0,0,0,.08)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-          <div className="min-w-0">
-            <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]"><Sparkles className="h-3.5 w-3.5" aria-hidden /> Next on your roadmap</p>
-            <p className="mt-0.5 font-display text-2xl font-extrabold leading-tight tracking-[-0.01em] text-[var(--text-primary)]">{next.b.title}: {next.c.title}</p>
-            <p className="mt-0.5 text-sm text-[var(--text-secondary)]">
-              {next.share > 0 ? <><b className="font-num text-[var(--text-primary)]">{next.share.toFixed(1)}%</b> of the paper · <b className="font-num text-[var(--text-primary)]">{next.qs}</b> past questions · </> : "Foundation, no question of its own · "}
-              {WHY[next.b.id] ?? "Part of the core syllabus."}{next.read > 0 && <> You have read {next.read} of {next.topics}.</>}
-            </p>
+
+      {primary && (
+        <div>
+          <p className="flex items-center gap-1.5 text-sm font-bold text-[var(--text-secondary)]"><Sparkles className="h-4 w-4" aria-hidden /> {primary.kicker}</p>
+          <p className="mt-1 max-w-3xl text-balance font-display text-3xl font-extrabold leading-[1.08] tracking-[-0.025em] text-[var(--text-primary)] sm:text-[2.6rem]">{primary.title}</p>
+          {primary.row && (
+            <>
+              <p className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                {primary.row.share > 0 && <span className="rounded-full bg-[var(--surface)] px-3 py-1 font-bold text-[var(--text-primary)]"><span className="font-num">{primary.row.share.toFixed(1)}%</span> of the paper</span>}
+                {primary.row.qs > 0 && <span className="rounded-full bg-[var(--surface)] px-3 py-1 font-bold text-[var(--text-primary)]"><span className="font-num">{primary.row.qs}</span> past questions</span>}
+                <span className="rounded-full bg-[var(--surface)] px-3 py-1 font-bold text-[var(--text-primary)]"><span className="font-num">{primary.row.read}/{primary.row.topics}</span> topics read</span>
+              </p>
+              <p className="mt-3 max-w-2xl text-sm text-[var(--text-secondary)]">{WHY[primary.row.b.id] ?? "Part of the core syllabus."}</p>
+              <div className="mt-3 h-1.5 max-w-md overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full" style={{ width: `${pct}%`, background: "var(--tint-ink)" }} /></div>
+            </>
+          )}
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <Link href={primary.href} className="pill-ink inline-flex h-12 items-center justify-center gap-2 px-6 text-base transition-transform active:scale-[0.97]" style={{ ["--btn" as string]: "var(--tint-ink)" }}>{primary.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+            <a href="#path" className="text-sm font-bold text-[var(--tint-ink)] underline underline-offset-4">See the whole path</a>
           </div>
-          <Link href={next.href} className="pill-ink inline-flex items-center justify-center gap-2" style={{ ["--btn" as string]: "var(--tint-ink)" }}>{next.read > 0 ? "Continue" : "Start"} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
         </div>
       )}
-      <div role="radiogroup" aria-label="Roadmap order" className="no-scrollbar -mx-1 flex gap-1.5 overflow-x-auto rounded-2xl bg-[var(--surface)] p-1 sm:flex-wrap sm:overflow-visible">
-        {MODES.map((x) => (
-          <button key={x.id} type="button" role="radio" aria-checked={mode === x.id} onClick={() => setMode(x.id)} className={`inline-flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 text-sm font-bold transition-colors ${mode === x.id ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"}`}><x.icon className="h-4 w-4" aria-hidden /> {x.label}</button>
-        ))}
-      </div>
-      <details className="group">
-        <summary className="inline-flex h-9 cursor-pointer list-none items-center gap-2 rounded-full bg-[var(--surface)] px-3 text-sm font-bold text-[var(--text-primary)] [&::-webkit-details-marker]:hidden">
-          <Layers className="h-4 w-4" aria-hidden /> Subjects shown: {included} of {CS_SHELF.length}
-          <span className="text-xs font-semibold text-[var(--text-secondary)] group-open:hidden">Change</span><span className="hidden text-xs font-semibold text-[var(--text-secondary)] group-open:inline">Hide</span>
-        </summary>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5" role="group" aria-label="Subjects to show">
-          {CS_SHELF.map((b) => { const on = !off.includes(b.id); return <button key={b.id} type="button" aria-pressed={on} onClick={() => toggle(b.id)} className={`inline-flex h-8 cursor-pointer items-center rounded-full px-3 text-xs font-bold transition-colors ${on ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "bg-[var(--surface)] text-[var(--text-secondary)] line-through hover:bg-[var(--surface-secondary)]"}`}>{b.title}</button>; })}
-          {(off.length > 0 || mode !== "balanced") && <button type="button" onClick={reset} className="inline-flex h-8 cursor-pointer items-center rounded-full border border-[var(--border)] px-3 text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">Reset</button>}
+
+      {upcoming.length > 0 && (
+        <div>
+          <p className="mb-2 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">Up next on your roadmap</p>
+          <ol className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+            {upcoming.map((r, i) => (
+              <li key={r.key}>
+                <Link href={r.href} className="flex h-full items-center gap-3 rounded-2xl bg-[var(--surface)] p-3 transition-transform hover:-translate-y-0.5 active:scale-[0.99]">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--surface-secondary)] font-num text-sm font-extrabold text-[var(--tint-ink)]">{i + 1}</span>
+                  <span className="min-w-0"><span className="block truncate text-[11px] font-bold uppercase tracking-[.1em] text-[var(--text-secondary)]">{r.b.title}</span><span className="block text-sm font-extrabold leading-snug text-[var(--text-primary)]">{r.c.title}</span></span>
+                </Link>
+              </li>
+            ))}
+          </ol>
         </div>
-      </details>
-      <p className="text-xs text-[var(--text-secondary)]"><b className="font-num text-[var(--text-primary)]">{ordered.length}</b> chapters ready · <b className="font-num text-[var(--text-primary)]">{readTotal}</b> of {topicTotal} topics read · the first 5 cover <b className="font-num text-[var(--text-primary)]">{Math.round((ordered.slice(0, 5).reduce((s, r) => s + r.share, 0) / total) * 100)}%</b> of the marks shown</p>
+      )}
+      <p className="text-xs text-[var(--text-secondary)]"><b className="font-num text-[var(--text-primary)]">{ordered.length}</b> chapters ready · <b className="font-num text-[var(--text-primary)]">{readTotal}</b> of {topicTotal} topics read</p>
     </div>
   );
 }
@@ -151,7 +167,7 @@ export function RoadmapPath() {
   const shown = all ? staged : staged.slice(0, 7);
   if (!ready || !staged.length) return null;
   return (
-    <details className="group card-pastel p-4 sm:p-5" data-tint="peri">
+    <details id="path" className="group card-pastel scroll-mt-24 p-4 sm:p-5" data-tint="peri">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
         <span className="font-display text-lg font-extrabold text-[var(--text-primary)]">Your path, chapter by chapter <span className="text-sm font-semibold text-[var(--text-secondary)]">· {staged.length} chapters</span></span>
         <span className="text-sm font-bold text-[var(--tint-ink)] group-open:hidden">Show</span><span className="hidden text-sm font-bold text-[var(--tint-ink)] group-open:inline">Hide</span>
