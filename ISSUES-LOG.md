@@ -8,6 +8,11 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-043 · 28 Nov · Study roadmap opens as a modal · Fixed
+- **Reported:** the roadmap should be a modal.
+- **Fix:** a one-line launcher card on the Study page (shows Next up); the full roadmap opens in a portal dialog (bottom sheet on phones), closes on Esc, backdrop or X, and locks page scroll while open. Subject chips folded into a disclosure.
+- **Files:** `components/study/study-roadmap.tsx`
+
 ### L-042 · 28 Nov · Roadmap sort is the reader's choice · Fixed
 - **Reported:** do not force the logical order; offer other ways to sort.
 - **Fix:** six orders (Balanced, Marks first, Logical, Most past questions, Continue reading, Shelf order) and Include chips to drop subjects; both saved on this device.

@@ -8,7 +8,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Compass, FileQuestion, Layers, LibraryBig, ListOrdered, Scale, Sparkles, Target } from "lucide-react";
+import { createPortal } from "react-dom";
+import { ArrowRight, BookOpen, X, Compass, FileQuestion, Layers, LibraryBig, ListOrdered, Scale, Sparkles, Target } from "lucide-react";
 import { CS_SHELF, type ShelfBook, type ShelfChapter } from "@/lib/study/catalog";
 import { useLibraryFocus } from "@/lib/study/use-focus";
 import { useStudyAccess } from "@/lib/study/use-study-access";
@@ -46,6 +47,14 @@ export function StudyRoadmap() {
   const [mode, setMode] = useState<Mode>("balanced");
   const [all, setAll] = useState(false);
   const [off, setOff] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const prev = document.body.style.overflow; document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [open]);
   const [seen, setSeen] = useState<Record<string, { ch: string }>>({});
   // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only choices, read once after mount
   useEffect(() => { setSeen(readSeen()); try { const m = localStorage.getItem("renyxera.study.roadmap.mode"); if (MODE_IDS.includes(m as Mode)) setMode(m as Mode); const o = JSON.parse(localStorage.getItem("renyxera.study.roadmap.off") ?? "[]"); if (Array.isArray(o)) setOff(o.filter((x) => typeof x === "string")); } catch { /* storage off */ } }, []);
@@ -100,7 +109,7 @@ export function StudyRoadmap() {
   if (!rows.length) return null;
   const m = MODES.find((x) => x.id === mode)!;
 
-  return (
+  const body = (
     <section aria-label="Study roadmap" className="space-y-4">
       <div className="card-pastel p-4 sm:p-6" data-tint="peri">
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -172,5 +181,26 @@ export function StudyRoadmap() {
       </ol>
       {staged.length > 7 && <button type="button" onClick={() => setAll((v) => !v)} className="mx-auto flex h-10 cursor-pointer items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{all ? "Show the first 7 only" : `Show the whole roadmap (${staged.length} chapters)`}</button>}
     </section>
+  );
+
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="card-pastel flex w-full cursor-pointer items-center gap-3 p-3 text-left sm:gap-4 sm:p-4" data-tint="peri">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--surface)] text-[var(--tint-ink)]"><Compass className="h-5 w-5" aria-hidden /></span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-extrabold uppercase tracking-[.14em] text-[var(--tint-ink)]">Your study roadmap</span>
+          <span className="block truncate font-display text-base font-extrabold text-[var(--text-primary)] sm:text-lg">{next ? `Next up: ${next.b.title}, ${next.c.title}` : "Where to start, and what next"}</span>
+        </span>
+        <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-[var(--tint-ink)]">Open <ArrowRight className="h-4 w-4" aria-hidden /></span>
+      </button>
+      {open && createPortal(
+        <div className="fixed inset-0 z-[120] flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label="Study roadmap">
+          <button type="button" aria-label="Close roadmap" onClick={() => setOpen(false)} className="absolute inset-0 cursor-default bg-black/55" />
+          <div className="relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-[var(--background)] shadow-2xl sm:max-w-5xl sm:rounded-3xl">
+            <div className="flex shrink-0 justify-end px-3 pt-3"><button type="button" onClick={() => setOpen(false)} aria-label="Close" className="grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-[var(--surface)] text-[var(--text-primary)]"><X className="h-5 w-5" aria-hidden /></button></div>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-6 sm:px-6">{body}</div>
+          </div>
+        </div>, document.body)}
+    </>
   );
 }
