@@ -7,6 +7,8 @@ import { chapterA1 } from "./algo-v2-a1";
 import { chapterA2 } from "./algo-v2-a2";
 import { chapterA3 } from "./algo-v2-a3";
 import { chapterA4 } from "./algo-v2-a4";
+import { chapterA5 } from "./algo-v2-a5";
+import { chapterA6 } from "./algo-v2-a6";
 
 /**
  * Algorithms, textbook edition (28 Nov 2026). Each row of the shelf keeps its route and its old chapter shell (id, syllabus line, PYQ pattern);
@@ -17,8 +19,8 @@ export const V2_ASYM: Chapter = { ...ALGO_ASYM, topics: [chapterA1], map: strip(
 export const V2_SORT: Chapter = { ...ALGO_SORT, topics: [chapterA2], map: strip([["A2", "searching and sorting"]]) };
 export const V2_HASH: Chapter = { ...ALGO_HASH, topics: [chapterA3], map: strip([["A3", "hashing"]]) };
 export const V2_DC: Chapter = { ...ALGO_DC, topics: [chapterA4], map: strip([["A4", "divide and conquer"]]) };
-export const V2_GREEDY: Chapter = ALGO_GREEDY;
-export const V2_DP: Chapter = ALGO_DP;
+export const V2_GREEDY: Chapter = { ...ALGO_GREEDY, topics: [chapterA5], map: strip([["A5", "greedy algorithms"]]) };
+export const V2_DP: Chapter = { ...ALGO_DP, topics: [chapterA6], map: strip([["A6", "dynamic programming"]]) };
 export const V2_GRAPH: Chapter = ALGO_GRAPH;
 export const V2_MST: Chapter = ALGO_MST;
 export const V2_SP: Chapter = ALGO_SP;
