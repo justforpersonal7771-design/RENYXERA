@@ -93,8 +93,13 @@ export function useRoadmap() {
   const next = ordered.find((r) => !done(r) && openOf(r) !== "pack") ?? ordered.find((r) => !done(r)) ?? null;
   const staged = ordered.map((r, i) => { const before = ordered.slice(0, i).reduce((s, x) => s + x.share, 0) / total; return { r, stage: before < 0.5 ? 0 : before < 0.8 ? 1 : 2 }; });
   const readTotal = ordered.reduce((s, r) => s + r.read, 0), topicTotal = ordered.reduce((s, r) => s + r.topics, 0);
-  /** book id to its place (1 = first) in the chosen order; books left out have no rank */
-  const rank = useMemo(() => { const m = new Map<string, number>(); ordered.forEach((r) => { if (!m.has(r.b.id)) m.set(r.b.id, m.size + 1); }); return m; }, [ordered]);
+  /** book id to its place (1 = first) in the chosen order. Books with chapters come first in that order; books still being written follow in shelf order, so every shelf book carries a number (only books the learner switched off have none). */
+  const rank = useMemo(() => {
+    const m = new Map<string, number>();
+    ordered.forEach((r) => { if (!m.has(r.b.id)) m.set(r.b.id, m.size + 1); });
+    CS_SHELF.forEach((b) => { if (!m.has(b.id) && !off.includes(b.id)) m.set(b.id, m.size + 1); });
+    return m;
+  }, [ordered, off]);
   return { mode, off, ordered, staged, next, rank, total, readTotal, topicTotal, openOf, done, ready: rows.length > 0 };
 }
 

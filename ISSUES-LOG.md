@@ -11,8 +11,8 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 ### L-054 · 29 Nov · Study shelf: roadmap badge overlapped the marks pill; unlocked card left a gap · Fixed
 - **Reported:** the "#2 ON YOUR ROADMAP" text sat on the "% of marks" pill; place the number at the left of the book instead. When every book is unlocked the packs card was a small green strip with empty space under it; use the purple card at the purchase card's height.
 - **Cause:** the rank was a long text stamp in the right-hand stack; the all-unlocked state used the pastel strip with no `flex-1`.
-- **Fix:** a round numbered medallion at the left of each slab (the next book gets a ring and a "Read next" stamp; aria-label carries the rank); slab titles resized (27px at most, 15px on phones) so words never split; the unlocked state now uses the purple `plan-peri` card, `flex-1`, with a "Browse the books" button.
-- **Files:** `components/study/bookshelf.tsx`, `app/globals.css` · **Commit:** see git log
+- **Fix:** the rank is now a heavy number (Archivo Black) inside the coloured left strip of each slab (no bubble), strip widened for two digits; every shelf book is ranked (books still being written follow the written ones in shelf order); the next book gets an inset edge and a "Read next" stamp; aria-label carries the rank; slab titles resized (27px at most, 15px on phones) so words never split; the unlocked state uses the purple `plan-peri` card, `flex-1`, with a "Browse the books" button.
+- **Files:** `components/study/bookshelf.tsx`, `components/study/study-roadmap.tsx`, `app/globals.css` · **Commit:** see git log
 - **Open:** checked on the dev server at desktop and phone widths (light shown; dark follows the same tokens).
 
 ### L-053 · 28 Nov · Open points closed: option order, CI, phone reading · Fixed

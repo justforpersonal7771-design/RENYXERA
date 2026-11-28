@@ -76,8 +76,8 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false, rank, next = false 
   return (
     <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${56 + Math.min(b.chapters.length, 6) * 5}px` /* capped: books stay varied without 17-chapter books towering (owner, 19 Nov) */ }}
       aria-label={`${b.title}. ${rank !== undefined ? `${next ? "Next on your roadmap, number" : "Number"} ${rank} on your roadmap. ` : ""}${b.chapters.length} chapters.`}
-      className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
-      {rank !== undefined && <span aria-hidden title={next ? `Next on your roadmap · #${rank}` : `#${rank} on your roadmap`} className="-ml-1 grid h-7 w-7 shrink-0 place-items-center rounded-full text-[14px] font-black tabular-nums leading-none" style={{ background: "var(--tint-ink)", color: "var(--tint)", boxShadow: next ? "0 0 0 3px var(--tint), 0 0 0 5px var(--tint-ink)" : "inset 0 -2px 0 rgba(0,0,0,.18)" }}>{rank}</span>}
+      className={`sp3-slab ${free ? "is-feature" : ""} ${rank !== undefined ? "has-rank" : ""} ${dim ? "opacity-35" : ""}`}>
+      {rank !== undefined && <span aria-hidden title={next ? `Next on your roadmap · #${rank}` : `#${rank} on your roadmap`} className={`sp3-rank ${next ? "is-next" : ""}`}>{rank}</span>}
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
       </span>

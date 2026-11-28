@@ -2480,6 +2480,10 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 .bk-mark { background: linear-gradient(transparent 60%, var(--mk) 60% 90%, transparent 90%); padding: 0 .12em; margin: 0 -.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { text-transform: uppercase !important; font-weight: 800 !important; font-size: clamp(18px, 1.7vw, 27px) !important; line-height: 1.06 !important; letter-spacing: -.02em !important; text-wrap: balance; overflow-wrap: break-word; }
 @media (max-width: 480px) { .sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { font-size: 15px !important; letter-spacing: -.01em !important; } .sp3-slab .sp3-stamp { font-size: 9.5px; padding: 5px 8px; letter-spacing: .04em; } .sp3-slab { gap: 8px; padding-left: 18px; padding-right: 12px; } }
+.sp3-slab.has-rank { border-left-width: 0; padding-left: 62px; }
+.sp3-rank { position: absolute; left: 0; top: 0; bottom: 0; width: 48px; display: grid; place-items: center; background: var(--tint-ink); color: var(--tint); font: 400 22px/1 var(--font-archivo), "Archivo Black", Impact, sans-serif; letter-spacing: -.02em; font-variant-numeric: tabular-nums; z-index: 1; }
+.sp3-rank.is-next { box-shadow: inset -4px 0 0 var(--tint); }
+@media (max-width: 480px) { .sp3-slab.has-rank { padding-left: 50px; } .sp3-rank { width: 38px; font-size: 17px; } }
 
 /* Study is purple everywhere (as Pro is gold): every 'buy books' button, including the study packs window. */
 .shop-cta, .btn-study { --cta-bg: #4b2fa8; --cta-ink: #ffffff; --cta-line: rgba(154,140,240,.6); }
