@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-046 · 28 Nov · Roadmap joins the library hero; choices filter the shelves; focus target hides outside chapters · Fixed
+- **Reported:** remove the roadmap modal; fold the GATE CS library card into the roadmap; the roadmap should filter and apply on the screen itself; the focus target should show only subjects, topics and chapters inside it.
+- **Fix:** `lib/study/roadmap-prefs.ts` shares order and included subjects. `RoadmapPanel` replaces the library card (order pills, subjects, resume, next chapter); search moved to its own bar; `RoadmapPath` is a collapsible path list; the bookshelf hides excluded subjects and shows each book's place on the roadmap. With a Focus Target, a book's Contents lists only chapters with marks inside the target, with a Show them button.
+- **Files:** `components/study/study-roadmap.tsx`, `components/study/bookshelf.tsx`, `lib/study/roadmap-prefs.ts`, `app/(dashboard)/study/page.tsx`
+- **Open:** not yet checked with a Focus Target set on screen; shelf badges not screenshotted.
+
 ### L-045 · 28 Nov · Algorithms: picture questions solved, PYQs tagged, old files removed · Fixed
 - **Reported:** finish the eleven picture-only questions, tag Algorithms PYQs, remove unused files, read on a phone.
 - **Fix:** all 12 picture questions read from the images in `public/images` and solved (2017 AN Q13 D; Q59 225; 2017 FN Q30 C; 2018 FN Q57 4; 2021 AN Q19 929; Q30 A, B; 2021 FN Q25 C; Q48 3; Q49 C; 2024 AN Q53 9; 2025 AN Q59 6; 2025 FN Q64 5), each as a worked example in its chapter. All 73 Algorithms questions tagged in `lib/study/pyq-chapter-map.json` (books now pds, ds, algo). Old `algo-a..d.ts` deleted; `algo-v2.ts` holds the chapter shells. Trace tables no longer split words on a phone.

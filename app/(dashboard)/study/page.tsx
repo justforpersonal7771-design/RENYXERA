@@ -9,7 +9,6 @@
 import { useEffect, useState } from "react";
 import { BookOpen, FlaskConical, Highlighter, Library } from "lucide-react";
 import { Bookshelf } from "@/components/study/bookshelf";
-import { StudyRoadmap } from "@/components/study/study-roadmap";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { FREE_TOPICS } from "@/lib/study/packs";
 import { highlightCount, readSeen } from "@/lib/study/progress";
@@ -65,7 +64,6 @@ export default function StudyPage() {
         </TiltCard>
       </section>
 
-      <StudyRoadmap />
       <Bookshelf />
     </div>
   );

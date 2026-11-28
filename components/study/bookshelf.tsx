@@ -22,6 +22,7 @@ import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { useLibraryFocus, type Focus } from "@/lib/study/use-focus";
 import { branchByCode } from "@/lib/branches";
+import { RoadmapPanel, RoadmapPath, useRoadmap } from "@/components/study/study-roadmap";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
   { id: "core", title: "Core Computer Science", note: "Ten books in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "ds"], ["toc", "cd", "coa", "dl"]] },
@@ -68,7 +69,7 @@ const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
  *  The featured book (has a ready chapter) is thicker, names its free chapter. Hover slides it out. */
-function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number; flat?: boolean }) {
+function Slab({ b, i, dim, onOpen, weight = 0, flat = false, rank, next = false }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number; flat?: boolean; rank?: number; next?: boolean }) {
   const r = ready(b);
   const free = b.chapters.find((c) => c.ready);
   return (
@@ -78,7 +79,7 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
       </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Being written</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
+      <span className="flex shrink-0 flex-col items-end gap-1">{rank !== undefined && <span className={`sp3-stamp ${next ? "!bg-[var(--tint-ink)] !text-[var(--tint)]" : ""}`} title="Place on your roadmap">{next ? `Next · #${rank}` : `#${rank} on your roadmap`}</span>}{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Being written</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -93,10 +94,16 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
   const hiCut = sorted[Math.max(0, Math.ceil(sorted.length / 3) - 1)] ?? Infinity, midCut = sorted[Math.max(0, Math.ceil((sorted.length * 2) / 3) - 1)] ?? Infinity;
   weights.forEach((w) => { w.tier = w.share <= 0 ? "none" : w.share >= hiCut ? "high" : w.share >= midCut ? "mid" : "low"; });
   const ink = `var(--tint-${b.tint ?? "peri"}-ink)`;
+  const [showAll, setShowAll] = useState(false);
+  /** With a Focus Target, only the chapters that carry marks inside the target are listed; the rest wait behind one button. */
+  const hide = (w: Weight) => !!focus?.active && !showAll && (w.qs === 0 || !w.inTarget);
+  const hiddenCount = focus?.active ? weights.filter((w) => w.qs === 0 || !w.inTarget).length : 0;
   return (
+    <>
     <ol className="space-y-1">
       {b.chapters.map((c, i) => {
         const w = weights[i];
+        if (hide(w)) return null;
         const mark = w.tier === "high" ? <span className="rounded-full px-2 py-0.5 text-[11px] font-extrabold" style={{ background: ink, color: "var(--surface)" }}>High weight</span>
           : w.tier === "mid" ? <span className="rounded-full border px-2 py-0.5 text-[11px] font-bold" style={{ borderColor: ink, color: ink }}>Medium</span> : null;
         const row = (
@@ -123,6 +130,8 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
         );
       })}
     </ol>
+    {hiddenCount > 0 && <p className="mt-2 flex flex-wrap items-center gap-2 px-3 text-xs text-[var(--text-secondary)]">{showAll ? "Showing every chapter." : `${hiddenCount} chapter${hiddenCount === 1 ? " is" : "s are"} outside your focus target and hidden.`}<button type="button" onClick={() => setShowAll((v) => !v)} className="font-bold underline underline-offset-4">{showAll ? "Hide them again" : "Show them"}</button></p>}
+    </>
   );
 }
 
@@ -191,9 +200,10 @@ export function Bookshelf() {
   const free = CS_SHELF.find((b) => ready(b) > 0);
   const resume = last ?? (free ? { href: free.chapters.find((c) => c.href)!.href!, title: `${free.title}: ${free.chapters.find((c) => c.href)!.title}` } : null);
   const focus = useLibraryFocus();
+  const rm = useRoadmap();
   const [showAll, setShowAll] = useState(false);
   const weightOf = (bs: ShelfBook[]) => bs.reduce((t, b) => t + focus.topicsOf(b).reduce((x, tp) => x + tp.marksShare, 0), 0);
-  const visible = (b: ShelfBook) => showAll || focus.bookIn(b);
+  const visible = (b: ShelfBook) => !rm.off.includes(b.id) && (showAll || focus.bookIn(b));
   const hidden = CS_SHELF.filter((b) => !visible(b)).length;
   const hits = CS_SHELF.filter((b) => visible(b) && match(b)).length;
   const isPhone = () => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches;
@@ -201,21 +211,9 @@ export function Bookshelf() {
   return (
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1.1fr)_minmax(0,0.75fr)]">
-        <div className="card-pastel flex min-w-0 flex-col justify-between p-5 sm:p-6 lg:h-72" data-tint="butter">
-          <div>
-            <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
-            <p className="mt-1 text-balance text-[var(--text-secondary)]">Lessons written for the way GATE asks.<br />Pull a book to see what is inside.</p>
-          </div>
-          {resume && (
-            <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
-              <BookOpen className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
-              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here: free sample topics"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
-              <Link href={resume.href} className="pill-ink">{last ? "Resume" : "Read now"}</Link>
-            </div>
-          )}
-        </div>
-        <div className="card-pastel flex h-72 min-h-0 min-w-0 flex-col gap-3 p-5 sm:p-6" data-tint="peri">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,0.9fr)]">
+        <RoadmapPanel resume={resume ? { ...resume, started: !!last } : null} />
+        <div className="card-pastel flex min-h-0 min-w-0 flex-col gap-3 p-4 sm:p-5 lg:order-2 lg:col-span-2" data-tint="peri">
           <label className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3">
             <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subjects and chapters" aria-label="Search subjects and chapters" className="search-bare h-11 flex-1 bg-transparent text-[var(--text-primary)]" />
@@ -227,7 +225,7 @@ export function Bookshelf() {
             <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
           </div>
           {term && (
-            <ul aria-label="Matching chapters" className="custom-scrollbar min-h-0 flex-1 space-y-1 overflow-y-auto">
+            <ul aria-label="Matching chapters" className="custom-scrollbar max-h-64 min-h-0 flex-1 space-y-1 overflow-y-auto">
               {CS_SHELF.flatMap((b) => b.chapters.filter((c) => b.title.toLowerCase().includes(term) || c.title.toLowerCase().includes(term)).map((c) => ({ b, c }))).slice(0, 12).map(({ b, c }) => (
                 <li key={b.id + c.id}>{c.href
                   ? <Link href={c.href} className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate"><b>{c.title}</b> <span className="text-[var(--text-secondary)]">· {b.title}</span></span><span className="shrink-0 font-bold">Open</span></Link>
@@ -237,10 +235,10 @@ export function Bookshelf() {
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
         </div>
-        {access.loading ? <div aria-hidden className="min-w-0 lg:h-72" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
-          <section aria-label="Study access" className="card-pastel flex min-w-0 flex-col justify-between p-5 lg:h-72" data-tint="mint"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><div><p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Every book is unlocked</p><p className="mt-1 text-sm text-[var(--text-secondary)]">All chapters are open to you. Pick a book and carry on reading.</p></div></section>
+        {access.loading ? <div aria-hidden className="min-w-0 lg:order-1" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
+          <section aria-label="Study access" className="card-pastel flex min-w-0 flex-col justify-between p-5 lg:order-1" data-tint="mint"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><div><p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Every book is unlocked</p><p className="mt-1 text-sm text-[var(--text-secondary)]">All chapters are open to you. Pick a book and carry on reading.</p></div></section>
         ) : (
-          <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
+          <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:order-1" onClick={() => openStudyShop("Study packs and bundles")}
             body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
         )}
       </div>
@@ -251,6 +249,7 @@ export function Bookshelf() {
           {hidden > 0 && <button type="button" onClick={() => setShowAll((x) => !x)} className="pill-soft">{showAll ? "Hide them again" : "Show all subjects"}</button>}
         </div>
       )}
+      <RoadmapPath />
       {/* the shelves */}
       <div className="sp2-case">
         {(() => { const shelves = SHELVES.map((sh) => {
@@ -280,7 +279,7 @@ export function Bookshelf() {
               <div className={`grid flex-1 items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
-                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}</div>
+                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} rank={rm.rank.get(id)} next={rm.next?.b.id === id} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
                 ))}
               </div>
