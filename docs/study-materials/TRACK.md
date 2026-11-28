@@ -18,7 +18,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Algorithms | algo | [x] | [x] | [x] all 11 chapters written (A0–A10), 29 Nov | [x] chapter-check 11/11, browser sweep and contrast clean | [x] pushed 29 Nov | routes unchanged (`/study/asymptotics` … `/study/shortest-paths`); code in `content/study/CS/algo-v2*.ts`; PYQ list in A10 |
 | Theory of Computation | toc | [ ] | [ ] | [ ] | [ ] | old version live | |
 | Compiler Design | cd | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
-| Computer Organisation | coa | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
+| Computer Organisation | coa | [x] | [x] Gemini + ChatGPT merged 28 Nov | [x] all 8 chapters written (O0–O7), 29 Nov | [x] chapter-check 8/8, browser sweep and contrast clean | [~] pushed with this commit, live check pending | routes unchanged (`/study/instructions-addressing` … `/study/io-interrupts-dma`); code `content/study/CS/coa-v2*.ts`; 72 PYQs tagged in `pyq-chapter-map.json`; old `coa-a`…`coa-f` kept only for the hardware check scripts; owner review pending |
 | Digital Logic | dl | [x] | [x] Gemini merged 28 Nov | [x] all 7 chapters written (L1–L7) | [x] chapter-check 7/7, browser sweep and contrast clean | [~] pushed with this commit, live check pending | routes `/study/number-codes` … `/study/computer-arithmetic`; code `content/study/CS/dl-v2*.ts`; 69 PYQs tagged and all solved incl. 25 picture questions |
 | Discrete Mathematics | dm | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Linear Algebra | la | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |

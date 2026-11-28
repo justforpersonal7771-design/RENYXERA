@@ -21,6 +21,7 @@ import { getCurrentBranch } from "@/lib/branch/current";
 const readyChapters = CS_SHELF.flatMap((b) => b.chapters.filter((c) => c.href).map((c) => ({ b, c, topics: Number(/(\d+)\s+topics?/.exec(c.ready ?? "")?.[1] ?? 0) })));
 const totalTopics = readyChapters.reduce((s, x) => s + x.topics, 0);
 const readyBooks = CS_SHELF.filter((b) => b.chapters.some((c) => c.href)).length;
+const subjectsWithBooks = CS_SHELF.filter((b) => b.chapters.some((c) => c.href));
 const sampleTopics = CS_SHELF.filter((b) => b.chapters.some((c) => c.href)).length * FREE_TOPICS;
 
 export default function StudyPage() {
@@ -28,25 +29,26 @@ export default function StudyPage() {
   const [soon, setSoon] = useState(false); // study books exist for Computer Science only so far
   // eslint-disable-next-line react-hooks/set-state-in-effect -- the branch is read from this browser after mount
   useEffect(() => { setSoon(getCurrentBranch() !== "CSE"); }, []);
-  const [stats, setStats] = useState<{ read: number; chapters: number; hl: number } | null>(null);
+  const [stats, setStats] = useState<{ read: number; chapters: number; subjects: number; hl: number } | null>(null);
   useEffect(() => {
     const seen = readSeen();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only progress, read once after mount
-    setStats({ read: Object.keys(seen).length, chapters: new Set(Object.values(seen).map((v) => v.ch)).size, hl: highlightCount() });
+    const chs = new Set(Object.values(seen).map((v) => v.ch));
+    setStats({ read: Object.keys(seen).length, chapters: chs.size, subjects: subjectsWithBooks.filter((b) => b.chapters.some((c) => c.href && chs.has(c.href))).length, hl: highlightCount() });
     if (new URLSearchParams(window.location.search).has("shop") || window.location.hash === "#packs") openStudyShop("Study packs and bundles");
   }, []);
   const open = access.all ? totalTopics : sampleTopics;
-  const pct = stats && open ? Math.min(100, Math.round((stats.read / open) * 100)) : 0;
+  const pct = stats && subjectsWithBooks.length ? Math.min(100, Math.round((stats.subjects / subjectsWithBooks.length) * 100)) : 0;
   if (soon) return <div className="p-4 sm:p-6"><BranchSoon feature="study" /></div>;
   return (
     <div className="space-y-6 pb-8">
       <Bookshelf aside={
         <section aria-label="Your reading" className="grid grid-cols-2 gap-3">
           <TiltCard tint="mint" className="card-pastel p-4 sm:p-5">
-            <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" /> Topics read</p>
-            <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{stats?.read ?? 0}</span><span className="text-base text-[var(--text-secondary)]"> / {open}</span></p>
+            <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" /> Subject progress</p>
+            <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{stats?.subjects ?? 0}</span><span className="text-base text-[var(--text-secondary)]"> / {subjectsWithBooks.length} subjects</span></p>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-mint-ink)]" style={{ width: `${pct}%` }} /></div>
-            <p className="mt-1 text-xs text-[var(--text-secondary)]">{access.all ? "of every topic written so far" : "of the topics open to you"}</p>
+            <p className="mt-1 text-xs text-[var(--text-secondary)]">{stats?.read ?? 0} topics read across the subjects you have opened</p>
           </TiltCard>
           <TiltCard tint="sky" className="card-pastel p-4 sm:p-5">
             <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><Library className="h-4 w-4" /> Chapters started</p>

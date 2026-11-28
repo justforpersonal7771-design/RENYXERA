@@ -8,6 +8,13 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-055 · 29 Nov · Computer Organisation book rewritten (O0 to O7) and Study tile shows subject progress · Fixed
+- **Done:** eight textbook chapters on the six existing routes (O0 words and performance, O1 instructions and addressing, O2 ALU and data path, O3 pipelining, O4 cache, O5 main memory, O6 I/O, O7 practice); all 72 bank questions re-solved (14 programs compiled and run with gcc, a pipeline simulator, a cache simulator); 72 PYQs tagged to shelf rows; first Study tile now reads "Subject progress" (subjects started out of subjects with books).
+- **Checks:** chapter-check 8/8, browser sweep (desktop light, phone dark) and contrast audit clean on all six routes; the temporary `ZZTEMP` patch of `canReadTopic` was reverted.
+- **Answers worth the owner's eye:** 2021 AN Q59 (1.875, key accepts 1.87 to 1.88) and 2020 FN Q27 (13.5; 13.3 if the miss time excludes the hit time).
+- **Files:** `content/study/CS/coa-v2*.ts`, `lib/study/chapters-server.ts`, `lib/study/catalog.ts`, `lib/study/pyq-chapter-map.json`, `scripts/study-validate.ts`, `app/(dashboard)/study/page.tsx` · **Commit:** see git log
+- **Open:** the shelf "ready" counts for rows whose text says "chapters" make the Study total of topics ignore them (`totalTopics` parses "N topics"); not changed here.
+
 ### L-054 · 29 Nov · Study shelf: roadmap badge overlapped the marks pill; unlocked card left a gap · Fixed
 - **Reported:** the "#2 ON YOUR ROADMAP" text sat on the "% of marks" pill; place the number at the left of the book instead. When every book is unlocked the packs card was a small green strip with empty space under it; use the purple card at the purchase card's height.
 - **Cause:** the rank was a long text stamp in the right-hand stack; the all-unlocked state used the pastel strip with no `flex-1`.
