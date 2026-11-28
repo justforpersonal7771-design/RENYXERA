@@ -114,3 +114,11 @@ Related files: [`ISSUES-LOG.md`](../ISSUES-LOG.md) (dated log of all work), `sup
 - **Bank key before the fix:** C. **My answer:** A (normalised numbers need exponent 1 to 254, so the smallest has exponent 00000001 and mantissa 0).
 - **Evidence:** published solutions give the correct content as "exponent = 00000001, mantissa = 0" but label it differently: one listing calls it option (C), another option (D). So the option order differs between listings of this question, which explains how the bank key letter C ended up on the wrong text.
 - **What I could not do:** the 2021 answer-key PDF in `data/pyq/official_pdfs/CS/CS_2021/` is the CS-1 paper and a scan; this question is from CS-2 (Set 2, CS question 14). To confirm, open the official GATE 2021 CS-2 answer key, find question 14 (CS section) and check that the key letter matches the option that reads "exponent 00000001, mantissa all zeros" in **your paper's** option order. If the paper's letter points at that text, the bank key must be the letter of that text (A in our order), which is what migration 0067 set.
+
+## Option order of GATE 2024 AN Q23 (Digital Logic, IEEE 754) — owner to confirm the key
+
+- **Bank text:** `A) [IMAGE_Q_23_A] | B) [IMAGE_Q_23_C] | C) [IMAGE_Q_23_D] | D) [IMAGE_Q_23_B]`. The app resolves each token to its file (`lib/services/image-resolver.ts`), so option B shows `23_C.png`.
+- **The pictures:** `23_A` exponent 01111111, all-ones fraction (just under 2); `23_C` exponent **11111110**, all-ones fraction (the largest finite number); `23_D` exponent 11111111, all-ones fraction (NaN); `23_B` exponent 01111111, zero fraction (1.0).
+- **My answer:** the picture with exponent 11111110, which the app lists as **option B**. An earlier review said 'option C by position'; that fits only if the original paper's own option order differs from the bank's.
+- **To confirm:** open the question in the app and check which option letter the stored key marks. If the key is C, the bank's option order or its key needs correcting (as was done for 2021 AN Q56). The Digital Logic chapter L6 describes the answer by its picture, so it stays right either way.
+

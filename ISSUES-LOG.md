@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-053 · 28 Nov · Open points closed: option order, CI, phone reading · Fixed
+- **2024 AN Q23:** option B in the app shows the exponent-11111110 picture; the earlier review's 'C' is logged in `docs/QUESTION-BANK-DISCREPANCIES.md` for the owner to confirm against the stored key; chapter L6 now says which option the app lists.
+- **2022 FN Q41:** already in the discrepancy file; the picture cannot be edited here, the chapter reads the register as 0x42100000.
+- **CI:** `gh` is not installed; instead the live site was fetched: `/study/number-codes`, `/minimisation`, `/asymptotics`, `/shortest-paths` all return 200 with the new chapters, so the deploy of the pushed work succeeded.
+- **Phone reading:** L1 and A0/A1 read on a 390 px screen in light and dark: no sideways scroll, tables, code and worked examples fit.
+
 ### L-052 · 28 Nov · Digital Logic book written and wired (L1 to L7) · Fixed
 - **Reported:** continue on the book that was paused.
 - **Fix:** seven chapters (number representation, Boolean algebra, minimisation, combinational circuits, sequential circuits, IEEE 754, previous-year patterns) with all 69 questions solved, 25 picture questions read from `public/images`, programs compiled with gcc. Six shelf rows and routes (`/study/number-codes`, `boolean-algebra`, `minimisation`, `combinational`, `sequential`, `computer-arithmetic`), 69 PYQs tagged in `pyq-chapter-map.json`. Array figures can now carry Gray-code or text labels (`colLabels`, `rowLabels`); the K-maps and the LCS table use them instead of showing meaningless cell numbers.
