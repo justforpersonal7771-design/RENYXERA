@@ -11,7 +11,7 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Subject | Pack | 1 | 2 | 3 Book v2 | 4 Verified | 5 Live | Notes |
 |---|---|---|---|---|---|---|---|
 | Programming in C (Section 1 of P&DS, in 4 parts: foundations C0–C5, functions/recursion/arrays C6–C9+C17, pointers/strings/memory C10–C15, reading code and practice C16, C18–C21) | pds | [x] | [x] | [x] C0–C21 | [x] chapter-check 22/22, sweep, contrast | [~] pushed, live check pending | C1, C4, C16, C17, C18, C20 have no tagged PYQ |
-| **Data Structures** | pds | [x] | [x] | [x] 13 chapters written (D0–D5, D7–D10, D13, D15, D16); D6 bridge optional | [x] chapter-check, tsc, browser sweep, contrast clean | [x] pushed 29 Nov, live check pending | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
+| **Data Structures** | pds | [x] | [x] | [x] all 17 chapters written (D0–D16) | [x] chapter-check, tsc, browser sweep, contrast clean | [x] pushed 29 Nov, live check pending | route `/study/data-structures`; spec `04-DATA-STRUCTURES.md` |
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
 | Databases | dbms | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
@@ -39,14 +39,15 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | D3 | Linked lists: nodes and pointers | [x] verified (GATE 2026 Q39, 2023 Q13, 2022 Q15, 2025 Q62 variant) |
 | D4 | Stacks: last in, first out | [x] verified (2026 AN Q50, 2025 AN Q45) |
 | D5 | Queues: first in, first out | [x] verified (2023 FN Q59, 2018 FN Q13) |
-| D6 | Recursion on data structures | [ ] (covered by C8 and the recursive functions in D3, D7, D8; a short bridge chapter may follow) |
+| D6 | Recursion on data structures | [x] verified (2023 FN Q47) |
 | D7 | Trees and binary trees | [x] verified (2026 FN Q33, 2026 AN Q12, 2025 AN Q13, 2018 FN Q30) |
 | D8 | Binary search trees | [x] verified (2025 AN Q35, 2026 FN Q62, 2020 FN Q15, 2025 FN Q26, 2026 FN Q40, 2022 FN Q28, 2026 AN Q49) |
 | D9 | AVL trees: staying balanced | [x] verified (2020 FN Q16) |
 | D10 | Binary heaps and priority queues | [x] verified (2023 FN Q12, 2026 FN Q23, 2025 FN Q35, 2023 FN Q46, 2018 FN Q56) |
-| D11–D12 | Hashing, sorting hooks | not in the book spec (hashing and sorting are in Algorithms) |
+| D11 | Multi-way trees: B-trees and B+ trees | [x] verified (6 real questions from Databases) |
+| D12 | Hashing: a short bridge | [x] verified (4 real questions from Algorithms) |
 | D13 | Graphs: representation and traversal | [x] verified (no tagged PYQ) |
-| D14 | (not in the spec) | n/a |
+| D14 | Extras: tries and disjoint sets | [x] verified (no tagged PYQ) |
 | D15 | Choosing the right structure | [x] verified (2025 AN Q38) |
 | D16 | Previous-year patterns and mixed practice | [x] verified (26 real questions grouped) |
 

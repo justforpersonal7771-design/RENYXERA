@@ -6,6 +6,19 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ---
 
+## 2026-11-29
+
+### L-032 · Calculator bar: screenshot with the three round buttons circled, no text · Open
+- **Reported:** a screenshot of the floating calculator bar (display 785, then history, expand and close buttons) with the buttons circled. No message came with it, so the request is unclear (too big? wrong place? should show more?).
+- **Next:** ask the owner what to change before touching `components/study/lesson-tools.tsx`.
+
+### L-031 · Data Structures D6, D11, D12, D14 added · Fixed
+- **Reported:** complete the remaining chapters of the book.
+- **Done:** D6 recursion on data structures (2023 FN Q47, figure read from the app), D11 B and B+ trees (2019 FN Q20, 2024 FN Q11, 2020 FN Q51, 2017 AN Q54, 2025 FN Q21, 2025 AN Q57), D12 hashing bridge (2026 FN Q24, 2026 AN Q30, 2025 FN Q65, 2020 FN Q28), D14 tries and disjoint sets. The book is now 17 chapters, D0 to D16. All programs compiled with gcc; chapter-check, browser sweep (desktop and phone) and contrast audit clean.
+- **Files:** `content/study/CS/pds-d6.ts`, `pds-d11.ts`, `pds-d12.ts`, `pds-d14.ts`, `pds-ds.ts`, `lib/study/catalog.ts`
+
+---
+
 ## 2026-11-28
 
 ### L-030 · 10:33 · CI build failed: React error #418 (hydration) · Fixed (Watch)

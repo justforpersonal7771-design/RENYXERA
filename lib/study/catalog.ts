@@ -33,7 +33,7 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "c4", title: "Reading code and practice", href: "/study/c-reading", ready: "5 chapters ready", match: "(?!)" },
   ] },
   { id: "ds", title: "Data Structures", short: "DS", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#7A4A1F", dark: "#7A4A1F", band: "core", chapters: [
-    { id: "ds-book", title: "From arrays to graphs", href: "/study/data-structures", ready: "13 chapters ready", match: "Abstract Data Types|Linked Lists|Binary Search Trees|BSTs" },
+    { id: "ds-book", title: "From arrays to graphs", href: "/study/data-structures", ready: "17 chapters ready", match: "Abstract Data Types|Linked Lists|Binary Search Trees|BSTs" },
     { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "3 topics ready" }, { id: "lists", title: "Arrays", href: "/study/arrays", ready: "3 topics ready" },
     { id: "stackq", title: "Stacks and queues", href: "/study/stacks-queues", ready: "4 topics ready" }, { id: "linked", title: "Linked lists", href: "/study/linked-lists", ready: "3 topics ready" }, { id: "trees", title: "Trees and binary search trees", href: "/study/trees", ready: "4 topics ready" },
     { id: "heaps", title: "Binary heaps", href: "/study/heaps", ready: "3 topics ready" }, { id: "graph-ds", title: "Graphs: representation", href: "/study/graph-representation", ready: "3 topics ready" },
