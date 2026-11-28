@@ -8,6 +8,11 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-049 · 28 Nov · Purple packs card and four 3D tiles restored · Fixed
+- **Reported:** the packs card should be the purple purchase card; place the four 3D tiles as before, arranged properly.
+- **Fix:** the four tilt tiles (topics read, chapters started, highlights, library) are back as the first row; below, the hero (2.1 parts) beside the purple `PremiumCard` (1 part, same height); the planner and path follow.
+- **Files:** `app/(dashboard)/study/page.tsx`, `components/study/bookshelf.tsx`
+
 ### L-048 · 28 Nov · Study home redesigned: hero, planner with Apply, ring card · Fixed
 - **Reported:** still not good; add an Apply button for the roadmap filters and search; research the placement; fresh look for the Study homepage.
 - **Research:** NN/g and Baymard say to filter in batch with an Apply button when a change reshapes the page, keep Apply at the end of the options, show the result count, and keep Apply sticky on phones; learning apps (Brilliant, EdApp, Tutor LMS) lead with one resume or next card plus progress and an Up next list.
