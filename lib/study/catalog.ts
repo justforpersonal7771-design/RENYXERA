@@ -22,9 +22,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "tcp", title: "TCP, UDP and flow control", href: "/study/transport", ready: "5 topics ready" }, { id: "app", title: "Application layer", href: "/study/application", ready: "5 topics ready" },
   ] },
   { id: "algo", title: "Algorithms", short: "Algo", tint: "peri", cloth: "#D9D2C2", ink: "#1B1917", paper: "#22324F", dark: "#22324F", band: "core", chapters: [
-    { id: "asym", title: "Asymptotics and recurrences", href: "/study/asymptotics", ready: "3 topics ready" }, { id: "sort", title: "Searching and sorting", href: "/study/sorting", ready: "5 topics ready" }, { id: "hash", title: "Hashing", href: "/study/hashing", ready: "3 topics ready" },
-    { id: "dc", title: "Divide and conquer", href: "/study/divide-conquer", ready: "3 topics ready" }, { id: "greedy", title: "Greedy", href: "/study/greedy", ready: "3 topics ready" }, { id: "dp", title: "Dynamic programming", href: "/study/dynamic-programming", ready: "4 topics ready" },
-    { id: "graphs", title: "Graph traversals", href: "/study/graph-traversals", ready: "3 topics ready" }, { id: "mst", title: "Minimum spanning trees", href: "/study/mst", ready: "3 topics ready" }, { id: "sp", title: "Shortest paths", href: "/study/shortest-paths", ready: "3 topics ready" },
+    { id: "asym", title: "Asymptotics and recurrences", href: "/study/asymptotics", ready: "2 chapters ready" }, { id: "sort", title: "Searching and sorting", href: "/study/sorting", ready: "1 chapter ready" }, { id: "hash", title: "Hashing", href: "/study/hashing", ready: "1 chapter ready" },
+    { id: "dc", title: "Divide and conquer", href: "/study/divide-conquer", ready: "1 chapter ready" }, { id: "greedy", title: "Greedy", href: "/study/greedy", ready: "1 chapter ready" }, { id: "dp", title: "Dynamic programming", href: "/study/dynamic-programming", ready: "1 chapter ready" },
+    { id: "graphs", title: "Graph traversals", href: "/study/graph-traversals", ready: "1 chapter ready" }, { id: "mst", title: "Minimum spanning trees", href: "/study/mst", ready: "1 chapter ready" }, { id: "sp", title: "Shortest paths", href: "/study/shortest-paths", ready: "2 chapters ready" },
   ] },
   { id: "pds", title: "Programming in C", short: "C", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#9A3B1F", dark: "#9A3B1F", band: "core", chapters: [
     { id: "c", title: "Foundations: types, operators, loops", href: "/study/c-programming", ready: "6 chapters ready", match: "Data Types|Control Structures|Loops" },
