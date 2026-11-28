@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-047 · 28 Nov · Study hub cards reorganised by hierarchy · Fixed
+- **Reported:** rearrange the cards; research, then design skills, then reorganise.
+- **Research:** learning dashboards put the resume/next action first and progress compact (LearnDash student dashboard guide, Domo 2026 dashboard guide); bento guidance says the largest tile carries the most important content and smaller tiles support it (SaaSFrame 2026 bento guide, freeCodeCamp).
+- **Fix:** focal point is the Next-on-your-roadmap block (largest type, one primary button); order pills and subjects sit under it; the right column stacks Resume, a compact Your reading card (replaces four equal stat cards) and a one-line Study packs card; search and filters became one slim toolbar above the path and shelves.
+- **Files:** `components/study/study-roadmap.tsx`, `components/study/bookshelf.tsx`, `app/(dashboard)/study/page.tsx`
+
 ### L-046 · 28 Nov · Roadmap joins the library hero; choices filter the shelves; focus target hides outside chapters · Fixed
 - **Reported:** remove the roadmap modal; fold the GATE CS library card into the roadmap; the roadmap should filter and apply on the screen itself; the focus target should show only subjects, topics and chapters inside it.
 - **Fix:** `lib/study/roadmap-prefs.ts` shares order and included subjects. `RoadmapPanel` replaces the library card (order pills, subjects, resume, next chapter); search moved to its own bar; `RoadmapPath` is a collapsible path list; the bookshelf hides excluded subjects and shows each book's place on the roadmap. With a Focus Target, a book's Contents lists only chapters with marks inside the target, with a Show them button.

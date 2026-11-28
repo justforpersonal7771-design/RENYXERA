@@ -40,31 +40,21 @@ export default function StudyPage() {
   if (soon) return <div className="p-4 sm:p-6"><BranchSoon feature="study" /></div>;
   return (
     <div className="space-y-6 pb-8">
-      <section aria-label="Your reading" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <TiltCard tint="mint" className="card-pastel p-4 sm:p-5">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" /> Topics read</p>
-          <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{stats?.read ?? 0}</span><span className="text-base text-[var(--text-secondary)]"> / {open}</span></p>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-mint-ink)]" style={{ width: `${pct}%` }} /></div>
-          <p className="mt-1 text-xs text-[var(--text-secondary)]">{access.all ? "of every topic written so far" : "of the topics open to you"}</p>
-        </TiltCard>
-        <TiltCard tint="sky" className="card-pastel p-4 sm:p-5">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><Library className="h-4 w-4" /> Chapters started</p>
-          <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{stats?.chapters ?? 0}</span><span className="text-base text-[var(--text-secondary)]"> / {readyChapters.length}</span></p>
-          <p className="mt-1 text-xs text-[var(--text-secondary)]">on this device</p>
-        </TiltCard>
-        <TiltCard tint="butter" className="card-pastel p-4 sm:p-5">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><Highlighter className="h-4 w-4" /> Highlights saved</p>
-          <p className="mt-1 font-display text-3xl font-extrabold font-num text-[var(--text-primary)]">{stats?.hl ?? 0}</p>
-          <p className="mt-1 text-xs text-[var(--text-secondary)]">select text in a lesson to add one</p>
-        </TiltCard>
-        <TiltCard tint="lilac" className="card-pastel p-4 sm:p-5">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><FlaskConical className="h-4 w-4" /> Library so far</p>
-          <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{totalTopics}</span><span className="text-base text-[var(--text-secondary)]"> topics</span></p>
-          <p className="mt-1 text-xs text-[var(--text-secondary)]">{readyBooks} books, {readyChapters.length} chapters, a lab in every topic</p>
-        </TiltCard>
-      </section>
-
-      <Bookshelf />
+      <Bookshelf aside={
+        <section aria-label="Your reading" className="card-pastel p-4" data-tint="mint">
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="text-xs font-black uppercase tracking-[.14em] text-[var(--tint-ink)]">Your reading</p>
+            <p className="text-xs text-[var(--text-secondary)]">{access.all ? "every topic written so far" : "topics open to you"}</p>
+          </div>
+          <p className="mt-1 font-display text-3xl font-extrabold leading-none tracking-[-0.02em] text-[var(--text-primary)]"><span className="font-num">{stats?.read ?? 0}</span><span className="text-base font-bold text-[var(--text-secondary)]"> / {open} topics read</span></p>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-mint-ink)]" style={{ width: `${pct}%` }} /></div>
+          <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-black/5 pt-3 text-center dark:border-white/10">
+            <div><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{stats?.chapters ?? 0}<span className="text-xs font-bold text-[var(--text-secondary)]">/{readyChapters.length}</span></dd><dt className="text-[11px] text-[var(--text-secondary)]">chapters started</dt></div>
+            <div><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{stats?.hl ?? 0}</dd><dt className="text-[11px] text-[var(--text-secondary)]">highlights</dt></div>
+            <div><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{totalTopics}</dd><dt className="text-[11px] text-[var(--text-secondary)]">topics in {readyBooks} books</dt></div>
+          </dl>
+        </section>
+      } />
     </div>
   );
 }

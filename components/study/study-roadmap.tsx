@@ -99,7 +99,7 @@ export function useRoadmap() {
 }
 
 /** The top of the Study page: title, the book to resume, the next chapter on the roadmap, the order and the subjects to show. */
-export function RoadmapPanel({ resume }: { resume?: { href: string; title: string; started: boolean } | null }) {
+export function RoadmapPanel() {
   const rm = useRoadmap();
   const { setMode, toggle, reset } = useRoadmapPrefs();
   const { mode, off, next, ordered, readTotal, topicTotal, total } = rm;
@@ -111,6 +111,19 @@ export function RoadmapPanel({ resume }: { resume?: { href: string; title: strin
         <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]"><Compass className="mr-1 inline h-4 w-4 align-[-2px]" aria-hidden />Your roadmap. {m.blurb}</p>
       </div>
+      {next && (
+        <div className="grid gap-3 rounded-2xl bg-[var(--surface)] p-4 shadow-[0_0_0_1px_rgba(0,0,0,.05),0_2px_6px_-2px_rgba(0,0,0,.08)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+          <div className="min-w-0">
+            <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]"><Sparkles className="h-3.5 w-3.5" aria-hidden /> Next on your roadmap</p>
+            <p className="mt-0.5 font-display text-2xl font-extrabold leading-tight tracking-[-0.01em] text-[var(--text-primary)]">{next.b.title}: {next.c.title}</p>
+            <p className="mt-0.5 text-sm text-[var(--text-secondary)]">
+              {next.share > 0 ? <><b className="font-num text-[var(--text-primary)]">{next.share.toFixed(1)}%</b> of the paper · <b className="font-num text-[var(--text-primary)]">{next.qs}</b> past questions · </> : "Foundation, no question of its own · "}
+              {WHY[next.b.id] ?? "Part of the core syllabus."}{next.read > 0 && <> You have read {next.read} of {next.topics}.</>}
+            </p>
+          </div>
+          <Link href={next.href} className="pill-ink inline-flex items-center justify-center gap-2" style={{ ["--btn" as string]: "var(--tint-ink)" }}>{next.read > 0 ? "Continue" : "Start"} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+        </div>
+      )}
       <div role="radiogroup" aria-label="Roadmap order" className="no-scrollbar -mx-1 flex gap-1.5 overflow-x-auto rounded-2xl bg-[var(--surface)] p-1 sm:flex-wrap sm:overflow-visible">
         {MODES.map((x) => (
           <button key={x.id} type="button" role="radio" aria-checked={mode === x.id} onClick={() => setMode(x.id)} className={`inline-flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 text-sm font-bold transition-colors ${mode === x.id ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"}`}><x.icon className="h-4 w-4" aria-hidden /> {x.label}</button>
@@ -126,26 +139,6 @@ export function RoadmapPanel({ resume }: { resume?: { href: string; title: strin
           {(off.length > 0 || mode !== "balanced") && <button type="button" onClick={reset} className="inline-flex h-8 cursor-pointer items-center rounded-full border border-[var(--border)] px-3 text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">Reset</button>}
         </div>
       </details>
-      {resume && (
-        <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
-          <BookOpen className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
-          <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{resume.started ? "Continue reading" : "Start here: free sample topics"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
-          <Link href={resume.href} className="pill-ink">{resume.started ? "Resume" : "Read now"}</Link>
-        </div>
-      )}
-      {next && (
-        <div className="grid gap-3 rounded-2xl bg-[var(--surface)] p-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-          <div className="min-w-0">
-            <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]"><Sparkles className="h-3.5 w-3.5" aria-hidden /> Next on your roadmap</p>
-            <p className="mt-0.5 font-display text-lg font-extrabold leading-snug text-[var(--text-primary)]">{next.b.title}: {next.c.title}</p>
-            <p className="mt-0.5 text-sm text-[var(--text-secondary)]">
-              {next.share > 0 ? <><b className="font-num text-[var(--text-primary)]">{next.share.toFixed(1)}%</b> of the paper · <b className="font-num text-[var(--text-primary)]">{next.qs}</b> past questions · </> : "Foundation, no question of its own · "}
-              {WHY[next.b.id] ?? "Part of the core syllabus."}{next.read > 0 && <> You have read {next.read} of {next.topics}.</>}
-            </p>
-          </div>
-          <Link href={next.href} className="pill-ink inline-flex items-center justify-center gap-2" style={{ ["--btn" as string]: "var(--tint-ink)" }}>{next.read > 0 ? "Continue" : "Start"} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
-        </div>
-      )}
       <p className="text-xs text-[var(--text-secondary)]"><b className="font-num text-[var(--text-primary)]">{ordered.length}</b> chapters ready · <b className="font-num text-[var(--text-primary)]">{readTotal}</b> of {topicTotal} topics read · the first 5 cover <b className="font-num text-[var(--text-primary)]">{Math.round((ordered.slice(0, 5).reduce((s, r) => s + r.share, 0) / total) * 100)}%</b> of the marks shown</p>
     </div>
   );

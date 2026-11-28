@@ -9,7 +9,6 @@
  * search across subjects and chapters, and an availability filter.
  */
 import { BANK_SUBJECTS, BUNDLES, PACKS, packOfBook, rupees } from "@/lib/study/packs";
-import { PremiumCard } from "@/components/ui/premium-card";
 import { openStudyShop } from "@/store/use-study-shop-store";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { useEffect, useMemo, useState } from "react";
@@ -182,7 +181,7 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
   );
 }
 
-export function Bookshelf() {
+export function Bookshelf({ aside }: { aside?: React.ReactNode }) {
   const access = useStudyAccess();
   const [open, setOpen] = useState<ShelfBook | null>(null);
   const [drawer, setDrawer] = useState<string | null>(null);
@@ -211,10 +210,34 @@ export function Bookshelf() {
   return (
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,0.9fr)]">
-        <RoadmapPanel resume={resume ? { ...resume, started: !!last } : null} />
-        <div className="card-pastel flex min-h-0 min-w-0 flex-col gap-3 p-4 sm:p-5 lg:order-2 lg:col-span-2" data-tint="peri">
-          <label className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3">
+      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
+        <RoadmapPanel />
+        <div className="flex min-w-0 flex-col gap-4">
+          {resume && (
+            <div className="card-pastel flex min-w-0 flex-wrap items-center gap-3 p-4" data-tint="butter">
+              <BookOpen className="h-5 w-5 shrink-0 text-[var(--text-primary)]" aria-hidden />
+              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here: free sample topics"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
+              <Link href={resume.href} className="pill-ink">{last ? "Resume" : "Read now"}</Link>
+            </div>
+          )}
+          {aside}
+          {access.loading ? <div aria-hidden className="min-w-0" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
+            <section aria-label="Study access" className="card-pastel flex min-w-0 items-center gap-3 p-4" data-tint="mint"><div className="min-w-0 flex-1"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Every book is unlocked</p></div></section>
+          ) : (
+            <section aria-label="Study packs" className="card-pastel flex min-w-0 flex-wrap items-center gap-3 p-4" data-tint="lilac">
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p>
+                <p className="font-display text-lg font-extrabold leading-tight text-[var(--text-primary)]">Unlock every chapter</p>
+                <p className="mt-0.5 text-xs text-[var(--text-secondary)]">{`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`}</p>
+              </div>
+              <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="pill-ink">Unlock books</button>
+            </section>
+          )}
+        </div>
+      </div>
+
+      <div className="flex min-w-0 flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 sm:p-3">
+          <div className="flex flex-wrap items-center gap-2"><label className="flex min-w-[14rem] flex-1 items-center gap-2 rounded-xl bg-[var(--surface-secondary)] px-3">
             <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subjects and chapters" aria-label="Search subjects and chapters" className="search-bare h-11 flex-1 bg-transparent text-[var(--text-primary)]" />
             {q && <button type="button" onClick={() => setQ("")} aria-label="Clear search" className="grid h-8 w-8 place-items-center"><X className="h-4 w-4" /></button>}
@@ -223,6 +246,7 @@ export function Bookshelf() {
             <button type="button" aria-pressed={!onlyReady} onClick={() => setOnlyReady(false)} className={!onlyReady ? "pill-ink" : "pill-soft"}>All books</button>
             <button type="button" aria-pressed={onlyReady} onClick={() => setOnlyReady(true)} className={onlyReady ? "pill-ink" : "pill-soft"}>Ready to read</button>
             <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
+          </div>
           </div>
           {term && (
             <ul aria-label="Matching chapters" className="custom-scrollbar max-h-64 min-h-0 flex-1 space-y-1 overflow-y-auto">
@@ -234,13 +258,6 @@ export function Bookshelf() {
             </ul>
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
-        </div>
-        {access.loading ? <div aria-hidden className="min-w-0 lg:order-1" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
-          <section aria-label="Study access" className="card-pastel flex min-w-0 flex-col justify-between p-5 lg:order-1" data-tint="mint"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><div><p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Every book is unlocked</p><p className="mt-1 text-sm text-[var(--text-secondary)]">All chapters are open to you. Pick a book and carry on reading.</p></div></section>
-        ) : (
-          <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:order-1" onClick={() => openStudyShop("Study packs and bundles")}
-            body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
-        )}
       </div>
 
       {focus.active && (
