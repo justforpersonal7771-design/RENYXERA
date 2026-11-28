@@ -124,6 +124,9 @@ int main(void) {
     { t: "p", text: "A classic universal family for integer keys is h(k) = ((a·k + b) mod p) mod m, where p is a prime larger than every key and a ∈ {1, …, p − 1}, b ∈ {0, …, p − 1} are chosen at random once. The randomness is in the choice of the function, not in the later behaviour, so the same key always goes to the same slot during a run." },
     { t: "p", text: "A related idea is **dynamic hashing**, used for tables that grow on disk: the table is split on demand, using more bits of the hash (the 3rd and then 4th least significant bit in GATE 2021's version) only for the buckets that overflow. The questions on it give the bit rule and ask which insertion sequence could produce a given final shape; the method is to apply the rule key by key and see which sequences can build the picture." },
 
+    { t: "h2", text: "Questions that come with a picture" },
+    { t: "p", text: "The dynamic-hashing question of 2021 gives its final table as a picture: slot 00 empty, slot 01 with a tree of three keys, slot 10 with a tree of two keys and slot 11 with one key. It is solved here from that picture." },
+    { t: "ex", id: "a3-e7" },
     { t: "h2", text: "Chapter summary" },
     { t: "ul", items: ["Hash table: slot = h(k); collisions are unavoidable; load factor α = n/m; simple uniform hashing gives α keys per slot.", "Chaining: a list per slot; unsuccessful search 1 + α, successful about 1 + α/2; α may exceed 1.", "Open addressing: probe sequence; α ≤ 1; linear probing (h + i), quadratic, double hashing (h₁ + i·h₂); the probe wraps mod m.", "Deletion in open addressing needs a tombstone; otherwise later keys on the path become unfindable.", "Open addressing with uniform hashing: unsuccessful ≤ 1/(1 − α), successful ≤ (1/α) ln(1/(1 − α)); the cost explodes near α = 1.", "Worst case is Θ(n); against an adversary use universal hashing: random choice of function, collision probability ≤ 1/m."] },
     { t: "gate" },
@@ -170,10 +173,21 @@ A) h(k) = k mod m   B) the multiplication method   C) universal hashing   D) div
       { say: "Universal hashing chooses the function at random from a family with collision probability ≤ 1/m, so no key set is bad in advance.", result: "C" },
     ], answer: "C", check: "The guarantee is on the expected cost, for every input set." },
 
+    { type: "example", id: "a3-e7", level: "gate", title: "GATE CS 2021 (forenoon), Q49 · 2 marks · MSQ: dynamic hashing of 4-bit keys", file: "gate2021_fn_q49.txt", given: `Main table of size 4, indexed by the 2 least significant bits. A colliding bucket becomes a binary tree: the 3rd least significant bit splits left (0) and right (1), then the 4th. A split is made only on a collision.
+Final state (picture): 00 empty; 01 a tree with a left leaf and a right node that splits into two leaves (three keys); 10 a node with two leaves (two keys); 11 one key.
+Which insertion sequences can cause it?
+A) 5, 9, 4, 13, 10, 7   B) 9, 5, 10, 6, 7, 1   C) 10, 9, 6, 7, 5, 13   D) 9, 5, 13, 6, 10, 14`, find: "The valid sequences.", steps: [
+      { say: "What the picture requires: bucket 00 holds nothing, so no key may end in 00 (0, 4, 8, 12 are forbidden).", result: "no key ≡ 0 mod 4" },
+      { say: "Bucket 01: the 3rd bit splits the keys; the right side splits again by the 4th bit, so two keys have bit 2 = 1 and differ in bit 3: 5 (0101) and 13 (1101). The left side has one key with bit 2 = 0: 1 (0001) or 9 (1001).", result: "5, 13 and one of 1, 9" },
+      { say: "Bucket 10: one key with bit 2 = 0 (2 or 10) and one with bit 2 = 1 (6 or 14). Bucket 11: one key from 3, 7, 11, 15.", result: "two keys; one key" },
+      { say: "A has 4 (ends in 00): no. B has 9, 5, 1 in bucket 01 (9 and 1 both have bit 2 = 0, so the left side would need a split) and no 13: no. D has 6 and 14 both with bit 2 = 1 in bucket 10, needing a further split, and nothing for bucket 11: no.", result: "A, B, D fail" },
+      { say: "C: 10 and 6 go to bucket 10 and split on bit 2 (10 left, 6 right); 9 and 5 go to bucket 01 and split on bit 2 (9 left, 5 right); 13 joins 5 on the right, splitting on bit 3 (5 left, 13 right); 7 is alone in bucket 11. This is exactly the picture.", result: "C builds the state" },
+    ], answer: "C", check: "In C the sequence ends with 13 splitting the right side of bucket 01, the only extra split in the picture." },
+
     { type: "trap", wrong: "With linear probing, a key whose slot is taken moves to the next higher slot and fails at the end of the table.", tempting: "The slots are numbered 0 to m − 1 in a line.", whyWrong: "The table is a ring: after slot m − 1 the probe returns to slot 0. In the 2026 question, key 24 passes slots 9 and 10 and wraps to 0 before finding slot 1 free.", rule: "Every probe slot is taken mod m.", ex: { text: "m = 11, key hashes to 9, slots 9, 10, 0 taken: next probe is slot 1." } },
     { type: "trap", wrong: "A hash table always searches in constant time.", tempting: "It computes the slot directly.", whyWrong: "Constant time is the EXPECTED cost under simple uniform hashing with a modest load factor. The worst case is Θ(n): all keys in one slot, or one probe sequence covering the whole table.", rule: "Expected Θ(1 + α); worst case Θ(n).", ex: { text: "Every key ≡ 3 (mod 11) with h = k mod 11: all keys in slot 3, a search scans all n." } },
 
-    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q24 · 2026 AN Q30 · 2025 FN Q65 · 2023 FN Q20 · 2022 FN Q16 · 2020 FN Q28. The dynamic-hashing question with a picture (2021 FN Q49) is solved by the method at the end of the last section: apply the bit rule key by key." },
+    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q24 · 2026 AN Q30 · 2025 FN Q65 · 2023 FN Q20 · 2022 FN Q16 · 2021 FN Q49 · 2020 FN Q28. Every hashing question of the bank is solved here." },
     { type: "recall", cards: [
       { q: "Load factor?", a: "α = n / m." },
       { q: "Simple uniform hashing?", a: "Each key is equally likely to go to each slot, independently." },

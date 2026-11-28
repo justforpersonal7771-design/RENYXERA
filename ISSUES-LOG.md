@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-045 · 28 Nov · Algorithms: picture questions solved, PYQs tagged, old files removed · Fixed
+- **Reported:** finish the eleven picture-only questions, tag Algorithms PYQs, remove unused files, read on a phone.
+- **Fix:** all 12 picture questions read from the images in `public/images` and solved (2017 AN Q13 D; Q59 225; 2017 FN Q30 C; 2018 FN Q57 4; 2021 AN Q19 929; Q30 A, B; 2021 FN Q25 C; Q48 3; Q49 C; 2024 AN Q53 9; 2025 AN Q59 6; 2025 FN Q64 5), each as a worked example in its chapter. All 73 Algorithms questions tagged in `lib/study/pyq-chapter-map.json` (books now pds, ds, algo). Old `algo-a..d.ts` deleted; `algo-v2.ts` holds the chapter shells. Trace tables no longer split words on a phone.
+- **Files:** `content/study/CS/algo-v2*.ts`, `lib/study/pyq-chapter-map.json`, `components/study/figures/linear.tsx`, `scripts/study-validate.ts`
+- **Open:** `scripts/focus-check.ts` already failed before this change (it expects the old P&DS chapter ids).
+
 ### L-044 · 28 Nov · Algorithms book rewritten as a textbook (A0 to A10) · Fixed
 - **Reported:** start and complete the next book.
 - **Fix:** eleven numbered chapters (toolbox, asymptotics, sorting, hashing, divide and conquer, greedy, DP, traversals, MST, shortest paths, practice) with real GATE questions re-solved, programs compiled with gcc, figures, traps and checks. All nine shelf rows wired to them. Browser sweep (desktop and phone) and contrast audit clean on all rows. Graph figure labels shortened to fit their circles.

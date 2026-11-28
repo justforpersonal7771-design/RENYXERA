@@ -114,6 +114,10 @@ int main(void) {
     { t: "p", text: "**Job sequencing with deadlines:** each job takes one unit of time, has a deadline and a profit; take jobs in decreasing profit, placing each in the latest free slot before its deadline. **Merging files:** to merge files of given sizes into one using the fewest total moves, repeatedly merge the two smallest: exactly Huffman's algorithm, where the cost of the final plan is the sum of internal weights. **Prim, Kruskal and Dijkstra:** greedy on a graph; their chapters follow." },
     { t: "p", text: "How do you know a question wants a greedy algorithm? The words 'at each step choose the', 'minimise the total', 'schedule the maximum number', 'sort by ... and take'. How do you know a given greedy rule is the right one? Test it on two or three tiny cases, and look for the exchange argument. When in doubt, search for a counterexample: a failed small case is a proof that greedy is wrong, and the paper often asks for the number such a failure costs." },
 
+    { t: "h2", text: "Questions that come with a picture" },
+    { t: "p", text: "Two more questions give their data as a picture: the table of probabilities for Huffman coding (2017) and the table that matches algorithms with design paradigms (2017). Both are solved here from the pictures." },
+    { t: "ex", id: "a5-e3" },
+    { t: "ex", id: "a5-e4" },
     { t: "h2", text: "Chapter summary" },
     { t: "ul", items: ["Greedy: make the locally best choice, never undo it; correct when the greedy choice is in some optimal solution (exchange argument) and the rest is a smaller instance.", "Activity selection: sort by FINISH time, take each activity that starts at or after the last finish. (Not by start time or by length.)", "Fractional knapsack: greedy by value per kilogram is optimal. 0/1 knapsack: greedy can fail; GATE 2018 gives greedy 44, optimal 60, difference 16.", "Coin change with 1, 3, 4: greedy gives 3 coins for 6, the best is 2.", "Huffman: merge the two least frequent; cost = Σ frequency × depth = sum of internal node weights; GATE 2021's abbccdddee costs 23.", "Merging files uses the same merge-two-smallest rule."] },
     { t: "gate" },
@@ -150,10 +154,24 @@ A) 21   B) 23   C) 25   D) 30`, find: "The minimum encoded length.", steps: [
       { say: "Huffman's cost is the minimum over all prefix codes, so no valid code is shorter.", result: "23" },
     ], answer: "B", check: "The tempting 25 comes from giving a longer code to d; 21 would violate the Kraft inequality." },
 
+    { type: "example", id: "a5-e3", level: "gate", title: "GATE CS 2017 (afternoon), Q59 · 2 marks · NAT: Huffman expected length of 100 characters", file: "gate2017_an_q59.txt", given: `Characters P, Q, R, S, T have probabilities 0.22, 0.34, 0.17, 0.19, 0.08 (total 1.00). A message of 100 characters over this set is Huffman-coded. The expected length of the encoded message in bits?`, find: "The expected length in bits.", steps: [
+      { say: "Merge the two smallest: T 0.08 and R 0.17 give 0.25.", result: "0.25" },
+      { say: "Now the smallest are S 0.19 and P 0.22: merge to 0.41.", result: "0.41" },
+      { say: "Smallest now: 0.25 and Q 0.34: merge to 0.59. Finally 0.41 and 0.59 give 1.00.", result: "0.59, 1.00" },
+      { say: "Expected bits per character = sum of the internal node probabilities = 0.25 + 0.41 + 0.59 + 1.00 = 2.25. Code lengths check it: Q 2, P 2, S 2, R 3, T 3: 0.34·2 + 0.22·2 + 0.19·2 + 0.17·3 + 0.08·3 = 2.25.", result: "2.25 bits" },
+      { say: "For 100 characters: 100 × 2.25.", result: "225" },
+    ], answer: "225", check: "The same total follows from either method: depth-weighted or internal-weight sum." },
+    { type: "example", id: "a5-e4", level: "gate", title: "GATE CS 2017 (forenoon), Q30 · 1 mark · match algorithms with design paradigms", file: "gate2017_fn_q30.txt", given: `(P) Kruskal   (Q) Quicksort   (R) Floyd–Warshall      (i) Divide and Conquer   (ii) Greedy   (iii) Dynamic Programming
+A) P-ii, Q-iii, R-i   B) P-iii, Q-i, R-ii   C) P-ii, Q-i, R-iii   D) P-i, Q-ii, R-iii`, find: "The correct matching.", steps: [
+      { say: "Kruskal repeatedly takes the lightest edge that does not close a cycle: greedy.", result: "P → ii" },
+      { say: "Quicksort partitions and recurses on the two parts: divide and conquer.", result: "Q → i" },
+      { say: "Floyd–Warshall fills a table of shortest distances using intermediate vertices: dynamic programming.", result: "R → iii" },
+    ], answer: "C", check: "Prim, Dijkstra and Huffman are greedy; merge sort and Strassen divide and conquer; matrix chain and LCS dynamic programming." },
+
     { type: "trap", wrong: "To fit the most activities, always take the activity that starts first (or the shortest one).", tempting: "Starting early or being short seems to leave the most room.", whyWrong: "An early start can be very long and block everything: (0, 100) starts first. A short activity can sit in the middle and block two others. Only the earliest FINISH is safe, by the exchange argument.", rule: "Sort by finish time.", ex: { text: "Activities (0, 100), (1, 2), (3, 4): by start time you take one, by finish time you take two." } },
     { type: "trap", wrong: "Greedy by value per kilogram is optimal for the knapsack.", tempting: "It is optimal for the fractional knapsack, and the problems look alike.", whyWrong: "With whole items only, the last item chosen may leave room unused. In GATE 2018 the greedy value is 44 while one single item is worth 60.", rule: "Fractional: greedy is optimal. 0/1: use dynamic programming.", ex: { text: "Bag 11 kg: greedy takes items worth 44; item 1 alone is worth 60." } },
 
-    { type: "gate", text: "Real GATE questions solved in this chapter: 2018 FN Q58 and 2021 AN Q57. The Huffman question that gives its probabilities as a table (2017 AN Q59) is solved by the same merge rule: the expected length of the message is the message length times the sum of the internal node probabilities. The matching question on design paradigms (2017 FN Q30) is answered by the lists in Chapter A4." },
+    { type: "gate", text: "Real GATE questions solved in this chapter: 2018 FN Q58 · 2021 AN Q57 · 2017 AN Q59 · 2017 FN Q30. Every greedy question of the bank is solved here." },
     { type: "recall", cards: [
       { q: "Two properties of a correct greedy algorithm?", a: "Greedy-choice property and optimal substructure." },
       { q: "The exchange argument?", a: "Swap an element of an optimal solution for the greedy choice without making it worse." },

@@ -22,7 +22,7 @@ export const chapterA10: Topic = {
     { t: "p", text: "Only 7 of the 73 are easy and 16 are hard; the other 50 are of medium difficulty, which means they are solvable in a few minutes **if you know the right tool**. That is why this book teaches tools (the ladder, the Master theorem, the cut and cycle properties, DFS edge classes) rather than facts." },
 
     { t: "h2", text: "Every question, by chapter" },
-    { t: "p", text: "The table gives the year, shift and question number of every Algorithms question in the bank. A question marked (fig) gives part of its data as a picture; the picture is in the app, and the method of the chapter applies to it." },
+    { t: "p", text: "The table gives the year, shift and question number of every Algorithms question in the bank. A question marked (fig) gives part of its data as a picture; it is solved in its chapter from the picture's values." },
     { t: "table", head: ["Chapter", "Questions"], rows: [
       ["A1 Asymptotics and recurrences", "2026 FN Q17 · 2026 AN Q24, Q25 · 2025 FN Q20 · 2024 FN Q20, Q57 · 2023 FN Q29, Q54 · 2022 FN Q11 · 2021 FN Q50, Q61 · 2021 AN Q55 · 2020 FN Q34 · 2018 FN Q42, Q55 · 2017 FN Q21 · 2017 AN Q19, Q50, Q61"],
       ["A2 Searching and sorting", "2026 AN Q32, Q38 · 2025 FN Q33 · 2025 AN Q20, Q41 · 2021 FN Q25 (fig), Q30 · 2021 AN Q31 · 2019 FN Q31, Q61 · 2017 FN Q45"],
@@ -71,7 +71,7 @@ export const chapterA10: Topic = {
     { t: "p", text: "Finally, a word on the **answer checks** you can run in the exam. For a NAT answer, test it on the smallest case (n = 2 or n = 3) if the formula allows. For an MCQ about growth rate, substitute a large number such as n = 2²⁰ and compare the options numerically. For a graph statement, draw the three-vertex case. None of these takes a minute, and each catches the common slips: an off-by-one in a loop bound, a swapped O and Ω, a forgotten wrap-round in a hash probe." },
     { t: "h2", text: "A study plan from here" },
     { t: "p", text: "A reasonable order for a first pass is: A1 (the tools), A2 (sorting), A7 (traversals), A8 (spanning trees), A9 (shortest paths), then A3, A5, A6 and A4. Do the Check questions at the end of each chapter before moving on, and mark those you got wrong. In a second pass, solve every question of this chapter's table for the chapters you have read, timing yourself: one-mark questions should take about two minutes and two-mark questions about four." },
-    { t: "p", text: "The questions that give their data in a picture (the ones marked fig) are best practised on the real figures in the app: copy the graph or array onto paper, run the method, and compare with the answer. The skills are the same as for the text questions; only the first reading is different." },
+    { t: "p", text: "The questions that give their data in a picture (the ones marked fig) are best practised on the real figures in the app: copy the graph or array onto paper, run the method, and compare with the answer in the book. The skills are the same as for the text questions; only the first reading is different." },
 
     { t: "p", text: "The book ends here, but the practice does not. Return to the table once a week: pick four questions from a chapter you have read, solve them cold, and check the book only if you disagree with the answer in the app. A question you can solve twice, a week apart, is a question you will solve in the exam." },
     { t: "h2", text: "Chapter summary" },

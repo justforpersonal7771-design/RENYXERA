@@ -95,6 +95,12 @@ int main(void) {
     { t: "trap", i: 0 },
     { t: "trap", i: 1 },
 
+    { t: "h2", text: "Questions that come with a picture" },
+    { t: "p", text: "Four spanning-tree questions give their graph as a picture. Each is solved here by reading the edges and applying Kruskal's weight groups." },
+    { t: "ex", id: "a8-e7" },
+    { t: "ex", id: "a8-e8" },
+    { t: "ex", id: "a8-e9" },
+    { t: "ex", id: "a8-e10" },
     { t: "h2", text: "Chapter summary" },
     { t: "ul", items: ["Spanning tree: connects all n vertices with n − 1 edges and no cycle; MST: least total weight.", "Cut property: the lightest edge across a cut is in an MST (every MST if unique). Cycle property: the heaviest edge on a cycle is out of an MST (every MST if unique).", "Distinct weights ⇒ unique MST; every min-weight-edge-in-every-MST claim needs a unique minimum.", "Kruskal: sort edges, union-find, Θ(m log n). Prim: grow from a vertex with a heap, Θ(m log n), or Θ(n²) with a matrix.", "Add a constant to all weights: MSTs unchanged, shortest paths can change.", "New edge (u, v): T stays an MST unless the new edge is lighter than the heaviest edge on the tree path u–v; the test costs Θ(|V|).", "d₁(u, v) ≤ d₂(u, v): a shortest path in G is never longer than one in the MST."] },
     { t: "gate" },
@@ -155,10 +161,32 @@ A) d1 = d2   B) d1 ≤ d2   C) d1 ≥ d2   D) d1 ≠ d2`, find: "The relation th
       { say: "Equality can fail: a triangle with weights 2, 2, 3 has MST edges 2, 2; the distance across the weight-3 edge is 3 in G and 4 in T.", result: "A and D are not always true" },
     ], answer: "B", check: "Dropping edges can only lengthen shortest paths." },
 
+    { type: "example", id: "a8-e7", level: "gate", title: "GATE CS 2018 (forenoon), Q57 · 2 marks · NAT: x that maximises the number of MSTs", file: "gate2018_fn_q57.txt", given: `Graph (picture) on five vertices T (top), L (upper left), B (lower left), C (lower right), R (right). Edges: T–L 4, L–B 4, T–B 1, T–C 3, B–C 4, T–R x, R–C 5. Choose x to maximise the number of minimum-weight spanning trees. The number for that x?`, find: "The number of MSTs.", steps: [
+      { say: "Kruskal: weight 1 takes T–B; weight 3 takes T–C. Now {T, B, C}, L and R are separate components.", result: "1, 3 taken" },
+      { say: "Weight 4: L joins by T–L or L–B (two choices); B–C closes a cycle. So L has 2 choices.", result: "2 for L" },
+      { say: "R joins by T–R (x) or R–C (5). If x < 5, T–R is forced (1 choice); if x > 5, R–C is forced; if x = 4, T–R is taken at weight 4 and R–C is dropped. Only x = 5 puts both edges at the same weight, giving 2 choices for R.", result: "x = 5, 2 for R" },
+      { say: "Total: 2 × 2.", result: "4" },
+    ], answer: "4", check: "Any other x gives 2 MSTs; x = 5 doubles it." },
+    { type: "example", id: "a8-e8", level: "gate", title: "GATE CS 2021 (forenoon), Q48 · 1 mark · NAT: the number of MSTs of a 3 × 3 grid", file: "gate2021_fn_q48.txt", given: `Graph (picture): a 3 × 3 grid of vertices a b c / d e f / g h i. Edge weights: a–b 0.1, b–c 0.1, d–e 0.1, e–f 0.9, g–h 0.9, h–i 0.1; vertical: a–d 0.9, d–g 0.1, b–e 0.9, e–h 0.1, c–f 0.9, f–i 0.1. The number of minimum-weight spanning trees?`, find: "The number of MSTs.", steps: [
+      { say: "The seven edges of weight 0.1 are a–b, b–c, d–e, d–g, e–h, h–i, f–i. They form no cycle: {a, b, c} is a path and {d, e, g, h, i, f} is a tree of 5 edges on 6 vertices. All seven are taken.", result: "7 edges, 2 components" },
+      { say: "A spanning tree has 8 edges, so exactly one weight-0.9 edge joins the two components. Edges between them: a–d, b–e, c–f (3 choices). The other 0.9 edges (e–f, g–h) lie inside the big component and would close cycles.", result: "3 choices" },
+    ], answer: "3", check: "With a unique choice of 0.1 edges, the count is the number of connecting 0.9 edges." },
+    { type: "example", id: "a8-e9", level: "gate", title: "GATE CS 2024 (afternoon), Q53 · 2 marks · NAT: the number of distinct MSTs", file: "gate2024_an_q53.txt", given: `Graph (picture) with vertices a b c d e f g and edges a–b 1, a–f 1, a–g 2, b–c 3, b–g 2, c–g 2, c–d 1, g–d 2, g–e 2, g–f 2, f–e 3, e–d 1. The number of distinct minimum-weight spanning trees?`, find: "The number of MSTs.", steps: [
+      { say: "Weight 1: a–b, a–f, c–d, e–d: no cycle, all taken. Components: {a, b, f}, {c, d, e}, {g}.", result: "3 components" },
+      { say: "Weight 2 edges all touch g: a–g, b–g, g–f join g to the first component (3 choices); c–g, g–d, g–e join g to the second (3 choices). We need two edges: one of each kind.", result: "3 and 3" },
+      { say: "The choices are independent: 3 × 3.", result: "9" },
+    ], answer: "9", check: "No weight-3 edge is needed: 4 + 2 = 6 edges for 7 vertices." },
+    { type: "example", id: "a8-e10", level: "gate", title: "GATE CS 2025 (forenoon), Q64 · 2 marks · NAT: the largest x so that edge BC is in every MST", file: "gate2025_fn_q64.txt", given: `Graph (picture) on A, B, C, D with edges A–B 7, A–D 6, A–C 3, B–D 1, B–C x, D–C 8. The maximum (integer) value of x such that the edge B–C is in every MST?`, find: "The maximum x.", steps: [
+      { say: "Without B–C: Kruskal takes B–D 1, A–C 3, then A–D 6 (it connects {B, D} and {A, C}). The MST has weight 10 and uses A–D.", result: "MST uses A–D 6" },
+      { say: "B–C also connects {B, D} and {A, C}. If x < 6, Kruskal reaches B–C before A–D and takes it, and A–D is rejected: B–C is in the (unique) MST.", result: "x < 6: in every MST" },
+      { say: "If x = 6, B–C and A–D tie, and the MST can use either: B–C is not in every MST. If x > 6, A–D is taken and B–C is rejected.", result: "x ≥ 6: not in every MST" },
+      { say: "The largest integer below 6.", result: "5" },
+    ], answer: "5", check: "At x = 6 there are two MSTs, so B–C is not in all of them." },
+
     { type: "trap", wrong: "The lightest edge of a cycle is in every MST (and the heaviest edge at a vertex is in no MST).", tempting: "Light edges are cheap, so they are always chosen.", whyWrong: "The cycle property is about the HEAVIEST edge of a cycle. The lightest edge of one cycle may be the heaviest edge of another cycle through it, and then it is excluded. And the heaviest edge at a vertex may be its only edge (a leaf), which every spanning tree contains.", rule: "Cycle: the heaviest is out. Cut: the lightest crossing edge is in.", ex: { text: "A leaf's single edge is both the lightest and the heaviest at the leaf, and it is in every spanning tree." } },
     { type: "trap", wrong: "Adding a constant to every edge weight can change the MST, and shortest paths stay the same.", tempting: "It sounds the wrong way round: heavier edges change which tree is cheapest.", whyWrong: "Every spanning tree has exactly n − 1 edges, so every one gains (n − 1)α and the order of trees is unchanged: the MST stays. A path with k edges gains kα, so shortest paths with different edge counts are re-ranked: shortest paths can change.", rule: "Add a constant: MST same, shortest path may change.", ex: { text: "s–a 1, a–t 1, s–t 3: the shortest s–t path has 2 edges; after +5 the direct edge (8) beats the two-edge path (12)." } },
 
-    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q49 · 2025 AN Q37 (in the section on changes) · 2025 FN Q18 · 2022 FN Q49 · 2021 AN Q64 · 2020 FN Q39, Q56 · 2019 FN Q44 · 2017 FN Q48. The questions that give their graph as a figure (2025 FN Q64, 2024 AN Q53, 2021 FN Q48, 2018 FN Q57) are answered by processing the edges in groups of equal weight, as in the counting method of the section on uniqueness." },
+    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q49 · 2025 FN Q18, Q64 · 2025 AN Q37 · 2024 AN Q53 · 2022 FN Q49 · 2021 FN Q48 · 2021 AN Q64 · 2020 FN Q39, Q56 · 2019 FN Q44 · 2018 FN Q57 · 2017 FN Q48. Every spanning-tree question of the bank is solved here." },
     { type: "recall", cards: [
       { q: "Edges of a spanning tree of n vertices?", a: "n − 1." },
       { q: "Cut property?", a: "The lightest edge across a cut is in some MST; in every MST if unique." },

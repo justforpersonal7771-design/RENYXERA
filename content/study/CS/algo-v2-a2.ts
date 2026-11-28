@@ -147,6 +147,9 @@ int main(void) {
     { t: "ex", id: "a2-e8" },
     { t: "p", text: "A last remark on using the right tool. If the question says 'sorted', think binary search; if it says 'unsorted', think linear scan, partition or selection. If it asks for a **bound on the best algorithm**, argue both ways: show an algorithm that achieves it, then show why fewer steps cannot work, as in the 'every element must be read' arguments above." },
 
+    { t: "h2", text: "Questions that come with a picture" },
+    { t: "p", text: "One question in the paper shows its array as a picture. It is solved here from the picture's values." },
+    { t: "ex", id: "a2-e9" },
     { t: "h2", text: "Chapter summary" },
     { t: "ul", items: ["Binary search on a sorted array: ⌊log₂ n⌋ + 1 probes, Θ(log n); a transition among 31 items needs 5 probes.", "Inversions = swaps of bubble sort = shifts of insertion sort; a descending array of n has n(n−1)/2.", "Merge sort: Θ(n log n) always, stable, Θ(n) extra space; a merge is void when the last of L is below the first of R.", "Quicksort: Θ(n²) worst case (sorted input with a last-element pivot), Θ(n log n) on average; random pivot in the worst place has probability 2/n.", "Heap sort: Θ(n log n) always, in place, not stable. Comparison sorting needs Ω(n log n); counting sort is Θ(n + k).", "Min and max together: 3⌈n/2⌉ − 2 comparisons; any element that is not the largest: 1 comparison."] },
     { t: "gate" },
@@ -214,10 +217,17 @@ A) O(n)   B) O(n log n)   C) O(n²)   D) Ω(n² log n)`, find: "The worst-case t
       { say: "All n² elements must be read, so the bound is tight; D claims too much, since n² log n is not needed.", result: "C" },
     ], answer: "C", check: "Sorting each array would cost n · n log n, which is where D tempts you." },
 
+    { type: "example", id: "a2-e9", level: "gate", title: "GATE CS 2021 (forenoon), Q25 · 1 mark · the fewest comparisons on a given array", file: "gate2021_fn_q25.txt", given: `The array (shown as a picture) is 23 32 45 69 72 73 89 97. Which algorithm uses the least number of comparisons to sort it in ascending order?
+A) Selection sort   B) Mergesort   C) Insertion sort   D) Quicksort using the last element as pivot`, find: "The algorithm with the fewest comparisons.", steps: [
+      { say: "The array is already sorted: 23 < 32 < 45 < 69 < 72 < 73 < 89 < 97.", result: "sorted" },
+      { say: "Insertion sort compares each element once with its left neighbour and stops: n − 1 = 7 comparisons.", result: "7" },
+      { say: "Selection sort always makes n(n − 1)/2 = 28. Merge sort makes about 12 on a sorted array of 8. Quicksort with a last-element pivot is at its worst case: 28.", result: "28, 12, 28" },
+    ], answer: "C", check: "On a sorted array insertion sort is Θ(n) and the others are not." },
+
     { type: "trap", wrong: "Bubble sort makes about n² / 2 swaps on every input.", tempting: "It has two nested loops and compares n(n − 1)/2 pairs.", whyWrong: "The number of COMPARISONS is n(n − 1)/2, but the number of SWAPS equals the number of inversions: 0 for a sorted array, n(n − 1)/2 only for a reversed one.", rule: "Swaps of adjacent elements = inversions.", ex: { text: "A = 2 1 3 4 5: one inversion, so one swap, though the loops compare 10 pairs." } },
     { type: "trap", wrong: "Quicksort is Θ(n log n) in the worst case.", tempting: "It is the fastest sort in practice and Θ(n log n) on average.", whyWrong: "With a fixed pivot (the last element) an already sorted array gives splits 0 and n − 1 every time: T(n) = T(n − 1) + n = Θ(n²). The average is n log n; the worst case is n².", rule: "Quick: average n log n, worst n². Merge and heap: n log n always.", ex: { text: "Sorted input 1 2 3 4 5 with pivot = last: partitions leave 4, 3, 2, 1 elements: 4 + 3 + 2 + 1 = 10 comparisons." } },
 
-    { type: "gate", text: "Real GATE questions solved in this chapter: 2025 FN Q33 · 2025 AN Q20, Q41 · 2026 AN Q32, Q38 · 2021 FN Q30 · 2021 AN Q31 · 2019 FN Q31, Q61 · 2017 FN Q45. The question on an array shown as a picture (2021 FN Q25: which sort uses the fewest comparisons) is answered by the rule in the section on the whole table: look at how sorted the array is." },
+    { type: "gate", text: "Real GATE questions solved in this chapter: 2025 FN Q33 · 2025 AN Q20, Q41 · 2026 AN Q32, Q38 · 2021 FN Q25, Q30 · 2021 AN Q31 · 2019 FN Q31, Q61 · 2017 FN Q45. Every Algorithms sorting and searching question of the bank is solved here." },
     { type: "recall", cards: [
       { q: "Worst case of binary search?", a: "⌊log₂ n⌋ + 1 probes: Θ(log n)." },
       { q: "What is an inversion?", a: "A pair i < j with A[i] > A[j]." },

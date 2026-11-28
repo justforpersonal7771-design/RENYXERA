@@ -136,7 +136,7 @@ export function Trace({ fig }: { fig: TraceFig }) {
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Trace table"}>
       <div className="max-w-full overflow-x-auto">
-        <table className="w-full border-collapse text-sm tabular-nums" style={{ maxWidth: 560 }}>
+        <table className="w-full border-collapse text-sm tabular-nums [&_td]:[overflow-wrap:normal] [&_td]:[word-break:normal] [&_th]:[overflow-wrap:normal] [&_th]:[word-break:normal]" style={{ maxWidth: 560 }}>
           <thead><tr><th className="border border-[var(--border)] p-1.5 text-left text-xs text-[var(--text-secondary)]">step</th>{fig.cols.map((c) => <th key={c} className="border border-[var(--border)] p-1.5 font-mono text-xs text-[var(--text-primary)]">{c}</th>)}</tr></thead>
           <tbody>{fig.rows.map((r, i) => (
             <tr key={i} style={r.tone ? { background: toneStyle(r.tone).background } : undefined}>

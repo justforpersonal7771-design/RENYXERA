@@ -135,6 +135,12 @@ int main(void) {
     { t: "p", text: "The **diameter** of a tree is the length of its longest path. There is a neat method: run BFS from any vertex and take a farthest vertex u; run BFS again from u and take a farthest vertex z; the distance from u to z is the diameter. The question in GATE 2025 runs exactly this on a tree given as a figure, so you carry out the two searches on the picture; the answer is the largest distance found in the second search." },
     { t: "p", text: "DFS also yields the DFS order for **cycle detection** and for the **number of paths** in a DAG, which leads into dynamic programming over a DAG: process vertices in topological order and compute, for each vertex, the best value over its incoming edges. The 'quality-score' question in GATE 2021 (the best product of weights along a path from the source in a DAG) is of this kind, and we meet its cousin, shortest paths in a DAG, in the shortest-paths chapter." },
 
+    { t: "h2", text: "Questions that come with a picture" },
+    { t: "p", text: "Four traversal questions give their graph as a picture. Each is solved here from the picture, by reading the edges and running the method of this chapter." },
+    { t: "ex", id: "a7-e7" },
+    { t: "ex", id: "a7-e8" },
+    { t: "ex", id: "a7-e9" },
+    { t: "ex", id: "a7-e10" },
     { t: "h2", text: "Chapter summary" },
     { t: "ul", items: ["Adjacency list: Θ(n + m) space and traversal; matrix: Θ(n²) both.", "BFS: queue, rings, Θ(n + m); BFS distances = shortest paths in an unweighted graph; for undirected edge (u, v) the distances differ by 0 or 1; a DFS tree is not a shortest-path tree.", "DFS: discovery and finishing times; intervals nested or disjoint; edge classes tree, back, forward, cross.", "Undirected DFS: no cross edges. Directed cycle ⇔ DFS back edge, so a DAG has none; DFS tree = BFS tree implies no forward edges.", "Components = n − (forest edges); BFS and DFS both find components.", "Topological order = decreasing finish time; SCCs by Kosaraju (two DFS passes).", "Articulation point: root with ≥ 2 children, or a vertex with a child subtree having no back edge above it; leaves never are."] },
     { t: "gate" },
@@ -204,10 +210,39 @@ D) If u is an articulation point, x an ancestor and y a descendant of u in T, al
       { say: "D: y may lie in a child subtree with a back edge to a vertex above u, giving a path around u.", result: "D false" },
     ], answer: "B", check: "In the two-triangle graph rooted at 0, vertex 0 has one child, so it is not an articulation point, while vertices 1 and 3 are." },
 
+    { type: "example", id: "a7-e7", level: "gate", title: "GATE CS 2017 (afternoon), Q13 · 1 mark · a possible BFS order", file: "gate2017_an_q13.txt", given: `Graph (picture): edges M–N, N–O, M–Q, N–Q, O–Q, O–P, Q–P, M–R. BFS uses a queue. Which is a possible order of visiting the nodes?
+A) MNOPQR   B) NQMPOR   C) QMNROP   D) POQNMR`, find: "The possible BFS order.", steps: [
+      { say: "A possible BFS order starts at some vertex, then lists all its neighbours (any order), then the vertices at distance 2, and so on: every ring complete before the next.", result: "rings in order" },
+      { say: "A: start M. Its neighbours are N, Q, R, but O comes before Q and R, and O is at distance 2. Not BFS.", result: "A no" },
+      { say: "B: start N. Its neighbours are M, O, Q, but P (distance 2) appears before O. Not BFS. C: start Q: its neighbours are M, N, O, P, but R (distance 2) comes before O and P. Not BFS.", result: "B, C no" },
+      { say: "D: start P. Neighbours O, Q (ring 1). Then ring 2: N (from O or Q) and M (from Q). Then ring 3: R (from M). The order P, O, Q, N, M, R follows the rings.", result: "D yes" },
+    ], answer: "D", check: "In D every vertex is preceded by a neighbour that is one ring closer to P." },
+    { type: "example", id: "a7-e8", level: "gate", title: "GATE CS 2021 (afternoon), Q30 · 2 marks · MSQ: a directed 4 × 4 grid", file: "gate2021_an_q30.txt", given: `Directed graph (picture): 16 vertices in a 4 × 4 grid with arrows; S is the bottom-left vertex. Reading the picture by (row, column) with the top row 0 and S = (3, 0):
+row 0: (0,0)→(0,1), (0,2)→(0,1), (0,2)→(0,3); row 1: (1,0)→(1,1)→(1,2)→(1,3); row 2: (2,1)→(2,0), (2,1)→(2,2), (2,3)→(2,2); row 3: (3,0)→(3,1)→(3,2)→(3,3).
+Vertical: column 0: (2,0)→(3,0), (2,0)→(1,0)→(0,0); column 1: (3,1)→(2,1)→(1,1), (0,1)→(1,1); column 2: (2,2)→(1,2)→(0,2), (2,2)→(3,2); column 3: (3,3)→(2,3)→(1,3)→(0,3).
+A) no topological order   B) a DFS from S classifies three edges as back edges   C) no strongly connected component   D) a directed path between every pair`, find: "The correct statements.", steps: [
+      { say: "A directed cycle exists: S = (3,0) → (3,1) → (2,1) → (2,0) → (3,0). A graph with a cycle has no topological order. A is true.", result: "A true" },
+      { say: "There are three four-vertex cycles in all: the one above; (1,1)→(1,2)→(0,2)→(0,1)→(1,1); and (2,2)→(3,2)→(3,3)→(2,3)→(2,2). They lie in three different strongly connected components, each a simple 4-cycle, so any DFS closes each exactly once with one back edge. Three back edges. B is true.", result: "B true" },
+      { say: "Every graph has strongly connected components (a single vertex counts), so C is false.", result: "C false" },
+      { say: "The top rows cannot reach S: from row 1 there is no edge down to row 2, so (0,0) has no path to S. D is false.", result: "D false" },
+    ], answer: "A, B", check: "The strongly connected components are the three 4-cycles and the single vertices around them." },
+    { type: "example", id: "a7-e9", level: "gate", title: "GATE CS 2025 (afternoon), Q59 · 2 marks · NAT: someAlgo on a tree (two BFS runs)", file: "gate2025_an_q59.txt", given: `someAlgo(G): BFS from any v to a farthest vertex u; BFS from u to a farthest vertex z; output the distance between u and z. The tree T is given as a picture with 14 vertices. Labelling them n1 to n14 by position, its edges are n1–n2, n2–n5, n2–n4, n3–n4, n4–n6, n6–n7, n4–n8, n8–n9, n8–n10, n8–n11, n11–n12, n11–n13, n13–n14. The output of someAlgo(T)?`, find: "The output.", steps: [
+      { say: "The tree has 13 edges on 14 vertices, as a tree must.", result: "13 edges, 14 vertices" },
+      { say: "The longest path: n7–n6–n4–n8–n11–n13–n14, with 6 edges. The paths n1–n2–n4–n8–n11–n13–n14 and n5–n2–n4–n8–n11–n13–n14 also have 6 edges.", result: "6 edges" },
+      { say: "The two-BFS method returns the diameter of a tree: whichever start is chosen, the first search ends at an end of a longest path and the second finds the opposite end at distance 6.", result: "6" },
+    ], answer: "6", check: "The diameter of this tree is 6." },
+    { type: "example", id: "a7-e10", level: "gate", title: "GATE CS 2021 (afternoon), Q19 · 2 marks · NAT: quality-scores in a DAG", file: "gate2021_an_q19.txt", given: `A DAG with source s; the quality-score of a path is the product of its edge weights; the quality-score of v is the maximum over all paths from s to v; that of s is 1. Graph (picture): s→a 9, a→b 1, s→c 1, a→d 1, b→e 1, c→d 1, d→e 9, c→f 9, d→g 9, e→t 9, f→g 1, g→t 1. The sum of the quality-scores of all vertices?`, find: "The sum.", steps: [
+      { say: "Process in topological order. s = 1. a = 1 × 9 = 9. c = 1 × 1 = 1.", result: "s 1, a 9, c 1" },
+      { say: "b = a × 1 = 9. d = max(a × 1, c × 1) = max(9, 1) = 9. f = c × 9 = 9.", result: "b 9, d 9, f 9" },
+      { say: "e = max(b × 1, d × 9) = max(9, 81) = 81. g = max(d × 9, f × 1) = max(81, 9) = 81.", result: "e 81, g 81" },
+      { say: "t = max(e × 9, g × 1) = max(729, 81) = 729.", result: "t 729" },
+      { say: "Sum: 1 + 9 + 1 + 9 + 9 + 9 + 81 + 81 + 729.", result: "929" },
+    ], answer: "929", check: "The best path to t is s→a→d→e→t with 9 × 1 × 9 × 9 = 729." },
+
     { type: "trap", wrong: "In a BFS of an undirected graph, the two ends of every edge are at distances differing by exactly 1.", tempting: "BFS moves outward one ring at a time.", whyWrong: "An edge can join two vertices in the same ring (distance difference 0), such as the edge 1–2 in the triangle 0–1–2 with source 0. The distances differ by at most 1.", rule: "Undirected BFS: |dist(u) − dist(v)| ≤ 1.", ex: { text: "Triangle 0-1-2, source 0: vertices 1 and 2 are both at distance 1." } },
     { type: "trap", wrong: "A DFS tree gives shortest paths, because DFS finds paths.", tempting: "Every tree path is a path.", whyWrong: "DFS follows the first unvisited neighbour deeply. In a triangle s, a, b, the DFS tree s–a–b has b at depth 2 though b is adjacent to s. Only a BFS tree has shortest-path depths.", rule: "Shortest paths in an unweighted graph: BFS.", ex: { text: "Triangle with source s: BFS depth of b is 1; one DFS tree gives depth 2." } },
 
-    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q50 · 2025 AN Q29 · 2024 FN Q37, Q60 · 2021 FN Q39 · 2021 AN Q25 · 2018 FN Q40. The questions given as pictures (2025 AN Q59 tree diameter, 2021 AN Q30 edge classes, 2021 AN Q19 quality-scores in a DAG, 2017 AN Q13 a possible BFS order) use the methods above: run the traversal on the picture and record the numbers. A possible BFS order is any order in which each vertex appears after the vertex that discovers it and all vertices of one ring come before the next ring." },
+    { type: "gate", text: "Real GATE questions solved in this chapter: 2026 FN Q50 · 2025 AN Q29, Q59 · 2024 FN Q37, Q60 · 2021 FN Q39 · 2021 AN Q19, Q25, Q30 · 2018 FN Q40 · 2017 AN Q13. Every graph-traversal question of the bank is solved here." },
     { type: "recall", cards: [
       { q: "BFS and DFS cost with an adjacency list?", a: "Θ(n + m)." },
       { q: "Which data structure drives BFS?", a: "A queue." },
