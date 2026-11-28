@@ -8,17 +8,21 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Compass, Layers, ListOrdered, Scale, Sparkles, Target } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, FileQuestion, Layers, LibraryBig, ListOrdered, Scale, Sparkles, Target } from "lucide-react";
 import { CS_SHELF, type ShelfBook, type ShelfChapter } from "@/lib/study/catalog";
 import { useLibraryFocus } from "@/lib/study/use-focus";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { readSeen } from "@/lib/study/progress";
 
-type Mode = "balanced" | "marks" | "logical";
+type Mode = "balanced" | "marks" | "logical" | "pyqs" | "continue" | "shelf";
+const MODE_IDS: Mode[] = ["balanced", "marks", "logical", "pyqs", "continue", "shelf"];
 const MODES: { id: Mode; label: string; icon: typeof Scale; blurb: string }[] = [
   { id: "balanced", label: "Balanced", icon: Scale, blurb: "Heavy subjects first, but never before the subject they rest on. The best default." },
   { id: "marks", label: "Marks first", icon: Target, blurb: "Subjects ordered by the share of the paper they carry; inside a subject, the heaviest chapters first." },
   { id: "logical", label: "Logical order", icon: ListOrdered, blurb: "The order a beginner can follow: each subject builds on the one before it." },
+  { id: "pyqs", label: "Most past questions", icon: FileQuestion, blurb: "Chapters across all subjects ranked by how many real past questions they have: the best fit for practice-first revision." },
+  { id: "continue", label: "Continue reading", icon: BookOpen, blurb: "Chapters you have started come first, then the untouched ones in the balanced order. Finish what you began." },
+  { id: "shelf", label: "Shelf order", icon: LibraryBig, blurb: "Exactly as the bookshelf lists them: no ranking, just your library from the top." },
 ];
 /** What builds on what: C before data structures before algorithms; hardware together; systems after programming; theory late; maths and aptitude can run alongside. */
 const LEARN = ["pds", "ds", "algo", "dl", "coa", "os", "dbms", "cn", "toc", "cd", "dm", "la", "prob", "calc", "verbal", "quant", "analytical", "spatial"];
@@ -41,10 +45,13 @@ export function StudyRoadmap() {
   const access = useStudyAccess();
   const [mode, setMode] = useState<Mode>("balanced");
   const [all, setAll] = useState(false);
+  const [off, setOff] = useState<string[]>([]);
   const [seen, setSeen] = useState<Record<string, { ch: string }>>({});
   // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only choices, read once after mount
-  useEffect(() => { setSeen(readSeen()); try { const m = localStorage.getItem("renyxera.study.roadmap.mode"); if (m === "balanced" || m === "marks" || m === "logical") setMode(m); } catch { /* storage off */ } }, []);
+  useEffect(() => { setSeen(readSeen()); try { const m = localStorage.getItem("renyxera.study.roadmap.mode"); if (MODE_IDS.includes(m as Mode)) setMode(m as Mode); const o = JSON.parse(localStorage.getItem("renyxera.study.roadmap.off") ?? "[]"); if (Array.isArray(o)) setOff(o.filter((x) => typeof x === "string")); } catch { /* storage off */ } }, []);
   const pick = (m: Mode) => { setMode(m); try { localStorage.setItem("renyxera.study.roadmap.mode", m); } catch { /* storage off */ } };
+
+  const toggle = (id: string) => setOff((cur) => { const n = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]; try { localStorage.setItem("renyxera.study.roadmap.off", JSON.stringify(n)); } catch { /* storage off */ } return n; });
 
   const rows = useMemo<Row[]>(() => {
     const readBy: Record<string, number> = {};
@@ -63,18 +70,24 @@ export function StudyRoadmap() {
   }, [focus, seen]);
 
   const ordered = useMemo(() => {
-    const byBook = new Map<string, Row[]>(); rows.forEach((r) => byBook.set(r.b.id, [...(byBook.get(r.b.id) ?? []), r]));
+    const kept = rows.filter((r) => !off.includes(r.b.id));
+    if (mode === "pyqs") return [...kept].sort((x, y) => y.qs - x.qs || y.share - x.share);
+    const byBook = new Map<string, Row[]>(); kept.forEach((r) => byBook.set(r.b.id, [...(byBook.get(r.b.id) ?? []), r]));
     const books = [...byBook.keys()];
     const weight = (id: string) => (byBook.get(id) ?? []).reduce((s, r) => s + r.share, 0);
     const byWeight = [...books].sort((x, y) => weight(y) - weight(x));
     const wRank = (id: string) => byWeight.indexOf(id);
     const score = (id: string) => (mode === "marks" ? wRank(id) : mode === "logical" ? learnRank(id) : tierOf(id) * 100 + wRank(id));
-    const bookOrder = [...books].sort((x, y) => score(x) - score(y) || learnRank(x) - learnRank(y));
-    return bookOrder.flatMap((id) => {
+    const shelfIds = CS_SHELF.map((b) => b.id);
+    const bookOrder = [...books].sort(mode === "shelf" ? (x, y) => shelfIds.indexOf(x) - shelfIds.indexOf(y) : (x, y) => score(x) - score(y) || learnRank(x) - learnRank(y));
+    const flat = bookOrder.flatMap((id) => {
       const rs = byBook.get(id) ?? [];
-      return mode === "logical" || mode === "balanced" ? rs : [...rs].sort((x, y) => (x.first ? -1 : 0) - (y.first ? -1 : 0) || y.share - x.share);
+      return mode === "marks" ? [...rs].sort((x, y) => (x.first ? -1 : 0) - (y.first ? -1 : 0) || y.share - x.share) : rs;
     });
-  }, [rows, mode]);
+    if (mode !== "continue") return flat;
+    const started = (r: Row) => r.read > 0 && r.read < r.topics;
+    return [...flat.filter(started).sort((x, y) => y.read / y.topics - x.read / x.topics), ...flat.filter((r) => !started(r))];
+  }, [rows, mode, off]);
 
   const total = ordered.reduce((s, r) => s + r.share, 0) || 1;
   const openOf = (r: Row) => (access.all || access.canRead(r.href, 1) ? "open" : access.canRead(r.href, 0) ? "sample" : "pack");
@@ -84,7 +97,7 @@ export function StudyRoadmap() {
   const STAGES = [{ t: "Stage 1 · Score the first half", s: "the chapters that carry the first 50% of the marks on your list" }, { t: "Stage 2 · Build depth", s: "the next 30%" }, { t: "Stage 3 · Finish and revise", s: "the last 20%, then mixed practice" }];
   const readTotal = ordered.reduce((s, r) => s + r.read, 0), topicTotal = ordered.reduce((s, r) => s + r.topics, 0);
   const shown = all ? staged : staged.slice(0, 7);
-  if (!ordered.length) return null;
+  if (!rows.length) return null;
   const m = MODES.find((x) => x.id === mode)!;
 
   return (
@@ -101,6 +114,11 @@ export function StudyRoadmap() {
               <button key={x.id} type="button" role="radio" aria-checked={mode === x.id} onClick={() => pick(x.id)} className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-xl px-3 text-sm font-bold transition-colors ${mode === x.id ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"}`}><x.icon className="h-4 w-4" aria-hidden /> {x.label}</button>
             ))}
           </div>
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-1.5" role="group" aria-label="Subjects to include">
+          <span className="mr-1 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">Include</span>
+          {CS_SHELF.map((b) => { const on = !off.includes(b.id); return <button key={b.id} type="button" aria-pressed={on} onClick={() => toggle(b.id)} className={`inline-flex h-8 cursor-pointer items-center rounded-full px-3 text-xs font-bold transition-colors ${on ? "bg-[var(--tint-ink)] text-[var(--surface)]" : "bg-[var(--surface)] text-[var(--text-secondary)] line-through hover:bg-[var(--surface-secondary)]"}`}>{b.title}</button>; })}
         </div>
 
         {next && (

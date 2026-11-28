@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-042 · 28 Nov · Roadmap sort is the reader's choice · Fixed
+- **Reported:** do not force the logical order; offer other ways to sort.
+- **Fix:** six orders (Balanced, Marks first, Logical, Most past questions, Continue reading, Shelf order) and Include chips to drop subjects; both saved on this device.
+- **Files:** `components/study/study-roadmap.tsx`
+- **Open:** dev overlay showed '1 Issue' in the screenshot; cause not yet checked.
+
 ### L-041 · 28 Nov · Study roadmap added · Fixed
 - **Reported:** study needs a guide to the flow: where to start, high-weightage books, logical order.
 - **Fix:** new Study roadmap above the shelf with three modes (Balanced, Marks first, Logical order), a Next up card, stages by cumulative marks share and per-chapter cards with % of marks, PYQs, progress and access chip. Balanced works in prerequisite tiers (C, then Data Structures, then Algorithms/Digital Logic, and so on); weight breaks ties inside a tier.
