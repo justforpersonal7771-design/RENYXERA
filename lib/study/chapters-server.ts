@@ -39,7 +39,7 @@ export const CHAPTER_SOURCES: Record<string, () => Promise<Chapter>> = {
   "/study/graph-representation": () => import("@/content/study/CS/pds-ds").then((x) => x.PDS_DS_GRAPHS),
   "/study/ds-hashing": () => import("@/content/study/CS/pds-ds").then((x) => x.PDS_DS_HASH),
   "/study/choosing-structures": () => import("@/content/study/CS/pds-ds").then((x) => x.PDS_DS_CHOOSE),
-  "/study/asymptotics": () => import("@/content/study/CS/algo-a").then((x) => x.ALGO_ASYM),
+  "/study/asymptotics": () => import("@/content/study/CS/algo-v2").then((x) => x.V2_ASYM),
   "/study/sorting": () => import("@/content/study/CS/algo-a").then((x) => x.ALGO_SORT),
   "/study/hashing": () => import("@/content/study/CS/algo-b").then((x) => x.ALGO_HASH),
   "/study/divide-conquer": () => import("@/content/study/CS/algo-b").then((x) => x.ALGO_DC),
