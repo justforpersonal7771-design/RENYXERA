@@ -11,12 +11,13 @@ export type FocusQ = { question_id: string; subject: string; topic?: string; mar
 export type FocusChapter = { id: string; title: string; match?: string };
 export type ChapterFocus = { qs: number; marks: number; share: number; inMarks: number; inTarget: boolean; foundation: boolean };
 
-const TAGS = tagFile as unknown as { book: string; map: Record<string, string> };
+const TAGS = tagFile as unknown as { book: string; books?: string[]; map: Record<string, string> };
+const TAGGED_BOOKS = TAGS.books ?? [TAGS.book];
 /** Words that tie a chapter to the bank's topic names ("Synchronisation" ~ "Synchronization"). */
 export const stems = (t: string) => t.toLowerCase().replace(/is(e|ing|ation)/g, "iz$1").split(/[^a-z]+/).filter((w) => w.length > 3 && !["and", "with", "from"].includes(w)).map((w) => w.slice(0, 6));
 
 export function chapterQuestions(bookId: string, chapter: FocusChapter, bookQs: FocusQ[]): FocusQ[] {
-  if (bookId === TAGS.book) return bookQs.filter((q) => TAGS.map[q.question_id] === chapter.id);
+  if (TAGGED_BOOKS.includes(bookId)) return bookQs.filter((q) => TAGS.map[q.question_id] === chapter.id);
   const st = stems(chapter.title);
   return bookQs.filter((q) => (chapter.match ? new RegExp(chapter.match, "i").test(q.topic ?? "") : stems(q.topic ?? "").some((w) => st.includes(w))));
 }

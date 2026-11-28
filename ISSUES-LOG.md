@@ -8,6 +8,34 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-040 · Chapter numbers and labels were selectable (highlight popup appeared on them) · Fixed
+- **Reported:** the heading badges (7.5.1) and the EXAMPLE 7.1 label could be selected, which opened the highlight palette. They should not be selectable.
+- **Fix:** `select-none` on the heading number badges (all four levels), the Example, Chapter and Topic labels and the Worked example label. **Files:** `components/study/lesson-renderer.tsx`
+
+### L-039 · Page still said "Programming and Data Structures" (header, tab) · Fixed
+- **Cause:** the part chapters copied the old combined subject name.
+- **Fix:** `subject` is now "Programming in C" for the four C parts and "Data Structures" for every Data Structures chapter (also the names the bank uses, so the PYQ drawer filters correctly). **Files:** `content/study/CS/pds-cparts.ts`, `content/study/CS/pds-ds.ts`
+
+### L-038 · PYQ count and percentage missing on most rows · Fixed
+- **Cause:** weights for the combined book came from `lib/study/pyq-chapter-map.json`, which tagged all 42 C questions to chapter `c`; the new rows had no tags (and the new Data Structures book id was not in the tag list). My earlier regex fix did not apply because tagged books ignore `match`.
+- **Fix:** retagged the 98 questions (C by bank topic: `c` 11, `c2` 26, `c3` 20; Data Structures rows `linked` 6, `stackq` 8, `trees` 17, `heaps` 10, `choose` 1) and let both books use the tags (`books: ["pds", "ds"]`). Rows with no question of their own show nothing. **Files:** `lib/study/pyq-chapter-map.json`, `lib/study/focus.ts`
+
+### L-037 · Data Structures chapters integrated into the subject rows; the single "From arrays to graphs" row removed · Fixed
+- **Reported:** remove that chapter and put the chapters under their own topics.
+- **Fix:** rows now Foundations (D0, D1), Arrays (D2), Linked lists (D3), Stacks and queues (D4, D5), Recursion (D6), Trees and BSTs (D7, D8, D9, D11), Binary heaps (D10), Hashing (D12, route `/study/ds-hashing`), Graphs (D13, D14), Choosing the right structure (D15, D16). The older single-draft pages for these routes are replaced by the new chapters. **Files:** `content/study/CS/pds-ds.ts`, `lib/study/chapters-server.ts`, `lib/study/catalog.ts`, two new route pages.
+
+### L-036 · Calculator bar: controls jumped between left and right · Fixed (Watch)
+- **Reported (L-032):** the expand, minimise and close buttons are not on the left.
+- **Cause:** in the small state the buttons followed the number, in the open state they were pushed right (`ml-auto`).
+- **Fix:** the buttons always sit on the left after the drag handle, the result is right-aligned beside them. If you meant the right side, it is a one-line change. **Files:** `components/exam/virtual-calculator.tsx`
+- **Also fixed:** a lint error in the same file (a state update inside an effect), the likely cause of the failed CI lint job. Line: `if (!open) return;` and the reset moved to the effect cleanup.
+
+### L-035 · Question bank discrepancy file · Fixed
+- **Reported:** log every discrepancy found in the bank in a separate file. **Done:** `docs/QUESTION-BANK-DISCREPANCIES.md` (59 rows, with the full detail of 2021 AN Q17 for you to confirm).
+
+### L-034 · Four figure questions re-checked (2026_FN_Q37, 2023_FN_Q21, 2022_FN_Q40, 2017_AN_Q45) · Fixed
+- **Reported:** recheck what had only been taken on Gemini's word. **Result:** all four keys correct from the pictures (next-state table solved by program: option B; mux with feedback is a D latch; decoders and a 2:1 mux; T inputs T1 = Q1'Q0, T0 = (Q1Q0)').
+
 ### L-033 · Compiler Design and Digital Logic figures checked; two more bank defects · Fixed (Owner step)
 - **Reported:** next item on the list: check the Compiler Design (11) and Digital Logic (21) figures.
 - **Done:** every key checked against the pictures in `public/images` (liveness, available expressions, parse tables, SDDs, circuits, counters, IEEE formats). All keys hold.

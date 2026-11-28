@@ -7,7 +7,7 @@ import { PDS_C } from "./pds-a";
  */
 const byNo = (nos: string[]): Topic[] => nos.map((n) => { const t = PDS_C.topics.find((x) => x.no === n); if (!t) throw new Error(`C part: chapter C${n} not found`); return t; });
 const part = (id: string, title: string, nos: string[], items: { label: string; sub: string }[]): Chapter => ({
-  ...PDS_C, id: `cs.pds.c.${id}`, title, topics: byNo(nos), map: { kind: "strip", items: items.map((i) => ({ ...i, state: "done" as const })) },
+  ...PDS_C, id: `cs.pds.c.${id}`, subject: "Programming in C", title, topics: byNo(nos), map: { kind: "strip", items: items.map((i) => ({ ...i, state: "done" as const })) },
 });
 
 export const PDS_C_FOUNDATIONS = part("foundations", "Programming in C 1: foundations", ["0", "1", "2", "3", "4", "5"], [{ label: "1. How it runs", sub: "compile, memory" }, { label: "2. Types", sub: "wrap, promotion" }, { label: "3. Operators", sub: "precedence" }, { label: "4. Decisions and loops", sub: "loop counts" }]);

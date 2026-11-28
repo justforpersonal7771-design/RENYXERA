@@ -33,10 +33,12 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "c4", title: "Reading code and practice", href: "/study/c-reading", ready: "5 chapters ready", match: "(?!)" },
   ] },
   { id: "ds", title: "Data Structures", short: "DS", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#7A4A1F", dark: "#7A4A1F", band: "core", chapters: [
-    { id: "ds-book", title: "From arrays to graphs", href: "/study/data-structures", ready: "17 chapters ready", match: "Abstract Data Types|Linked Lists|Binary Search Trees|BSTs" },
-    { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "3 topics ready" }, { id: "lists", title: "Arrays", href: "/study/arrays", ready: "3 topics ready" },
-    { id: "stackq", title: "Stacks and queues", href: "/study/stacks-queues", ready: "4 topics ready" }, { id: "linked", title: "Linked lists", href: "/study/linked-lists", ready: "3 topics ready" }, { id: "trees", title: "Trees and binary search trees", href: "/study/trees", ready: "4 topics ready" },
-    { id: "heaps", title: "Binary heaps", href: "/study/heaps", ready: "3 topics ready" }, { id: "graph-ds", title: "Graphs: representation", href: "/study/graph-representation", ready: "3 topics ready" },
+    { id: "ds-found", title: "Foundations: structures and cost", href: "/study/data-structures", ready: "2 chapters ready", match: "(?!)" },
+    { id: "lists", title: "Arrays", href: "/study/arrays", ready: "1 chapter ready" }, { id: "linked", title: "Linked lists", href: "/study/linked-lists", ready: "1 chapter ready" },
+    { id: "stackq", title: "Stacks and queues", href: "/study/stacks-queues", ready: "2 chapters ready" }, { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "1 chapter ready" },
+    { id: "trees", title: "Trees and binary search trees", href: "/study/trees", ready: "4 chapters ready" }, { id: "heaps", title: "Binary heaps", href: "/study/heaps", ready: "1 chapter ready" },
+    { id: "hash", title: "Hashing", href: "/study/ds-hashing", ready: "1 chapter ready", match: "(?!)" }, { id: "graph-ds", title: "Graphs", href: "/study/graph-representation", ready: "2 chapters ready" },
+    { id: "choose", title: "Choosing the right structure", href: "/study/choosing-structures", ready: "2 chapters ready", match: "(?!)" },
   ] },
   { id: "toc", title: "Theory of Computation", short: "TOC", tint: "sky", cloth: "#D6CFE6", ink: "#1B1917", paper: "#155E63", dark: "#155E63", band: "core", chapters: [
     { id: "regular", title: "Regular expressions and finite automata", href: "/study/finite-automata", ready: "4 topics ready", match: "Finite Automata|Regular Expression|Regular Language|DFA|NFA" }, { id: "reg-props", title: "Regular languages: closure and pumping lemma", href: "/study/regular-properties", ready: "3 topics ready", match: "Regular Language|Pumping|Closure" }, { id: "cfl", title: "Context-free grammars and PDAs", href: "/study/context-free", ready: "3 topics ready", match: "Context-free|Grammar|Pushdown|PDA|Ambig" },

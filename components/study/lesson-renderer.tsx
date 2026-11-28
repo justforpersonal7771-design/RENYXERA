@@ -353,7 +353,7 @@ const Deep = ({ b }: { b: B<"deep"> }) => (
 const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p"><Rich s={s} /></p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3">{(() => { const sp = splitCodeQ(b.prompt.q); return <><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: {sp ? <Rich s={sp.after || sp.before || "what happens?"} /> : <Rich s={b.prompt.q} />}</summary>{sp && <div className="mt-2"><CodeEditor text={sp.code} name="think.c" /></div>}</>; })()}<p className="mt-2 text-sm text-[var(--text-secondary)]"><Rich s={b.prompt.a} /></p></details>}</section>;
 const Figure = ({ b }: { b: B<"figure"> }) => <figure className={`${plain} grid grid-cols-[minmax(0,1fr)] content-center justify-items-center gap-2`}><Diagram fig={b.fig} /><figcaption className="text-center text-sm text-[var(--text-secondary)]">{b.caption}</figcaption><span className="sr-only">{b.alt}</span></figure>;
 const Example = ({ b, code }: { b: B<"example">; code?: boolean }) => (
-  <section {...card("sky")}><p className="text-xs font-bold text-[var(--tint-ink)]">Worked example{b.level === "edge" ? ", edge case" : b.level === "gate" ? ", GATE level" : ""}</p><h3 className="lesson-h !mt-1">{b.title}</h3>
+  <section {...card("sky")}><p className="select-none text-xs font-bold text-[var(--tint-ink)]">Worked example{b.level === "edge" ? ", edge case" : b.level === "gate" ? ", GATE level" : ""}</p><h3 className="lesson-h !mt-1">{b.title}</h3>
     {code && b.file?.endsWith(".txt") ? <><p className="lesson-p"><b>Given:</b></p><pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 font-mono text-[0.92rem] leading-6 text-[var(--text-primary)]">{b.given}</pre></> : code ? <><p className="lesson-p"><b>Given:</b></p><CodeEditor text={b.given} name={b.file ?? "trace.c"} /></> :<p className="lesson-p"><b>Given: </b>{b.given}</p>}<p className="lesson-p mt-1"><b>Find: </b><Rich s={b.find} /></p>
     <ol className="mt-3 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3 rounded-xl bg-[var(--surface)] p-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--tint-ink)] text-xs font-bold text-[var(--surface)]">{i + 1}</span><p className="text-[15px] leading-relaxed text-[var(--text-primary)]"><Rich s={s.say} />{s.result && <b className="ml-1">→ <Rich s={s.result} /></b>}</p></li>)}</ol>
     <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 font-bold text-[var(--text-primary)]">Answer: <Rich s={b.answer} /></p>{b.check && <p className="mt-2 text-sm text-[var(--text-primary)]"><b>Check it another way: </b><Rich s={b.check} /></p>}</section>
@@ -651,10 +651,10 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
   const recall = single("recall"), links = single("links"), practice = single("practice");
   // four heading levels, each its own shape: h2 a numbered banner with a filled badge, h3 a side-barred title, h4 a small-caps label, h5 an italic run-in
   const HEAD = [
-    { wrap: "mt-12 flex items-start gap-3 border-b-2 pb-2.5", ws: { borderColor: "color-mix(in srgb, var(--st-accent) 45%, transparent)" }, num: "mt-1 shrink-0 rounded-lg px-2.5 py-0.5 text-[1.05rem] font-extrabold tabular-nums text-[var(--surface)]", ns: { background: "var(--st-accent)" }, text: "font-display text-[1.75rem] font-extrabold leading-tight tracking-tight" },
-    { wrap: "mt-9 flex items-start gap-3 border-l-[5px] pl-3.5", ws: { borderColor: "var(--st-accent)" }, num: "mt-0.5 shrink-0 rounded-md border px-2 py-0.5 text-[0.88rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)", background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }, text: "text-[1.35rem] font-bold leading-snug" },
-    { wrap: "mt-7 flex items-start gap-2.5 border-b border-dotted border-[var(--border)] pb-1", ws: {}, num: "mt-0.5 shrink-0 rounded px-1.5 py-px text-[0.78rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", background: "color-mix(in srgb, var(--st-accent) 12%, transparent)" }, text: "text-[0.95rem] font-extrabold uppercase tracking-[.09em]" },
-    { wrap: "mt-5 flex items-start gap-2", ws: {}, num: "mt-1 shrink-0 text-xs font-bold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-base font-semibold italic text-[var(--text-secondary)]" },
+    { wrap: "mt-12 flex items-start gap-3 border-b-2 pb-2.5", ws: { borderColor: "color-mix(in srgb, var(--st-accent) 45%, transparent)" }, num: "select-none mt-1 shrink-0 rounded-lg px-2.5 py-0.5 text-[1.05rem] font-extrabold tabular-nums text-[var(--surface)]", ns: { background: "var(--st-accent)" }, text: "font-display text-[1.75rem] font-extrabold leading-tight tracking-tight" },
+    { wrap: "mt-9 flex items-start gap-3 border-l-[5px] pl-3.5", ws: { borderColor: "var(--st-accent)" }, num: "select-none mt-0.5 shrink-0 rounded-md border px-2 py-0.5 text-[0.88rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)", background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }, text: "text-[1.35rem] font-bold leading-snug" },
+    { wrap: "mt-7 flex items-start gap-2.5 border-b border-dotted border-[var(--border)] pb-1", ws: {}, num: "select-none mt-0.5 shrink-0 rounded px-1.5 py-px text-[0.78rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", background: "color-mix(in srgb, var(--st-accent) 12%, transparent)" }, text: "text-[0.95rem] font-extrabold uppercase tracking-[.09em]" },
+    { wrap: "mt-5 flex items-start gap-2", ws: {}, num: "select-none mt-1 shrink-0 text-xs font-bold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-base font-semibold italic text-[var(--text-secondary)]" },
   ];
   const firstHead = nodes.findIndex((n) => n.t === "h2" || n.t === "h3"); const leadAt = nodes.findIndex((n) => n.t === "p");
   const render = (n: BookNode, i: number) => {
@@ -674,7 +674,7 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
       const wide = f.fig.kind === "frames" || !["memory", "stackframe", "ring"].includes(kind);
       const stage = f.fig.kind === "frames" && kind !== "strip" ? "max-w-[640px]" : "max-w-[860px]";
       return <figure key={i} className={`${plain} my-6 grid grid-cols-[minmax(0,1fr)] content-center justify-items-center gap-2 ${wide ? "clear-both w-full" : "lg:float-right lg:clear-right lg:ml-8 lg:w-[50%]"}`}><div className={`w-full ${stage}`}><Diagram fig={f.fig} /></div><figcaption className={`${stage} text-center text-sm leading-6 text-[var(--text-secondary)]`}><b className="text-[var(--text-primary)]">Figure {no}.{figNo.get(n.id)}.</b> <Rich s={f.caption} /></figcaption><span className="sr-only">{f.alt}</span></figure>; }
-    if (n.t === "ex") { const e = exs.get(n.id); return e ? <div key={i} className="clear-both my-6"><p className="mb-1.5 text-xs font-extrabold uppercase tracking-wide text-[var(--st-accent)]">Example {no}.{exNo.get(n.id)}</p><Example b={e} code /></div> : null; }
+    if (n.t === "ex") { const e = exs.get(n.id); return e ? <div key={i} className="clear-both my-6"><p className="select-none mb-1.5 text-xs font-extrabold uppercase tracking-wide text-[var(--st-accent)]">Example {no}.{exNo.get(n.id)}</p><Example b={e} code /></div> : null; }
     if (n.t === "trap") { const b = traps[n.i ?? 0]; return b ? <div key={i} className="clear-both my-5"><Trap b={b} /></div> : null; }
     if (n.t === "gate") { const b = single("gate"); return b ? <div key={i} className="clear-both my-5"><Gate b={b} /></div> : null; }
     if (n.t === "shortcut") { const b = single("shortcut"); return b ? <div key={i} className="clear-both my-5"><Shortcut b={b} /></div> : null; }
@@ -686,7 +686,7 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
   return (
     <article id={t.id} data-topic="" data-book="" lang="en" className="scroll-mt-24 lg:scroll-mt-4">
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Chapter {no}</p>
+        <div className="min-w-0"><p className="select-none text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Chapter {no}</p>
           <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
         <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
@@ -721,7 +721,7 @@ function TopicView({ t, index, topics, href }: { t: Topic; index: number; topics
   return (
     <article id={t.id} data-topic="" className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
+        <div className="min-w-0"><p className="select-none text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
         <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>

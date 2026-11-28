@@ -66,7 +66,7 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
   }, [anchor]);
 
   useEffect(() => {
-    if (!open) { setPeek(false); return; }
+    if (!open) return;
     let timer: number | undefined;
     let active = false;
     let held = false;
@@ -93,6 +93,7 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
     document.addEventListener("contextmenu", noMenu);
     return () => {
       window.clearTimeout(timer);
+      setPeek(false);
       document.removeEventListener("pointerdown", down, true);
       document.removeEventListener("pointermove", move, true);
       document.removeEventListener("pointerup", up, true);
@@ -113,7 +114,6 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
   useEffect(() => {
     if (!showHist || phone) return;
     const h = panel.current?.offsetHeight ?? 0;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- measured after the panel grew
     setPos((c) => (c && h && c.y + h > window.innerHeight - 8 ? { ...c, y: Math.max(8, window.innerHeight - h - 8) } : c));
   }, [showHist, phone, hist.length]);
   const onDown = (e: React.PointerEvent) => {
@@ -166,7 +166,8 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 ${phone ? "py-0.5" : "py-1"} ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
         {!phone && <GripHorizontal className="h-3.5 w-3.5 text-[var(--text-muted)]" aria-hidden />}
-        {mini && <span className="ml-1 truncate font-num text-sm font-extrabold text-[var(--text-primary)]">{result}</span>}<button type="button" aria-label="Calculation history" aria-expanded={showHist} title="History" onClick={() => setShowHist((v) => !v)} onPointerDown={(e) => e.stopPropagation()} className={`${mini ? "" : "ml-auto"} my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] ${showHist ? "bg-[var(--surface-secondary)]" : "bg-[var(--surface)]"}`}><History className="h-4 w-4" /></button><button type="button" aria-label={mini ? "Expand calculator" : "Minimise calculator"} title={mini ? "Expand" : "Minimise"} onClick={() => setMini((m) => !m)} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{mini ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}</button><button type="button" aria-label="Close calculator" title="Close" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
+        <button type="button" aria-label="Calculation history" aria-expanded={showHist} title="History" onClick={() => setShowHist((v) => !v)} onPointerDown={(e) => e.stopPropagation()} className={`my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] ${showHist ? "bg-[var(--surface-secondary)]" : "bg-[var(--surface)]"}`}><History className="h-4 w-4" /></button><button type="button" aria-label={mini ? "Expand calculator" : "Minimise calculator"} title={mini ? "Expand" : "Minimise"} onClick={() => setMini((m) => !m)} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{mini ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}</button><button type="button" aria-label="Close calculator" title="Close" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
+        {mini && <span className="ml-1 min-w-0 flex-1 truncate text-right font-num text-sm font-extrabold text-[var(--text-primary)]">{result}</span>}
       </div>
 
       <div className={`${phone ? "px-1.5 pt-1" : "px-2 pt-1.5"} ${mini ? "hidden" : ""}`}>
