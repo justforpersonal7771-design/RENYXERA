@@ -54,8 +54,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "memory-h", title: "Cache memory", href: "/study/cache-memory", ready: "3 topics ready", match: "Cache|Memory Hierarchy" }, { id: "mainmem", title: "Main memory and secondary storage", href: "/study/main-memory", ready: "4 topics ready", match: "Main Memory|DRAM|Disk|RAID|Secondary" }, { id: "io", title: "I/O interface: interrupts and DMA", href: "/study/io-interrupts-dma", ready: "4 topics ready", match: "Interrupt|DMA|I/O" },
   ] },
   { id: "dl", title: "Digital Logic", short: "Digital", tint: "mint", cloth: "#C9D6C2", ink: "#1B1917", paper: "#2E4A2A", dark: "#2E4A2A", band: "core", chapters: [
-    { id: "bool", title: "Boolean algebra" }, { id: "kmap", title: "Minimisation" }, { id: "comb", title: "Combinational circuits" },
-    { id: "seq", title: "Sequential circuits" }, { id: "num", title: "Number representation" }, { id: "arith", title: "Computer arithmetic: fixed and floating point" },
+    { id: "num", title: "Number representation and codes", href: "/study/number-codes", ready: "1 chapter ready" }, { id: "bool", title: "Gates and Boolean algebra", href: "/study/boolean-algebra", ready: "1 chapter ready" },
+    { id: "kmap", title: "Minimisation", href: "/study/minimisation", ready: "1 chapter ready" }, { id: "comb", title: "Combinational circuits", href: "/study/combinational", ready: "1 chapter ready" },
+    { id: "seq", title: "Sequential circuits", href: "/study/sequential", ready: "1 chapter ready" }, { id: "arith", title: "Computer arithmetic: fixed and floating point", href: "/study/computer-arithmetic", ready: "2 chapters ready" },
   ] },
   { id: "dm", title: "Discrete Mathematics", short: "Discrete", tint: "rose", cloth: "#E4C9D2", ink: "#1B1917", paper: "#6A1B3A", dark: "#6A1B3A", band: "maths", chapters: [
     { id: "logic", title: "Propositional logic", href: "/study/logic", ready: "4 topics ready" }, { id: "fol", title: "First-order logic", href: "/study/first-order-logic", ready: "3 topics ready" }, { id: "sets", title: "Sets, relations and functions", href: "/study/sets-relations", ready: "4 topics ready" },

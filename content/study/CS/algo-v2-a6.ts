@@ -156,7 +156,7 @@ int main(void) {
     ] } },
     { type: "figure", id: "a6-f2", caption: "The LCS table for X = ABCBDAB (rows) and Y = BDCABA (columns). The corner cell is the answer, 4.", alt: "A grid of numbers with rows for the prefixes of ABCBDAB and columns for the prefixes of BDCABA; the bottom right cell is 4.", fig: { kind: "array", title: "L[i][j]: rows A B C B D A B, columns B D C A B A", data: [
       [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1], [0, 1, 1, 1, 1, 2, 2], [0, 1, 1, 2, 2, 2, 2], [0, 1, 1, 2, 2, 3, 3], [0, 1, 2, 2, 2, 3, 3], [0, 1, 2, 2, 3, 3, 4], [0, 1, 2, 2, 3, 4, 4],
-    ], base: 0, size: 1, index: true, rowIndex: true, tones: { "7,6": "ok" } } },
+    ], colLabels: ["∅", "B", "D", "C", "A", "B", "A"], rowLabels: ["∅", "A", "B", "C", "B", "D", "A", "B"], tones: { "7,6": "ok" } } },
     { type: "figure", id: "a6-f3", caption: "The cheapest parenthesization of F1 F2 F3 F4 F5 (GATE 2018): ((F1 (F2 (F3 F4))) F5), cost 2173. Each node shows the size of the matrix it produces.", alt: "A tree: the root splits into a subtree for F1 to F4 and the leaf F5; F1 to F4 splits into F1 and a subtree for F2 to F4, which splits into F2 and F3 F4.", fig: { kind: "tree", title: "Cost 48 + 75 + 50 + 2000 = 2173", root: { label: "2×1000", sub: "2000", kids: [
       { label: "2×1", sub: "50", kids: [{ label: "F1 2×25" }, { label: "25×1", sub: "75", kids: [{ label: "F2 25×3" }, { label: "3×1", sub: "48", kids: [{ label: "F3 3×16" }, { label: "F4 16×1" }] }] }] },
       { label: "F5 1×1000" },

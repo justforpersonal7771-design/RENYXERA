@@ -19,6 +19,8 @@ export type ArrayFig = {
   kind: "array"; title?: string; note?: string;
   data: Val[][]; base?: number; size?: number; colMajor?: boolean; hex?: boolean;
   index?: boolean; rowIndex?: boolean; tones?: Record<string, Tone>; pointers?: { name: string; at: [number, number] }[];
+  /** Text shown above each column and left of each row in place of the numbers 0, 1, 2 (a K-map's Gray-code labels, the strings of a table). */
+  colLabels?: string[]; rowLabels?: string[];
 };
 
 /** Singly or doubly linked nodes. `next[i]` is the id of node i's successor (null = NULL); `prev` likewise for doubly linked. */

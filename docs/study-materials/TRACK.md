@@ -15,11 +15,11 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | Operating Systems | os | [x] | [x] | [ ] old-style topics only | [ ] | old version live | reviews merged |
 | Databases | dbms | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Computer Networks | cn | [x] | [x] | [ ] | [ ] | old version live | reviews merged |
-| Algorithms | algo | [x] | [x] | [x] all 11 chapters written (A0–A10), 29 Nov | [~] chapter-check 11/11 passed; browser sweep and contrast pending | [ ] committed locally, push pending | routes unchanged (`/study/asymptotics` … `/study/shortest-paths`); code in `content/study/CS/algo-v2*.ts`; PYQ list in A10 |
+| Algorithms | algo | [x] | [x] | [x] all 11 chapters written (A0–A10), 29 Nov | [x] chapter-check 11/11, browser sweep and contrast clean | [x] pushed 29 Nov | routes unchanged (`/study/asymptotics` … `/study/shortest-paths`); code in `content/study/CS/algo-v2*.ts`; PYQ list in A10 |
 | Theory of Computation | toc | [ ] | [ ] | [ ] | [ ] | old version live | |
 | Compiler Design | cd | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
 | Computer Organisation | coa | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
-| Digital Logic | dl | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
+| Digital Logic | dl | [x] | [x] Gemini merged 28 Nov | [x] all 7 chapters written (L1–L7) | [x] chapter-check 7/7, browser sweep and contrast clean | [~] pushed with this commit, live check pending | routes `/study/number-codes` … `/study/computer-arithmetic`; code `content/study/CS/dl-v2*.ts`; 69 PYQs tagged and all solved incl. 25 picture questions |
 | Discrete Mathematics | dm | [x] | [x] Gemini + ChatGPT merged 28 Nov | [ ] | [ ] | old version live | owner review pending |
 | Linear Algebra | la | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
 | Probability and Statistics | prob | [x] | [x] Gemini merged 28 Nov | [ ] | [ ] | no | |
@@ -66,6 +66,18 @@ Legend: `[x]` done · `[~]` partly · `[ ]` not started
 | A8 | Minimum spanning trees | [x] 9 PYQs; 4 with figures by method |
 | A9 | Shortest paths | [x] 3 PYQs |
 | A10 | Previous-year patterns and mixed practice | [x] all 73 PYQs listed by chapter |
+
+## Digital Logic chapters (detail)
+
+| Ch | Title | Status |
+|---|---|---|
+| L1 | Number representation and codes | [x] 16 PYQs |
+| L2 | Gates and Boolean algebra | [x] 10 PYQs |
+| L3 | Minimisation: K-maps, tabular method, NOR/NAND | [x] 9 PYQs |
+| L4 | Combinational circuits and hazards | [x] 13 PYQs, 11 pictures read |
+| L5 | Sequential circuits | [x] 11 PYQs, 8 pictures read |
+| L6 | IEEE 754 floating point | [x] 10 PYQs |
+| L7 | Previous-year patterns and mixed practice | [x] all 69 PYQs listed |
 
 ## Cross-cutting open items
 - [ ] Tag TOC / OS / CN / Algorithms PYQs to chapters

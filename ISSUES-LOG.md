@@ -8,6 +8,13 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-052 · 28 Nov · Digital Logic book written and wired (L1 to L7) · Fixed
+- **Reported:** continue on the book that was paused.
+- **Fix:** seven chapters (number representation, Boolean algebra, minimisation, combinational circuits, sequential circuits, IEEE 754, previous-year patterns) with all 69 questions solved, 25 picture questions read from `public/images`, programs compiled with gcc. Six shelf rows and routes (`/study/number-codes`, `boolean-algebra`, `minimisation`, `combinational`, `sequential`, `computer-arithmetic`), 69 PYQs tagged in `pyq-chapter-map.json`. Array figures can now carry Gray-code or text labels (`colLabels`, `rowLabels`); the K-maps and the LCS table use them instead of showing meaningless cell numbers.
+- **Files:** `content/study/CS/dl-v2*.ts`, `lib/study/catalog.ts`, `lib/study/chapters-server.ts`, `lib/study/figures.ts`, `components/study/figures/linear.tsx`, six `app/(dashboard)/study/*/page.tsx`
+- **Checked:** chapter-check 7/7, browser sweep (desktop and phone) and contrast audit clean on all six rows.
+- **Open:** 2024 AN Q23's option letter (the picture with exponent 11111110): the question lists it as option B by file order, while the earlier review said C, so the chapter names the picture, not the letter; 2022 FN Q41's third register is printed with an extra digit in the bank.
+
 ### L-051 · 28 Nov · Clay controls audit: chips, search, switches, dropdowns · Fixed
 - **Reported:** search bar, buttons, toggles and chips in the Clay Look were not proper.
 - **Cause:** the first Clay pass styled cards, `.btn-*` and inputs only; outlined pill buttons stayed flat, the search input got a second inset inside its own well, and switches and dropdown triggers were untouched.

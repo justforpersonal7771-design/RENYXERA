@@ -38,7 +38,7 @@ export function Memory({ fig }: { fig: MemoryFig }) {
 /* ---------------------------------------------------------------- array: indexes above, addresses inside, pointers below */
 export function ArrayView({ fig }: { fig: ArrayFig }) {
   const id = useId().replace(/:/g, ""), rows = fig.data.length, cols = Math.max(...fig.data.map((r) => r.length));
-  const cw = 52, ch = fig.base !== undefined ? 50 : 38, left = fig.rowIndex ? 34 : 8, top = fig.index ? 24 : 8;
+  const cw = 52, ch = fig.base !== undefined ? 50 : 38, left = fig.rowLabels ? 46 : fig.rowIndex ? 34 : 8, top = fig.index || fig.colLabels ? 24 : 8;
   const ptrs = fig.pointers ?? [], bottom = ptrs.length && rows === 1 ? 14 + (Math.max(...ptrs.map((p) => ptrs.filter((q) => q.at[0] === p.at[0] && q.at[1] === p.at[1]).length)) + 1) * 14 : 8;
   const W = left + cols * cw + 8, H = top + rows * ch + bottom;
   const seen: Record<string, number> = {};
@@ -47,8 +47,8 @@ export function ArrayView({ fig }: { fig: ArrayFig }) {
       <div className="max-w-full overflow-x-auto">
         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: Math.round(Math.max(W, 120) * 2) }} className="mx-auto h-auto" role="img" aria-label={fig.title ?? "Array"}>
           <ArrowDefs id={id} />
-          {fig.index && Array.from({ length: cols }, (_, c) => <text key={c} x={left + c * cw + cw / 2} y={top - 8} textAnchor="middle" fontSize="11" fill={SUB}>{c}</text>)}
-          {fig.rowIndex && fig.data.map((_, r) => <text key={r} x={left - 8} y={top + r * ch + ch / 2 + 4} textAnchor="end" fontSize="11" fill={SUB}>{r}</text>)}
+          {(fig.index || fig.colLabels) && Array.from({ length: cols }, (_, c) => <text key={c} x={left + c * cw + cw / 2} y={top - 8} textAnchor="middle" fontSize="11" fill={SUB}>{fig.colLabels?.[c] ?? c}</text>)}
+          {(fig.rowIndex || fig.rowLabels) && fig.data.map((_, r) => <text key={r} x={left - 8} y={top + r * ch + ch / 2 + 4} textAnchor="end" fontSize="11" fill={SUB}>{fig.rowLabels?.[r] ?? r}</text>)}
           {fig.data.map((row, r) => row.map((v, c) => (
             <g key={`${r}-${c}`}>
               <rect x={left + c * cw} y={top + r * ch} width={cw} height={ch} strokeWidth="1.6" style={toneStyle(fig.tones?.[`${r},${c}`])} />
