@@ -8,6 +8,15 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-041 · 28 Nov · Study roadmap added · Fixed
+- **Reported:** study needs a guide to the flow: where to start, high-weightage books, logical order.
+- **Fix:** new Study roadmap above the shelf with three modes (Balanced, Marks first, Logical order), a Next up card, stages by cumulative marks share and per-chapter cards with % of marks, PYQs, progress and access chip. Balanced works in prerequisite tiers (C, then Data Structures, then Algorithms/Digital Logic, and so on); weight breaks ties inside a tier.
+- **Files:** `components/study/study-roadmap.tsx`, `app/(dashboard)/study/page.tsx`
+```ts
+const score = (id) => mode === "marks" ? wRank(id) : mode === "logical" ? learnRank(id) : tierOf(id) * 100 + wRank(id);
+```
+- **Watch:** check on a phone and in dark mode.
+
 ### L-040 · Chapter numbers and labels were selectable (highlight popup appeared on them) · Fixed
 - **Reported:** the heading badges (7.5.1) and the EXAMPLE 7.1 label could be selected, which opened the highlight palette. They should not be selectable.
 - **Fix:** `select-none` on the heading number badges (all four levels), the Example, Chapter and Topic labels and the Worked example label. **Files:** `components/study/lesson-renderer.tsx`
