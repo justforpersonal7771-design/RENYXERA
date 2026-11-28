@@ -14630,7 +14630,7 @@
           },
           {
             "option_id": "D",
-            "text": "B1: {a, i, j}, B2: {a, i, j}, B3: {a, j}, B4: {a, i, j}",
+            "text": "B1: {a, i, j}, B2: {a, j}, B3: {a, j}, B4: {a, i, j}",
             "is_correct": true,
             "has_image": false
           }
@@ -14892,7 +14892,7 @@
         "subject": "Digital Logic",
         "topic": "Combinational Logic (Multiplexers, Decoders, Adders)",
         "difficulty": "Medium",
-        "question_text": "A Boolean digital circuit is composed using two 4-input multiplexers (M1 and M2) and one 2-input multiplexer (M3) as shown in the figure. X0 – X7 are the inputs of the multiplexers M1 and M2 and could be connected to either 0 or 1. The select lines of the multiplexers are connected to Boolean variables A, B and C as shown.\n[IMAGE_Q_44_1]\nWhich one of the following set of values of (X0, X1, X2, X3, X4, X5, X6, X7) will realise the Boolean function \\( A + \\overline{A}\\cdot\\overline{C} + A\\cdot\\overline{B}\\cdot C \\)?",
+        "question_text": "A Boolean digital circuit is composed using two 4-input multiplexers (M1 and M2) and one 2-input multiplexer (M3) as shown in the figure. X0 – X7 are the inputs of the multiplexers M1 and M2 and could be connected to either 0 or 1. The select lines of the multiplexers are connected to Boolean variables A, B and C as shown.\n[IMAGE_Q_44_1]\nWhich one of the following set of values of (X0, X1, X2, X3, X4, X5, X6, X7) will realise the Boolean function \\( \\overline{A} + \\overline{A}\\cdot\\overline{C} + A\\cdot\\overline{B}\\cdot C \\)?",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_44_1"

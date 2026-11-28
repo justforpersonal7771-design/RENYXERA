@@ -8,6 +8,13 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-033 · Compiler Design and Digital Logic figures checked; two more bank defects · Fixed (Owner step)
+- **Reported:** next item on the list: check the Compiler Design (11) and Digital Logic (21) figures.
+- **Done:** every key checked against the pictures in `public/images` (liveness, available expressions, parse tables, SDDs, circuits, counters, IEEE formats). All keys hold.
+- **Defects found:** 2023_FN_Q37 option D printed `B2: {a, i, j}` (true: `{a, j}`); 2023_FN_Q44 function printed `A + A'C' + AB'C` (paper: `A' + A'C' + AB'C`); 2022_FN_Q41 picture prints `0xC42100000` (stray C; true value `0x42100000`).
+- **Fixed in** `data/Aggregated_Output.json` and `public/data/questions.json`; the database copy is `supabase/migrations/0068_bank_corrections_2.sql` (**owner runs it once**). The picture typo cannot be edited.
+- **Docs:** `compiler-design/` and `digital-logic/` `01-REVIEW-MERGE-AND-PLAN.md` updated.
+
 ### L-032 · Calculator bar: screenshot with the three round buttons circled, no text · Open
 - **Reported:** a screenshot of the floating calculator bar (display 785, then history, expand and close buttons) with the buttons circled. No message came with it, so the request is unclear (too big? wrong place? should show more?).
 - **Next:** ask the owner what to change before touching `components/study/lesson-tools.tsx`.

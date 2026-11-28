@@ -14,7 +14,7 @@ Good and specific. It finds the two serious bank defects (both verified below), 
 | 2026_AN_Q35 | Token definition prints `[A - Za - z]` with spaces; the string yields **13** tokens (x1, 23, mm, 78, y, 7, z, zz5, 14, A, 8, H, AaYcD) | Key correct; fix the spacing |
 | 2020_FN_Q35 | Options A and C are both "I only" | Key D unaffected; fix option C |
 | Other numbers re-solved | 2024_AN_Q64 = 9 items, 2022_FN_Q29 = 5, 2021_AN_Q46 = 8, 2019_FN_Q36 = 5, 2021_FN_Q11 = 6 DAG nodes, 2020_FN_Q21 = 7 reductions, 2025_FN_Q52 = 6 basic blocks, 2017_FN_Q54 = 2 registers | All keys correct |
-| Figures | 11 missing: 2026_FN_Q42, 2026_AN_Q45, 2026_FN_Q53, 2024_FN_Q38, 2024_AN_Q51, 2024_AN_Q48, 2023_FN_Q37, 2021_FN_Q36, 2019_FN_Q13, 2019_FN_Q57, 2018_FN_Q48 | **Open**: restore |
+| Figures (29 Nov update) | **The pictures exist in the app; all 11 keys checked against them.** 2026_FN_Q42 = D (g*k is available at B4, nothing is at B5), 2026_AN_Q45 = A (live variables by program), 2026_FN_Q53 = A, B, D, 2024_FN_Q38 = 45, 2024_AN_Q51 = A, 2024_AN_Q48 = A, 2021_FN_Q36 = A, 2019_FN_Q13 = 31 (FOLLOW(B) = {a, d}, indices 3 and 1), 2019_FN_Q57 = A, 2018_FN_Q48 = A. **One defect found:** 2023_FN_Q37 option D prints B2: {a, i, j}; recomputed and confirmed on published solutions it is B2: {a, j} (i is redefined in B4 before any use). The key D stands; the option text is fixed (migration 0068). Original list: 2026_FN_Q42, 2026_AN_Q45, 2026_FN_Q53, 2024_FN_Q38, 2024_AN_Q51, 2024_AN_Q48, 2023_FN_Q37, 2021_FN_Q36, 2019_FN_Q13, 2019_FN_Q57, 2018_FN_Q48 | **Done** |
 | Other keys (MCQ, MSQ) | Gemini says CORRECT for every text-complete one; we did not re-solve them | Keep |
 
 ## 3. Syllabus check
@@ -25,4 +25,4 @@ Official line: *Lexical analysis, parsing, syntax-directed translation. Runtime 
 Weights (bank): lexical + parsing 30 q / 43 marks, SDT + runtime 11 / 18, intermediate code + local optimisation 9 / 15, data flow 5 / 9.
 
 ## 5. Next steps
-Correct 2025_AN_Q40 and 2026_AN_Q41 now; restore the 11 figures (owner); tag the 55 PYQs to lessons; build the LR item-set generator used here as the figure engine for parsing tables.
+Correct 2025_AN_Q40 and 2026_AN_Q41 now; tag the 55 PYQs to lessons; build the LR item-set generator used here as the figure engine for parsing tables.
