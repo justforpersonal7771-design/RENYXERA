@@ -19,7 +19,7 @@ export interface Look {
 
 const F = {
   base: { display: "Sora", body: "Manrope" }, outfit: { display: "Outfit", body: "Outfit" }, arcade: { display: "Archivo Black", body: "Space Grotesk" },
-  neon: { display: "Orbitron", body: "Space Grotesk" }, pixel: { display: "Silkscreen", body: "DotGothic16" },
+  clay: { display: "Lilita One", body: "Rubik" }, neon: { display: "Orbitron", body: "Space Grotesk" }, pixel: { display: "Silkscreen", body: "DotGothic16" },
 };
 
 export const LOOKS: Look[] = [
@@ -38,7 +38,7 @@ export const LOOKS: Look[] = [
   { id: "hud", name: "HUD Terminal", tier: "pro", family: "Sci-fi HUD", blurb: "Green and amber on black, monospace numbers.", swatch: ["#04110a", "#3ddc84", "#ffb000"], ready: false, modes: "both", fonts: F.base },
   { id: "blueprint", name: "Blueprint", tier: "pro", family: "Engineering drawing", blurb: "Blue grid paper and white line art.", swatch: ["#0b3d91", "#1d5fd1", "#ffffff"], ready: false, modes: "both", fonts: F.base },
   { id: "editorial", name: "Editorial", tier: "pro", family: "Magazine", blurb: "Large serif headlines, hairline rules, generous space.", swatch: ["#faf7f2", "#e8e1d6", "#1c1917"], ready: false, modes: "both", fonts: F.base },
-  { id: "clay", name: "Clay", tier: "pro", family: "Claymorphism", blurb: "Soft inflated shapes in bright pastels.", swatch: ["#ffd6e0", "#c1fba4", "#ffe066"], ready: false, modes: "both", fonts: F.base },
+  { id: "clay", name: "Clay", tier: "pro", family: "Claymorphism", blurb: "Soft inflated shapes in bright pastels, pressed like modelling clay.", swatch: ["#ffd6e0", "#c1fba4", "#8f72f8"], ready: true, modes: "both", fonts: F.clay },
 ];
 
 export const lookById = (id: string | null | undefined): Look => LOOKS.find((l) => l.id === id) ?? LOOKS[0];
@@ -70,6 +70,7 @@ export const FONT_SETS: Record<string, FontSet> = {
   arcade: { headings: [FC.archivo, FC.bowlby, FC.lilita, FC.rubik, FC.grotesk], numbers: [FC.archivo, FC.grotesk, FC.spacemono, FC.rubik], text: [FC.grotesk, FC.rubik, FC.worksans, FC.dmsans] },
   neon: { headings: [FC.orbitron, FC.audiowide, FC.rajdhani, FC.chakra, FC.grotesk], numbers: [FC.orbitron, FC.sharetech, FC.spacemono, FC.rajdhani], text: [FC.grotesk, FC.exo2, FC.rajdhani, FC.chakra, FC.inter] },
   pixel: { headings: [FC.silkscreen, FC.jersey, FC.vt323, FC.dotgothic], numbers: [FC.silkscreen, FC.jersey, FC.vt323, FC.sharetech], text: [FC.dotgothic, FC.vt323, FC.jersey, FC.sharetech] },
+  clay: { headings: [FC.lilita, FC.bowlby, FC.outfit, FC.urbanist, FC.jakarta], numbers: [FC.lilita, FC.rubik, FC.outfit, FC.dmsans], text: [FC.rubik, FC.urbanist, FC.jakarta, FC.dmsans, FC.outfit] },
   aurora: { headings: [FC.outfit, FC.fraunces, FC.playfair, FC.sora, FC.urbanist], numbers: [FC.outfit, FC.grotesk, FC.sora, FC.dmsans], text: [FC.outfit, FC.manrope, FC.inter, FC.jakarta, FC.lora] },
 };
 export const fontSetFor = (lookId: string): FontSet => FONT_SETS[lookId] ?? FONT_SETS.classic;

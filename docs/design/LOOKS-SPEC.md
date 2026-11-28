@@ -53,7 +53,16 @@
 - **Fonts:** Outfit. **Corners:** 24 px.
 - **Motion:** background drift only when "reduce motion" is off.
 
-## Not built yet (specified in R26): Liquid Glass, HUD Terminal, Blueprint, Editorial, Clay, Minimal Mono, Midnight, Ocean Bento, Sunrise Soft, Paper.
+## Clay (Pro, light and dark)
+- **Idea:** claymorphism: soft, inflated shapes in bright pastels that look pressed from modelling clay.
+- **Research:** a clay surface is a large radius, a soft tinted outer shadow, a bright inner highlight at the top-left and a darker inner shade at the bottom-right; inputs are the reverse (debossed). Shadow alone must not carry meaning (WCAG 1.4.11), so controls keep labels and 3:1 edges and text stays AA. Sources: Smashing Magazine "Claymorphism: will it stick around?", LogRocket "Implementing claymorphism in CSS", SetProduct claymorphism guide (2026).
+- **Principles:** layered shadows only, no outlines; one radius family (32 px cards, 22 px controls, round pills); tints come from the card's own colour; motion is a 4 px lift on hover and a 3 px press, switched off for reduced motion and inside exams.
+- **Colour:** page `#f4ecff` with pink, blue and mint blobs (dark `#1b1429`); surface `#fffafd` (dark `#2b2142`); ink `#2a1f42` (dark `#f6efff`); shadows tinted `rgb(105, 70, 175)`; primary button a purple clay ball `#8f72f8` to `#6a4ce0`, white text 5.6:1.
+- **Fonts:** Lilita One for headings and numbers (single heavy weight, never re-bolded), Rubik for text.
+- **Surfaces and controls:** every card class, dock, popover and menu is inflated clay; inputs debossed; secondary buttons raised white clay that sinks when pressed.
+- **Mode:** light and dark.
+
+## Not built yet (specified in R26): Liquid Glass, HUD Terminal, Blueprint, Editorial, Minimal Mono, Midnight, Ocean Bento, Sunrise Soft, Paper.
 Each needs: tokens, surfaces, controls, fonts, mode support, motion, contrast audit, this spec section.
 
 ## Test results (2 Nov 2026, local production build)

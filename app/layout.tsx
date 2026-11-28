@@ -4,6 +4,7 @@ import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC
 import './globals.css'; // Global styles
 import './looks.css';
 import './looks-pro2.css'; // Design Studio Looks, batch 2
+import './looks-clay.css'; // Design Studio Look: Clay (claymorphism)
 import './looks-details.css'; // fonts, motion, full Pixel treatment
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { CardHover } from '@/components/system/card-hover';

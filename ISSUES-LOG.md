@@ -8,6 +8,12 @@ Every bug, issue, request and fix is logged here, newest first, with date and ti
 
 ## 2026-11-29
 
+### L-050 · 28 Nov · Clay (claymorphism) Look added to the Design Studio, Pro tier · Fixed
+- **Reported:** add claymorphism in the Design Studio for Pro; research it and build with the design skills.
+- **Research:** Smashing Magazine, LogRocket and SetProduct (2026): large radius, tinted outer shadow, bright top-left inner rim, darker bottom-right inner shade; inputs debossed; WCAG 1.4.11 means shadow alone cannot carry meaning.
+- **Fix:** `app/looks-clay.css` (tokens, pastel backdrop, inflated surfaces, puffy buttons that sink when pressed, debossed inputs, light and dark); `lib/looks/looks.ts` marks Clay ready, fonts Lilita One and Rubik, font choices; spec section in `docs/design/LOOKS-SPEC.md`.
+- **Checked:** Study page in light and dark with the attribute applied. **Open:** the Studio preview card and the contrast audit for Clay not run; the Design Studio page did not finish loading in my headless run.
+
 ### L-049 · 28 Nov · Purple packs card and four 3D tiles restored · Fixed
 - **Reported:** the packs card should be the purple purchase card; place the four 3D tiles as before, arranged properly.
 - **Fix:** the four tilt tiles (topics read, chapters started, highlights, library) are back as the first row; below, the hero (2.1 parts) beside the purple `PremiumCard` (1 part, same height); the planner and path follow.

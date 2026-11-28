@@ -41,7 +41,7 @@ export default function StudyPage() {
   return (
     <div className="space-y-6 pb-8">
       <Bookshelf aside={
-        <section aria-label="Your reading" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <section aria-label="Your reading" className="grid grid-cols-2 gap-3">
           <TiltCard tint="mint" className="card-pastel p-4 sm:p-5">
             <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" /> Topics read</p>
             <p className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{stats?.read ?? 0}</span><span className="text-base text-[var(--text-secondary)]"> / {open}</span></p>

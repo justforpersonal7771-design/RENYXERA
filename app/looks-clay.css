@@ -1,0 +1,106 @@
+/*
+ * CLAY (Pro): claymorphism. Soft inflated shapes in bright pastels that look pressed from modelling clay.
+ * Research (Smashing Magazine, LogRocket, SetProduct 2026): a clay surface = a large radius, a soft tinted OUTER shadow, a bright INNER highlight on the top-left
+ * edge and a darker INNER shade on the bottom-right edge; inputs are the opposite (debossed). The shadow alone never carries meaning (WCAG 1.4.11): controls keep
+ * a label and a 3:1 edge, and body text stays at 4.5:1 on its pastel.
+ * Depth strategy: layered shadows only (no outlines). One radius family: 32 px cards, 22 px controls, pills fully round.
+ */
+[data-look="clay"] {
+  --card-radius: 32px;
+  --background: #f4ecff;
+  --surface: #fffafd;
+  --surface-secondary: #f1e8fb;
+  --border: rgba(110, 70, 170, .16);
+  --text-primary: #2a1f42;
+  --text-secondary: #5a4a78;
+  --clay-hi: rgba(255, 255, 255, .9);
+  --clay-ink: 105, 70, 175;            /* the purple the shadows are tinted with (rgb triplet) */
+  --font-sans: var(--font-rubik), system-ui, sans-serif;
+  --font-display: var(--font-lilita), system-ui, sans-serif;
+}
+:is(.dark[data-look="clay"], .dark [data-look="clay"]) {
+  --background: #1b1429;
+  --surface: #2b2142;
+  --surface-secondary: #382b57;
+  --border: rgba(255, 255, 255, .1);
+  --text-primary: #f6efff;
+  --text-secondary: #cdbfe8;
+  --clay-hi: rgba(255, 255, 255, .14);
+  --clay-ink: 8, 4, 20;
+}
+
+/* the page: a pastel field with two soft blobs of colour */
+[data-look="clay"][data-look="clay"] .ambient-gradient, html[data-look="clay"] body {
+  background-image:
+    radial-gradient(640px 460px at 6% 0%, rgba(255, 190, 215, .6), transparent 64%),
+    radial-gradient(620px 440px at 96% 14%, rgba(190, 220, 255, .6), transparent 64%),
+    radial-gradient(700px 520px at 60% 108%, rgba(200, 245, 190, .5), transparent 64%) !important;
+  background-color: #f4ecff !important;
+}
+:is(.dark[data-look="clay"], .dark [data-look="clay"]) .ambient-gradient, html.dark[data-look="clay"] body {
+  background-image:
+    radial-gradient(640px 460px at 6% 0%, rgba(190, 60, 120, .28), transparent 64%),
+    radial-gradient(620px 440px at 96% 14%, rgba(70, 90, 210, .3), transparent 64%),
+    radial-gradient(700px 520px at 60% 108%, rgba(60, 150, 90, .2), transparent 64%) !important;
+  background-color: #1b1429 !important;
+}
+
+/* every surface is inflated clay: tinted outer shadow, bright top-left rim, darker bottom-right rim */
+[data-look="clay"][data-look="clay"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
+  background: var(--surface) !important;
+  border: 0 !important;
+  border-radius: var(--card-radius);
+  box-shadow:
+    12px 16px 30px -10px rgba(var(--clay-ink), .32),
+    inset 7px 7px 14px var(--clay-hi),
+    inset -8px -10px 16px rgba(var(--clay-ink), .14) !important;
+  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+[data-look="clay"][data-look="clay"] :is(.card-pastel, .card-well, .card-band)[data-tint] {
+  background: color-mix(in srgb, var(--tint, var(--tint-lilac)) 88%, var(--surface)) !important;
+  box-shadow:
+    12px 16px 30px -10px color-mix(in srgb, var(--tint-ink, rgb(105 70 175)) 45%, transparent),
+    inset 7px 7px 14px var(--clay-hi),
+    inset -8px -10px 16px color-mix(in srgb, var(--tint-ink, rgb(105 70 175)) 20%, transparent) !important;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-look="clay"][data-look="clay"] .card-pastel:hover { transform: translateY(-4px); }
+}
+[data-look="clay"][data-look="clay"] .ai-panel::after { opacity: .08; }
+[data-look="clay"][data-look="clay"] .page-shell { --sec: transparent; }
+[data-look="clay"][data-look="clay"] .page-shell::before, [data-look="clay"] .page-shell::after { opacity: 0 !important; }
+
+/* buttons: puffy and pressable. Primary is a purple clay ball, white text (5.6:1) */
+[data-look="clay"][data-look="clay"] :is(.btn-main, .pill-ink) {
+  background: linear-gradient(150deg, #8f72f8, #6a4ce0) !important; color: #fff !important; border: 0 !important; border-radius: 22px;
+  box-shadow:
+    0 12px 20px -8px rgba(80, 50, 200, .6),
+    inset 4px 4px 9px rgba(255, 255, 255, .45),
+    inset -5px -7px 11px rgba(40, 20, 120, .38) !important;
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+[data-look="clay"][data-look="clay"] :is(.btn-main, .pill-ink) :is(svg, span) { color: #fff !important; }
+[data-look="clay"][data-look="clay"] :is(.btn-main, .pill-ink):active {
+  transform: translateY(3px) scale(.985);
+  box-shadow: 0 4px 8px -4px rgba(80, 50, 200, .6), inset 5px 6px 12px rgba(40, 20, 120, .45), inset -3px -3px 8px rgba(255, 255, 255, .25) !important;
+}
+[data-look="clay"][data-look="clay"] :is(.btn-soft, .pill-soft) {
+  background: var(--surface) !important; color: var(--text-primary) !important; border: 0 !important; border-radius: 22px;
+  box-shadow: 6px 8px 16px -8px rgba(var(--clay-ink), .32), inset 3px 3px 7px var(--clay-hi), inset -3px -4px 8px rgba(var(--clay-ink), .12) !important;
+}
+[data-look="clay"][data-look="clay"] :is(.btn-soft, .pill-soft):active { box-shadow: inset 4px 5px 10px rgba(var(--clay-ink), .22), inset -2px -2px 6px var(--clay-hi) !important; }
+
+/* inputs are debossed into the clay: the opposite of a card */
+[data-look="clay"][data-look="clay"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) {
+  background: var(--surface-secondary); border: 0 !important; border-radius: 20px;
+  box-shadow: inset 4px 5px 10px rgba(var(--clay-ink), .2), inset -3px -4px 8px var(--clay-hi) !important;
+}
+[data-look="clay"][data-look="clay"] :is(input, textarea, select):focus-visible { outline: 3px solid rgba(106, 76, 224, .55); outline-offset: 2px; }
+[data-look="clay"] [role="menu"], [data-look="clay"] [role="listbox"], [data-look="clay"] [role="dialog"] { border-radius: 26px; }
+
+/* headings: Lilita One is a single heavy weight, so it must not be bolded again */
+[data-look="clay"][data-look="clay"] :is(h1, h2, h3, .font-display) { font-weight: 400; letter-spacing: 0; }
+[data-look="clay"][data-look="clay"] .font-num { font-variant-numeric: tabular-nums; }
+
+/* exams stay calm: no lift, no blobs behind a question */
+html[data-in-exam][data-look="clay"] .card-pastel:hover { transform: none; }
