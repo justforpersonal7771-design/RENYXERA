@@ -125,7 +125,8 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
         <UserRound className="w-4 h-4" /> Share as an image
       </button>
       {open && (
-        <div className="mt-3 space-y-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div className="mt-3 grid gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-start">
+          <div className="min-w-0 space-y-2">
           <p className="text-xs text-[var(--text-muted)]">Optional: tick what you want to show on the card. The details come from your profile and can only be changed there. Leave all unticked for the standard RENYXERA card. Nothing is saved or uploaded.</p>
           <div className="flex items-center gap-2 text-sm">
             <input type="checkbox" checked={onAvatar} onChange={(e) => setOnAvatar(e.target.checked)} aria-label="Show avatar" className="h-4 w-4 accent-violet-600" />
@@ -137,11 +138,14 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
             </span>
           </div>
           {field("name", "Name")}{field("username", "Username")}{field("sid", "Student ID")}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {preview && <img src={preview} alt="Preview of your share card" className="mt-2 w-full rounded-xl border border-[var(--border)]" />}
           <div className="flex gap-2 pt-1">
             <button type="button" disabled={busy} onClick={() => go("share")} className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-violet-600 text-white text-sm font-bold cursor-pointer disabled:opacity-60"><Share2 className="w-4 h-4" /> Share</button>
             <button type="button" disabled={busy} onClick={() => go("download")} className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-[var(--border)] text-sm font-semibold cursor-pointer disabled:opacity-60"><Download className="w-4 h-4" /> Download</button>
+          </div>
+          </div>
+          <div className="min-w-0 lg:sticky lg:top-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {preview && <img src={preview} alt="Preview of your share card" className="w-full rounded-xl border border-[var(--border)] shadow-sm" />}
           </div>
         </div>
       )}

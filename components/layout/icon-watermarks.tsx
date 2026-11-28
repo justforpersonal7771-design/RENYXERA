@@ -9,7 +9,11 @@ import { useEffect } from "react";
  */
 const CARD = ".card-pastel[data-tint]:not([data-wm-icon]), .card-well[data-tint]:not([data-wm-icon])";
 
+/** React puts a `__reactFiber$...` key on every node it has hydrated. Adding a child to a card that React has not hydrated yet breaks hydration (error 418), so wait. */
+const hydrated = (el: Element) => Object.keys(el).some((k) => k.startsWith("__reactFiber"));
+
 function mark(card: Element) {
+  if (!hydrated(card)) return;
   card.setAttribute("data-wm-icon", "1");
   if (card.querySelector(".tile-mark")) return;
   const src = card.querySelector<SVGElement>("svg.lucide, svg[class*='lucide-']");
@@ -26,9 +30,12 @@ export function IconWatermarks() {
     let raf = 0;
     const run = () => { raf = 0; document.querySelectorAll(CARD).forEach(mark); };
     const kick = () => { if (!raf) raf = requestAnimationFrame(run); };
-    kick();
+    const start = window.setTimeout(kick, 1200);
     const mo = new MutationObserver(kick); mo.observe(document.body, { childList: true, subtree: true });
-    return () => { mo.disconnect(); if (raf) cancelAnimationFrame(raf); };
+    // cards inside a section that hydrates late are picked up by this slow retry
+    const retry = window.setInterval(kick, 1500);
+    const stop = window.setTimeout(() => window.clearInterval(retry), 20000);
+    return () => { mo.disconnect(); window.clearTimeout(start); window.clearTimeout(stop); window.clearInterval(retry); if (raf) cancelAnimationFrame(raf); };
   }, []);
   return null;
 }
