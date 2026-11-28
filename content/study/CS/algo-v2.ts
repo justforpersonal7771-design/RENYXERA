@@ -4,6 +4,9 @@ import { ALGO_HASH, ALGO_DC } from "./algo-b";
 import { ALGO_GREEDY, ALGO_DP } from "./algo-c";
 import { ALGO_GRAPH, ALGO_MST, ALGO_SP } from "./algo-d";
 import { chapterA1 } from "./algo-v2-a1";
+import { chapterA2 } from "./algo-v2-a2";
+import { chapterA3 } from "./algo-v2-a3";
+import { chapterA4 } from "./algo-v2-a4";
 
 /**
  * Algorithms, textbook edition (28 Nov 2026). Each row of the shelf keeps its route and its old chapter shell (id, syllabus line, PYQ pattern);
@@ -11,9 +14,9 @@ import { chapterA1 } from "./algo-v2-a1";
  */
 const strip = (items: [string, string][]) => ({ kind: "strip" as const, items: items.map(([label, sub]) => ({ label, sub, state: "done" as const })) });
 export const V2_ASYM: Chapter = { ...ALGO_ASYM, topics: [chapterA1], map: strip([["A1", "asymptotics and recurrences"]]) };
-export const V2_SORT: Chapter = ALGO_SORT;
-export const V2_HASH: Chapter = ALGO_HASH;
-export const V2_DC: Chapter = ALGO_DC;
+export const V2_SORT: Chapter = { ...ALGO_SORT, topics: [chapterA2], map: strip([["A2", "searching and sorting"]]) };
+export const V2_HASH: Chapter = { ...ALGO_HASH, topics: [chapterA3], map: strip([["A3", "hashing"]]) };
+export const V2_DC: Chapter = { ...ALGO_DC, topics: [chapterA4], map: strip([["A4", "divide and conquer"]]) };
 export const V2_GREEDY: Chapter = ALGO_GREEDY;
 export const V2_DP: Chapter = ALGO_DP;
 export const V2_GRAPH: Chapter = ALGO_GRAPH;
