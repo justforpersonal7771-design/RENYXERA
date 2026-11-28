@@ -75,12 +75,13 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false, rank, next = false 
   const free = b.chapters.find((c) => c.ready);
   return (
     <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${56 + Math.min(b.chapters.length, 6) * 5}px` /* capped: books stay varied without 17-chapter books towering (owner, 19 Nov) */ }}
-      aria-label={`${b.title}. ${b.chapters.length} chapters.`}
+      aria-label={`${b.title}. ${rank !== undefined ? `${next ? "Next on your roadmap, number" : "Number"} ${rank} on your roadmap. ` : ""}${b.chapters.length} chapters.`}
       className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
+      {rank !== undefined && <span aria-hidden title={next ? `Next on your roadmap · #${rank}` : `#${rank} on your roadmap`} className="-ml-1 grid h-7 w-7 shrink-0 place-items-center rounded-full text-[14px] font-black tabular-nums leading-none" style={{ background: "var(--tint-ink)", color: "var(--tint)", boxShadow: next ? "0 0 0 3px var(--tint), 0 0 0 5px var(--tint-ink)" : "inset 0 -2px 0 rgba(0,0,0,.18)" }}>{rank}</span>}
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
       </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">{rank !== undefined && <span className={`sp3-stamp ${next ? "!bg-[var(--tint-ink)] !text-[var(--tint)]" : ""}`} title="Place on your roadmap">{next ? `Next · #${rank}` : `#${rank} on your roadmap`}</span>}{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Being written</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
+      <span className="flex shrink-0 flex-col items-end gap-1">{next && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">Read next</span>}{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Being written</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -217,7 +218,14 @@ export function Bookshelf({ aside }: { aside?: React.ReactNode }) {
         <div className="flex min-w-0 flex-col gap-4">
           {aside}
           {access.loading ? <div aria-hidden className="min-w-0" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
-            <section aria-label="Study access" className="card-pastel flex min-w-0 items-center gap-3 p-4" data-tint="mint"><div className="min-w-0 flex-1"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Every book is unlocked</p></div></section>
+            <section aria-label="Study access" className="plan-card plan-peri flex min-w-0 flex-1 flex-col justify-between gap-3 rounded-[var(--card-radius,24px)] p-5 sm:p-6">
+              <div className="relative min-w-0">
+                <p className="plan-kicker flex items-center gap-1.5 text-sm font-extrabold"><BookOpen className="h-4 w-4" aria-hidden /> Study packs</p>
+                <p className="mt-1 font-display text-3xl font-extrabold leading-tight text-[var(--text-primary)]">Every book is unlocked</p>
+                <p className="mt-1.5 text-sm text-[var(--text-secondary)] text-balance">All {PACKS.length} subject packs are yours. Pick a book below or follow your roadmap.</p>
+              </div>
+              <a href="#planner" className="plan-cta plan-peri relative inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl px-5 font-extrabold transition-transform hover:-translate-y-0.5">Browse the books</a>
+            </section>
           ) : (
             <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 flex-1" onClick={() => openStudyShop("Study packs and bundles")}
               body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />

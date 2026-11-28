@@ -2478,7 +2478,8 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 
 /* Shelf headings: ink-coloured type with a highlighter swipe in the shelf colour; spine titles: one size, normal case, wrap freely. */
 .bk-mark { background: linear-gradient(transparent 60%, var(--mk) 60% 90%, transparent 90%); padding: 0 .12em; margin: 0 -.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { text-transform: uppercase !important; font-weight: 800 !important; font-size: clamp(24px, 2.1vw, 30px) !important; line-height: 1.06 !important; letter-spacing: -.02em !important; text-wrap: balance; overflow-wrap: break-word; }
+.sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { text-transform: uppercase !important; font-weight: 800 !important; font-size: clamp(18px, 1.7vw, 27px) !important; line-height: 1.06 !important; letter-spacing: -.02em !important; text-wrap: balance; overflow-wrap: break-word; }
+@media (max-width: 480px) { .sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { font-size: 15px !important; letter-spacing: -.01em !important; } .sp3-slab .sp3-stamp { font-size: 9.5px; padding: 5px 8px; letter-spacing: .04em; } .sp3-slab { gap: 8px; padding-left: 18px; padding-right: 12px; } }
 
 /* Study is purple everywhere (as Pro is gold): every 'buy books' button, including the study packs window. */
 .shop-cta, .btn-study { --cta-bg: #4b2fa8; --cta-ink: #ffffff; --cta-line: rgba(154,140,240,.6); }
