@@ -212,14 +212,14 @@ export function Bookshelf({ aside }: { aside?: React.ReactNode }) {
   return (
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
-      {aside}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,2.1fr)_minmax(0,1fr)]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
         <RoadmapPanel resume={resume ? { ...resume, started: !!last } : null} />
-        <div className="flex min-w-0 flex-col gap-4 [&>*]:flex-1">
+        <div className="flex min-w-0 flex-col gap-4">
+          {aside}
           {access.loading ? <div aria-hidden className="min-w-0" /> : PACKS.every((p) => access.packs.includes(p.id)) ? (
             <section aria-label="Study access" className="card-pastel flex min-w-0 items-center gap-3 p-4" data-tint="mint"><div className="min-w-0 flex-1"><p className="text-xs font-black text-[var(--tint-ink)]">Study packs</p><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Every book is unlocked</p></div></section>
           ) : (
-            <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 h-full" onClick={() => openStudyShop("Study packs and bundles")}
+            <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 flex-1" onClick={() => openStudyShop("Study packs and bundles")}
               body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
           )}
         </div>

@@ -1001,7 +1001,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
 {outlineInner}          </nav>
         </>, sheetHost)}
       <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
-      <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
+      <div ref={bind} className="@container no-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
         {chapter.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={chapter.topics} href={href} />)}
       </div>
       {splitHref && <>
